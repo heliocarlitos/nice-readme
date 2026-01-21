@@ -1,0 +1,15 @@
+.top-loader-bar {
+  background-color: var(--foreground);
+  left: 0 !important;
+  opacity: 1;
+  position: fixed;
+  top: 0 !important;
+  transition:
+    width 0.25s ease-out,
+    opacity 0.4s ease;
+  z-index: 9999999;
+}
+
+.top-loader-bar[style*="width: 100%"] {
+  opacity: 0;
+}
