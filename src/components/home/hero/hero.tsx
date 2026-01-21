@@ -15,7 +15,7 @@ export function Hero() {
             </div>
             <p>Melhore seu README.md</p>
           </div>
-          <h1>Criador de Readme</h1>
+          <h1>Criador de Stats</h1>
           <p className="text">O Nice Readme é uma ferramenta para criar e personalizar estatísticas do GitHub. Ideal para developers que querem um perfil mais organizado. Eu criei esse projecto para ajudar quem esta iniciando no GitHub, quem tem dificuldades de entender documentações mas gostaria de deixar seu README mais limpo, organizado e profissional, sem precisar escrever código.</p>
           <div className="btn">
             <Botao
