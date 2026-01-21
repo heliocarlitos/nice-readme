@@ -12,7 +12,7 @@ export function Header() {
               <Botao content="Home" href="/" />
             </li>
             <li>
-              <Botao content="Readme" href="/readme" />
+              <Botao content="Readme" href="/streak-stats" />
             </li>
             <li>
               <Botao content="Documentação" />
