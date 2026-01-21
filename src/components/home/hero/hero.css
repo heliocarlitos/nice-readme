@@ -1,0 +1,42 @@
+.hero {
+  margin: auto;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 100px 30px;
+}
+.hero .btn {
+  gap: 30px;
+}
+
+.hero .btn button {
+  border-radius: 100px;
+  padding: 10px 20px;
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+}
+
+.hero .btn .txunar {
+  &:hover .icon {
+    transform: translateX(10px);
+  }
+}
+
+.hero .btn .github {
+  border: var(--thin-border);
+  background-color: var(--black);
+  color: var(--foreground);
+
+  & .icon svg {
+    color: var(--foreground);
+  }
+}

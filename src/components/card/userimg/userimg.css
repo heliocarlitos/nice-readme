@@ -1,0 +1,11 @@
+.userimg {
+  width: 100%;
+  justify-content: left;
+  display: none;
+}
+.userimg img {
+  width: 100%;
+  max-width: 130px;
+  height: auto;
+  border-radius: 100px;
+}

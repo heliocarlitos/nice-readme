@@ -1,0 +1,38 @@
+.codecard {
+  background-color: var(--card);
+  color: var(--card-foreground);
+  padding: 20px;
+  border-radius: var(--radius);
+  word-break: break-all;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: var(--thin-border);
+  user-select: none;
+  cursor: default;
+}
+
+.codecard .btn {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.codecard .btn .tt {
+  font-family: "Fira", monospace;
+  font-weight: 500;
+}
+
+.codecard .btn button:hover svg {
+  color: var(--foreground);
+}
+
+.codecard .btn button svg {
+  font-size: 1.3rem;
+  transition: 0.3s ease;
+}
+
+.codecard code {
+  max-width: 466px;
+  font-weight: 300;
+}

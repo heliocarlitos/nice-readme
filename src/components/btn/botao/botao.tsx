@@ -1,0 +1,41 @@
+"use client"
+
+import { ReactNode } from "react"
+import { useRouter } from "next/navigation"
+import "./botao.css"
+
+interface BotaoProps {
+  className?: string
+  content?: ReactNode
+
+  href?: string
+  target?: "_self" | "_blank"
+
+  onClick?: () => void
+}
+
+export function Botao({ className, content = "Botão", href, target = "_self", onClick }: BotaoProps) {
+  const router = useRouter()
+
+  function handleClick() {
+    if (onClick) {
+      onClick()
+      return
+    }
+
+    if (!href) return
+
+    if (target === "_blank") {
+      window.open(href, "_blank")
+      return
+    }
+
+    router.push(href)
+  }
+
+  return (
+    <button type="button" className={`botao ${className}`} onClick={handleClick} aria-label={`Ir para ${content}`}>
+      {content}
+    </button>
+  )
+}

@@ -1,0 +1,35 @@
+.header {
+  margin: auto;
+  position: fixed;
+  width: 100%;
+  max-width: 1300px;
+  top: 0;
+  z-index: 9999;
+  padding: 10px 30px;
+  border-bottom: var(--thin-border);
+  display: flex;
+  justify-content: end;
+  gap: 40px;
+}
+
+.header nav ul {
+  flex-direction: row;
+  gap: 0;
+}
+
+.header nav ul li button {
+  /* background-color: red; */
+  padding: 10px 15px;
+  border-radius: 100px;
+
+  &:hover {
+    background-color: var(--muted);
+    color: var(--muted-foreground);
+  }
+}
+
+.header .btn .github {
+  &:hover .icon svg {
+    color: var(--foreground);
+  }
+}

@@ -1,0 +1,62 @@
+export function StreakTheme() {
+  return (
+    <>
+      <option value="default">default</option>
+      <option value="dark">dark</option>
+      <option value="highcontrast">highcontrast</option>
+      <option value="transparent">transparent</option>
+      <option value="radical">radical</option>
+      <option value="merko">merko</option>
+      <option value="gruvbox">gruvbox</option>
+      <option value="tokyonight">tokyonight</option>
+      <option value="onedark">onedark</option>
+      <option value="cobalt">cobalt</option>
+      <option value="synthwave">synthwave</option>
+      <option value="dracula">dracula</option>
+      <option value="prussian">prussian</option>
+      <option value="monokai">monokai</option>
+      <option value="vue">vue</option>
+      <option value="vue-dark">vue-dark</option>
+      <option value="shades-of-purple">shades-of-purple</option>
+      <option value="nightowl">nightowl</option>
+      <option value="buefy">buefy</option>
+      <option value="blue-green">blue-green</option>
+      <option value="algolia">algolia</option>
+      <option value="great-gatsby">great-gatsby</option>
+      <option value="darcula">darcula</option>
+      <option value="bear">bear</option>
+      <option value="solarized-dark">solarized-dark</option>
+      <option value="solarized-light">solarized-light</option>
+      <option value="chartreuse-dark">chartreuse-dark</option>
+      <option value="nord">nord</option>
+      <option value="gotham">gotham</option>
+      <option value="material-palenight">material-palenight</option>
+      <option value="graywhite">graywhite</option>
+      <option value="vision-friendly-dark">vision-friendly-dark</option>
+      <option value="ayu-mirage">ayu-mirage</option>
+      <option value="midnight-purple">midnight-purple</option>
+      <option value="calm">calm</option>
+      <option value="flag-india">flag-india</option>
+      <option value="omni">omni</option>
+      <option value="react">react</option>
+      <option value="jolly">jolly</option>
+      <option value="maroongold">maroongold</option>
+      <option value="yeblu">yeblu</option>
+      <option value="blueberry">blueberry</option>
+      <option value="slateorange">slateorange</option>
+      <option value="kacho_ga">kacho_ga</option>
+      <option value="outrun">outrun</option>
+      <option value="ocean_dark">ocean_dark</option>
+      <option value="city_lights">city_lights</option>
+      <option value="github_dark">github_dark</option>
+      <option value="discord_old_blurple">discord_old_blurple</option>
+      <option value="aura_dark">aura_dark</option>
+      <option value="panda">panda</option>
+      <option value="noctis_minimus">noctis_minimus</option>
+      <option value="cobalt2">cobalt2</option>
+      <option value="swift">swift</option>
+      <option value="aura">aura</option>
+      <option value="apprentice">apprentice</option>
+    </>
+  )
+}
