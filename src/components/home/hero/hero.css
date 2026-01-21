@@ -1,15 +1,38 @@
 .hero {
   margin: auto;
   width: 100%;
-  max-width: 800px;
+  height: 50dvh;
+  display: flex;
+  padding: 0 30px;
+  text-align: center;
+  align-items: center;
+}
+
+.hero .content {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 100px 30px;
+  width: 100%;
 }
+
+.hero .tag_ {
+  margin: auto;
+}
+
+.hero .text {
+  margin: auto;
+  width: 100%;
+  max-width: 800px;
+}
+
 .hero .btn {
   gap: 30px;
   display: none;
+}
+
+.hero h1 {
+  font-size: clamp(1.5rem, 5vw, 3.3rem);
+  font-weight: 800;
 }
 
 .hero .btn button {
@@ -39,5 +62,19 @@
 
   & .icon svg {
     color: var(--foreground);
+  }
+}
+
+@media (width <= 356px) {
+  .hero {
+    margin-top: 30px;
+    padding: 0 20px;
+  }
+}
+
+@media (width <= 281px) {
+  .hero .tag_,
+  .hero .tag_ svg {
+    font-size: 0.7rem;
   }
 }

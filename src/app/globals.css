@@ -18,7 +18,7 @@
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   font-family: "Montserrat", Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 html {
@@ -63,11 +63,6 @@ html {
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
   -webkit-tap-highlight-color: transparent;
-}
-
-html {
-  scroll-padding-top: 100px;
-  transition: 0.3s ease;
 }
 
 body,
@@ -240,7 +235,7 @@ figure {
 }
 
 .tag_ {
-  padding: 5px 15px;
+  padding: 5px 13px;
   border: var(--thin-border);
   width: fit-content;
   border-radius: 100px;
@@ -250,6 +245,7 @@ figure {
   gap: 10px;
   user-select: none;
   cursor: default;
+  background-color: var(--muted);
 
   & .icon svg {
     font-size: 0.9rem;
