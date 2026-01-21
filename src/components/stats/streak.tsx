@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect, useCallback } from "react"
-import "./readme.css"
+import "./stats.css"
 import { CodeCard } from "../card/codecard/codecard"
 import { UserImg } from "../card/userimg/userimg"
 import { StreakTheme } from "../theme/streak"
@@ -43,7 +43,7 @@ const DATE_FORMAT_OPTIONS = [
   { value: "M j[, Y]", label: "Apr 14, 2020 / Apr 14" }
 ]
 
-export function Readme() {
+export function Stats() {
   const [username, setUsername] = useState("")
   const [theme, setTheme] = useState("default")
   const [hideBorder, setHideBorder] = useState(false)
@@ -123,7 +123,7 @@ export function Readme() {
 
   return (
     <>
-      <section className="readme">
+      <section className="stats">
         <div className="container">
           <div className="intro">
             <h2>Propriedades</h2>
@@ -244,7 +244,7 @@ export function Readme() {
 
         <div className="container">
           <div className="intro">
-            <h2>Preview</h2>
+            <h2>Preview do Streak</h2>
           </div>
 
           <div className="content">

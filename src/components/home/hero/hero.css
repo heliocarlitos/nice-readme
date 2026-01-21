@@ -9,6 +9,7 @@
 }
 .hero .btn {
   gap: 30px;
+  display: none;
 }
 
 .hero .btn button {

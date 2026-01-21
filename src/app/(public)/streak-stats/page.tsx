@@ -1,10 +1,9 @@
-import { Readme } from "@/components/readme/readme"
-import "./readme.css"
+import { Stats } from "@/components/stats/streak"
 
 export default function StreakStats() {
   return (
     <>
-      <Readme />
+      <Stats />
     </>
   )
 }

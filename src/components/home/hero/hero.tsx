@@ -1,7 +1,7 @@
 import { Botao } from "@/components/btn/botao/botao"
 import "./hero.css"
 import { PiStarFourFill } from "react-icons/pi"
-import { FaGithub, FaLeftLong, FaRightLeft } from "react-icons/fa6"
+import { FaGithub } from "react-icons/fa6"
 import { HiOutlineArrowSmRight } from "react-icons/hi"
 
 export function Hero() {
@@ -14,12 +14,12 @@ export function Hero() {
           </div>
           <p>Melhore seu README.md</p>
         </div>
-        <h1>Criador de Readme Maning Nices</h1>
-        <p className="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio aliquid quas fugiat eligendi harum magni magnam optio suscipit, totam quasi expedita rerum aliquam corrupti neque incidunt! Hic, maiores molestiae?</p>
+        <h1>Criador de Readme</h1>
+        <p className="text">O Nice Readme é uma ferramenta intuitiva para criar e personalizar estatísticas do GitHub directamente no seu README. Oferece suporte a cartões de sequência, temas, cores, idiomas e pré-visualização em tempo real, tudo numa interface simples e visual. Ideal para developers que querem um perfil mais atrativo e profissional.</p>
         <div className="btn">
           <Botao
             className="btn-geral txunar"
-            href="/readme"
+            href="/streak-stats"
             content={
               <>
                 Txunar meu readme

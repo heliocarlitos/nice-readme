@@ -1,21 +1,26 @@
+"use client"
+
+import { usePathname } from "next/navigation"
 import { FaGithub } from "react-icons/fa6"
 import { Botao } from "../btn/botao/botao"
 import "./header.css"
 
 export function Header() {
+  const pathname = usePathname()
+
   return (
     <>
       <header className="header">
         <nav>
           <ul>
             <li>
-              <Botao content="Home" href="/" />
+              <Botao content="Home" href="/" isActive={pathname === "/"} />
             </li>
             <li>
-              <Botao content="Readme" href="/streak-stats" />
+              <Botao content="Streak" href="/streak-stats" isActive={pathname === "/streak-stats"} />
             </li>
             <li>
-              <Botao content="Documentação" />
+              <Botao content="Stats" href="/stats" isActive={pathname === "/stats"} />
             </li>
           </ul>
         </nav>

@@ -6,7 +6,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="pt">
       <body>
-        {/* <Header /> */}
+        <Header />
         <main>{children}</main>
       </body>
     </html>

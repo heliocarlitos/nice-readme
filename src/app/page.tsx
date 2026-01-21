@@ -1,9 +1,9 @@
-import StreakStats from "./(public)/streak-stats/page"
+import { Hero } from "@/components/home/hero/hero"
 
 export default function Home() {
   return (
     <>
-      <StreakStats />
+      <Hero />
     </>
   )
 }

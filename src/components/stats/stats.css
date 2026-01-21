@@ -1,9 +1,9 @@
-.readme {
+.stats {
   display: flex;
   gap: 30px;
 }
 
-.readme .container {
+.stats .container {
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -14,52 +14,54 @@
   height: fit-content;
 }
 
-.readme .container:nth-child(2) {
+.stats .container:nth-child(2) {
   max-width: 530px;
+  position: sticky;
+  top: 80px;
 }
 
-.readme .container .content {
+.stats .container .content {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.readme .container .content .box {
+.stats .container .content .box {
   display: flex;
   gap: 20px;
   justify-content: space-between;
 }
 
-.readme .container .input-box,
-.readme .container .content .box .input-box {
+.stats .container .input-box,
+.stats .container .content .box .input-box {
   display: flex;
   gap: 20px;
   flex-direction: column;
   width: 50%;
 }
 
-.readme .container .input-box {
+.stats .container .input-box {
   width: 100%;
 }
 
-.readme .container .input-box .user-input {
+.stats .container .input-box .user-input {
   max-width: 100%;
 }
 
-.readme .container .content .box .input-box {
+.stats .container .content .box .input-box {
   gap: 10px;
 }
 
-.readme .container .input-box label {
+.stats .container .input-box label {
   text-wrap: nowrap;
 }
 
-.readme .container .input-box label span {
+.stats .container .input-box label span {
   color: var(--destructive);
 }
 
-.readme .container .input-box input,
-.readme .container .input-box select {
+.stats .container .input-box input,
+.stats .container .input-box select {
   background-color: var(--muted);
   border: var(--thin-border);
   padding: 10px 20px;
@@ -71,60 +73,69 @@
   }
 }
 
-.readme .container .content .bag-code {
+.stats .container .input-box .input-color {
+  width: 50px;
+  padding: 10px;
+}
+
+.stats .container .content .bag-code {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
 @media (width <= 1352px) {
-  .readme {
+  .stats {
     padding: 0 20px;
   }
 }
 
 @media (width <= 1172px) {
-  .readme .container .content .box {
+  .stats .container .content .box {
     flex-direction: column;
   }
 
-  .readme .container .content .box .input-box {
+  .stats .container .content .box .input-box {
     width: 100%;
   }
 }
 
 @media (width <= 1028px) {
-  .readme {
+  .stats {
     flex-direction: column;
   }
 
-  .readme .container .content .box {
+  .stats .container .content .box {
     flex-direction: row;
   }
 
-  .readme .container:nth-child(2),
-  .readme .container .content .bag-code code {
+  .stats .container:nth-child(2) {
+    position: static;
+  }
+
+  .stats .container:nth-child(2),
+  .stats .container .content .bag-code code {
     max-width: 100%;
   }
 
-  .readme .container .content .bag-code figure,
-  .readme .container .content .bag-code img {
+  .stats .container .content .bag-code figure,
+  .stats .container .content .bag-code img {
     width: 100%;
   }
 }
 
 @media (width <= 1028px) {
-  .readme {
+  .stats {
     flex-direction: column-reverse;
   }
 
-  .readme .container .content .box {
+  .stats .container .content .box {
     flex-direction: column;
   }
 }
 
 @media (width <= 430px) {
-  .readme .container {
+  .stats .container {
     padding: 20px;
   }
 }
