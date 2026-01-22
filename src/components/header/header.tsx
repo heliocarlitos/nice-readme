@@ -22,6 +22,9 @@ export function Header() {
             <li>
               <Botao content="Stats" href="/stats" isActive={pathname === "/stats"} />
             </li>
+            <li>
+              <Botao content="Pins" href="/extra-pins" isActive={pathname === "/extra-pins"} />
+            </li>
           </ul>
         </nav>
 
