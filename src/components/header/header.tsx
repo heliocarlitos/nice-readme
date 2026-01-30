@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import { FaGithub } from "react-icons/fa6"
 import { Botao } from "../btn/botao/botao"
 import "./header.css"
+import { MenuMobile } from "../btn/botao/menumobile/menumobile"
 
 export function Header() {
   const pathname = usePathname()
@@ -25,6 +26,9 @@ export function Header() {
             <li>
               <Botao content="Pins" href="/extra-pins" isActive={pathname === "/extra-pins"} />
             </li>
+            <li>
+              <Botao content="Badges" href="/badges" isActive={pathname === "/badges"} />
+            </li>
           </ul>
         </nav>
 
@@ -41,6 +45,8 @@ export function Header() {
               </>
             }
           />
+
+          <MenuMobile />
         </div>
       </header>
     </>

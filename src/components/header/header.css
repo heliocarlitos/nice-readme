@@ -8,6 +8,7 @@
   padding: 20px 30px;
   display: flex;
   justify-content: end;
+  align-items: center;
   gap: 40px;
   background-color: var(--bg);
 }
@@ -18,7 +19,8 @@
 }
 
 .header nav ul li button {
-  &:hover {
+  &:hover,
+  &:focus {
     color: var(--foreground);
   }
 }
@@ -28,7 +30,18 @@
 }
 
 .header .btn .github {
-  &:hover .icon svg {
+  &:hover .icon svg,
+  &:focus .icon svg {
     color: var(--foreground);
+  }
+}
+
+@media (width <= 490px) {
+  .header {
+    padding-block: 30px;
+  }
+  .header nav,
+  .header .btn .github {
+    display: none;
   }
 }

@@ -11,15 +11,16 @@ interface BotaoProps {
   target?: "_self" | "_blank"
   onClick?: () => void
   isActive?: boolean
+  onMouseUp?: () => void
+  onKeyDown?: (e: React.KeyboardEvent<HTMLButtonElement>) => void
 }
 
-export function Botao({ className, content = "Botão", href, target = "_self", onClick, isActive = false }: BotaoProps) {
+export function Botao({ className, content = "Botão", href, target = "_self", onClick, isActive = false, onMouseUp, onKeyDown }: BotaoProps) {
   const router = useRouter()
 
   function handleClick() {
     if (onClick) {
       onClick()
-      return
     }
 
     if (!href) return
@@ -36,7 +37,7 @@ export function Botao({ className, content = "Botão", href, target = "_self", o
   const fullClassName = `botao ${activeClass} ${className || ""}`.trim()
 
   return (
-    <button type="button" className={fullClassName} onClick={handleClick} aria-label={`Ir para ${typeof content === "string" ? content : "página"}`}>
+    <button type="button" className={fullClassName} onClick={handleClick} onMouseUp={onMouseUp} onKeyDown={onKeyDown} aria-label={`Ir para ${typeof content === "string" ? content : "página"}`}>
       {content}
     </button>
   )

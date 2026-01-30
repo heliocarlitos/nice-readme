@@ -124,6 +124,10 @@
   }
 }
 
+.stats .container .content .bag-code .badge-preview {
+  width: fit-content;
+}
+
 @media (width <= 1028px) {
   .stats {
     flex-direction: column-reverse;

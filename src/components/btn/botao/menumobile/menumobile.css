@@ -1,0 +1,132 @@
+.menumobile {
+  position: relative;
+  display: none;
+  align-items: center;
+  height: 0;
+}
+
+.menumobile .btn-menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1000;
+  display: block;
+  padding: 3px;
+  border: 1px solid transparent;
+  border-radius: 100px;
+
+  &:hover,
+  &:focus {
+    & svg {
+      color: var(--white);
+    }
+  }
+
+  &:focus {
+    border: var(--thin-border);
+  }
+}
+
+.menumobile .btn-menu .icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.menumobile .btn-menu .icon svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s ease;
+  width: 100%;
+  height: 100%;
+}
+
+.menumobile .btn-menu .icon .hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menumobile .content {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  left: 0;
+  top: 60px;
+  width: 100%;
+  height: 100dvh;
+  z-index: 999;
+}
+
+.menumobile .content.open {
+  background-color: #0000008c;
+  backdrop-filter: blur(4px);
+}
+
+.menumobile .content nav {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: 0.3s ease;
+  padding-block: 0;
+  transform: translateY(-30px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.menumobile .content nav.open {
+  visibility: visible;
+  opacity: 1;
+  background-color: var(--bg-sec);
+  padding-block: 30px;
+  transform: translateY(0);
+}
+
+.menumobile .content .link,
+.menumobile .content .github {
+  width: calc(100% - 60px);
+  justify-content: left;
+  padding: 15px 30px;
+  color: var(--white);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+.menumobile .content .link:hover,
+.menumobile .content .link:focus,
+.menumobile .content .github:hover,
+.menumobile .content .github:focus {
+  background-color: var(--card);
+}
+
+.menumobile .content .link.active {
+  background-color: var(--bg);
+}
+
+.menumobile .content .github {
+  background-color: var(--black);
+  width: calc(100% - 120px);
+  margin: 20px 30px 0 30px;
+  border-radius: 0.5rem;
+  justify-content: center;
+}
+
+.menumobile .content .github svg,
+.menumobile .content .github p {
+  color: var(--white);
+}
+
+@media (width <= 490px) {
+  .menumobile {
+    display: flex;
+  }
+}
+
+@media (width >= 491px) {
+  .menumobile {
+    display: none;
+  }
+}
