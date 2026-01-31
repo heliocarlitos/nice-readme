@@ -38,7 +38,7 @@ export function PinsAndLangs() {
   const [repoUrl, setRepoUrl] = useState("")
 
   // Gist
-  const [gistId, setGistId] = useState("")
+  const [gistId, setGistId] = useState("709fbee67b48e330507b9b7f10fef16f")
   const [showOwnerGist, setShowOwnerGist] = useState(false)
 
   // Top Languages
@@ -184,7 +184,7 @@ export function PinsAndLangs() {
 
           <div className="content">
             <div className="input-box">
-              <label htmlFor="card_type">Tipo de cartão</label>
+              <label htmlFor="card_type">Tipo de Card Pin</label>
               <select id="card_type" value={type} onChange={e => setType(e.target.value as any)}>
                 <option value="pin">Repositório Extra (Pin)</option>
                 <option value="gist">Gist Pin</option>
@@ -206,7 +206,7 @@ export function PinsAndLangs() {
                 <label htmlFor="gist_id">
                   ID do Gist <span>*</span>
                 </label>
-                <input type="text" id="gist_id" value={gistId} onChange={e => setGistId(e.target.value)} placeholder="bbfce31e0217a3689c8d961a356cb10d" />
+                <input type="text" id="gist_id" value={gistId} onChange={e => setGistId(e.target.value)} placeholder="709fbee67b48e330507b9b7f10fef16f" />
               </div>
             )}
 
