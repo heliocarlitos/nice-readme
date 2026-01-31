@@ -90,14 +90,23 @@
 
 .stats .container .content .info p {
   display: inline;
-  color: tomato;
+  color: var(--destructive);
 }
 
 .stats .container .content .info button {
   display: inline-flex;
-  /* margin-left: 10px; */
+  gap: 0;
   color: var(--foreground);
   text-decoration: underline;
+
+  &:hover {
+    color: var(--white);
+  }
+}
+
+.stats .container .content .info button svg {
+  font-size: 1rem;
+  color: var(--foreground);
 }
 
 @media (width <= 1352px) {

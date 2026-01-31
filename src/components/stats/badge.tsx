@@ -4,6 +4,7 @@ import "./stats.css"
 import { CodeCard } from "../card/codecard/codecard"
 import { UserImg } from "../card/userimg/userimg"
 import { Botao } from "../btn/botao/botao"
+import { MdOpenInNew } from "react-icons/md"
 
 const STYLES = ["flat", "flat-square", "plastic", "for-the-badge", "social", "pixel"]
 const COMMON_COLORS = ["brightgreen", "green", "yellowgreen", "yellow", "orange", "red", "lightgrey", "blue", "success", "important", "critical", "inactive", "informational", "grey", "blueviolet"]
@@ -158,7 +159,19 @@ export function Badges() {
                 {username ? (
                   <div className="info">
                     <p>
-                      As visualização são contadas apartir do momento que você adiciona a Badge no seu Readme. <Botao href={`https://github.com/${username}/${username}/edit/main/README.md`} target="_blank" content="Adicionar agora" />
+                      As visualização são contadas apartir do momento que você adiciona a Badge no seu Readme.{" "}
+                      <Botao
+                        href={`https://github.com/${username}/${username}/edit/main/README.md`}
+                        target="_blank"
+                        content={
+                          <>
+                            Adicionar agora
+                            <div className="icon">
+                              <MdOpenInNew />
+                            </div>
+                          </>
+                        }
+                      />
                     </p>
                   </div>
                 ) : (
