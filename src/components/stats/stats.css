@@ -84,6 +84,22 @@
   gap: 10px;
 }
 
+.stats .container .content .info {
+  display: flex;
+}
+
+.stats .container .content .info p {
+  display: inline;
+  color: tomato;
+}
+
+.stats .container .content .info button {
+  display: inline-flex;
+  /* margin-left: 10px; */
+  color: var(--foreground);
+  text-decoration: underline;
+}
+
 @media (width <= 1352px) {
   .stats {
     padding: 0 20px;
