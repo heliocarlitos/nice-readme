@@ -143,3 +143,9 @@
     padding: 20px;
   }
 }
+
+@media (width <= 360px) {
+  .stats .container .input-box label {
+    text-wrap: wrap;
+  }
+}
