@@ -1,11 +1,11 @@
 "use client"
 
 import { HiMenuAlt4, HiOutlineX } from "react-icons/hi"
-import { Botao } from "../botao"
 import "./menumobile.css"
 import { FaGithub } from "react-icons/fa6"
 import { usePathname } from "next/navigation"
 import { useState, useEffect, useRef } from "react"
+import { Botao } from "../botao/botao"
 
 export function MenuMobile() {
   const pathname = usePathname()
