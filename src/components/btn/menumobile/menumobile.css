@@ -10,13 +10,6 @@
   border: 1px solid transparent;
   border-radius: 100px;
 
-  &:hover,
-  &:focus {
-    & svg {
-      color: var(--white);
-    }
-  }
-
   &:focus {
     border: var(--thin-border);
   }
@@ -24,6 +17,7 @@
 
 .menumobile .btn-menu .icon svg {
   font-size: 1.6rem;
+  color: var(--white);
 }
 
 .menumobile .btn-menu .icon .hidden {
