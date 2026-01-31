@@ -34,3 +34,10 @@
 .ir-para-top:hover svg {
   color: var(--white);
 }
+
+@media (width <= 425px) {
+  .ir-para-top {
+    bottom: 20px;
+    right: 20px;
+  }
+}
