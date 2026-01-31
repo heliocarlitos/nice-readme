@@ -188,7 +188,7 @@ export function Stats() {
                   ))}
                 </select>
               </div>
-              <BooleanSelect id="disable_animations" label="Animações" value={disableAnimations} onChange={setDisableAnimations} />
+              <BooleanSelect id="disable_animations" label="Remover animações" value={disableAnimations} onChange={setDisableAnimations} />
             </div>
 
             <div className="box">

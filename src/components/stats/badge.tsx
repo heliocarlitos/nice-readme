@@ -110,7 +110,7 @@ export function Badges() {
 
             <div className="box">
               <div className="input-box">
-                <label htmlFor="style">Estilo</label>
+                <label htmlFor="style">Layout</label>
                 <select id="style" value={style} onChange={e => setStyle(e.target.value)}>
                   {STYLES.map(s => (
                     <option key={s} value={s}>
