@@ -1,0 +1,36 @@
+.ir-para-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--bg-sec);
+  padding: 10px;
+  border-radius: 100px;
+  opacity: 0;
+  transform: translateY(40px);
+  pointer-events: none;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+
+  &:hover {
+    background-color: var(--muted);
+    & svg {
+      color: var(--white);
+    }
+  }
+}
+
+.ir-para-top.visivel {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.ir-para-top:hover {
+  background-color: var(--muted);
+}
+
+.ir-para-top:hover svg {
+  color: var(--white);
+}

@@ -3,6 +3,7 @@ import { Header } from "@/components/header/header"
 import "./globals.css"
 import { LenisWrapper } from "@/components/leniswrapper/page"
 import TopProgressLoader from "@/components/topprogressloader/TopProgressLoader"
+import { IrparaTop } from "@/components/btn/irparatop/irparatop"
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <LenisWrapper>
           <main>{children}</main>
         </LenisWrapper>
+        <IrparaTop />
       </body>
     </html>
   )
