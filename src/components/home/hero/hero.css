@@ -37,6 +37,19 @@
   font-weight: 400;
 }
 
+.hero .content .star-github {
+  margin: auto;
+  font-weight: 500;
+  background-color: var(--bg-sec);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  color: var(--white);
+
+  & svg {
+    color: var(--white);
+  }
+}
+
 @media (width <= 356px) {
   .hero {
     margin-top: 30px;

@@ -57,6 +57,7 @@ export function UsersGithub() {
           content={
             <figure>
               <Image
+                loading="lazy"
                 src={`https://github.com/${username}.png`}
                 alt={`Foto de perfil do ${username}`}
                 width={40}
