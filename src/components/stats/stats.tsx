@@ -53,6 +53,10 @@ async function checkUsageExists(username: string, tool: string): Promise<boolean
 }
 
 export function Stats() {
+  useEffect(() => {
+    console.log("FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+  }, [])
+
   const [type, setType] = useState<"github" | "wakatime">("github")
 
   // GitHub Stats

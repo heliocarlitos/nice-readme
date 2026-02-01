@@ -34,6 +34,10 @@ async function checkUsageExists(username: string, tool: string): Promise<boolean
 }
 
 export function Badges() {
+  useEffect(() => {
+    console.log("FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+  }, [])
+
   const [type, setType] = useState<"static" | "logo" | "profile-views">("static")
   const [username, setUsername] = useState("")
   const [profileLabel, setProfileLabel] = useState("Vizualizações")

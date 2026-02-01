@@ -51,6 +51,10 @@ async function checkUsageExists(username: string, tool: string): Promise<boolean
 }
 
 export function PinsAndLangs() {
+  useEffect(() => {
+    console.log("FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+  }, [])
+
   const [type, setType] = useState<"pin" | "gist" | "langs">("pin")
 
   const [username, setUsername] = useState("")
