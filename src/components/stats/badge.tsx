@@ -2,11 +2,9 @@
 import { useState, useEffect } from "react"
 import "./stats.css"
 import { CodeCard } from "../card/codecard/codecard"
-import { UserImg } from "../card/userimg/userimg"
 import { Botao } from "../btn/botao/botao"
 import { MdOpenInNew } from "react-icons/md"
 
-// 🔥 Firebase
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
@@ -59,7 +57,6 @@ export function Badges() {
   const [markdown, setMarkdown] = useState("")
   const [loading, setLoading] = useState(false)
 
-  // Função de cópia com depuração
   const handleCopy = async (code: string, isHtml: boolean = false) => {
     console.log("handleCopy chamado com código:", code)
 
@@ -67,7 +64,6 @@ export function Badges() {
       await navigator.clipboard.writeText(code)
       console.log("Código copiado para a área de transferência.")
 
-      // Só processa se for profile-views e tiver username
       if (type !== "profile-views" || !username.trim()) {
         console.log("Não é profile-views ou username vazio. Nada a guardar.")
         return
@@ -76,21 +72,18 @@ export function Badges() {
       const cleanUsername = username.trim().toLowerCase()
       const tool = "profile-views"
 
-      // Verifica duplicados
       const existsInDb = await checkUsageExists(cleanUsername, tool)
       if (existsInDb) {
         console.log("Utilizador já existe na base de dados:", cleanUsername)
         return
       }
 
-      // Verifica no GitHub
       const existsOnGitHub = await checkGitHubUserExists(username)
       if (!existsOnGitHub) {
         console.warn("Utilizador não existe no GitHub:", username)
         return
       }
 
-      // Grava
       await addDoc(collection(db, "tool_usage"), {
         username: cleanUsername,
         tool,
@@ -369,10 +362,8 @@ export function Badges() {
                     <img className="badge-preview" src={imageUrl} alt="Badge preview" />
                   )}
 
-                  {/* Markdown */}
                   <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                  {/* HTML */}
                   <CodeCard code={type === "profile-views" ? `<img src="${imageUrl}" alt="${profileLabel}" />` : linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" />\n</a>` : `<img src="${imageUrl}" alt="Badge" />`} lang="HTML" onCopy={() => handleCopy(type === "profile-views" ? `<img src="${imageUrl}" alt="${profileLabel}" />` : linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" />\n</a>` : `<img src="${imageUrl}" alt="Badge" />`)} />
                 </>
               )}

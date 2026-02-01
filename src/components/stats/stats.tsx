@@ -2,8 +2,11 @@
 import { useState, useEffect, useCallback } from "react"
 import "./stats.css"
 import { CodeCard } from "../card/codecard/codecard"
-import { UserImg } from "../card/userimg/userimg"
 import { StatsTheme } from "../theme/stats"
+
+// Firebase
+import { db } from "@/lib/firebase"
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
 const HIDE_OPTIONS = ["stars", "commits", "prs", "issues", "contribs"]
 const SHOW_OPTIONS = ["reviews", "discussions_started", "discussions_answered", "prs_merged", "prs_merged_percentage"]
@@ -27,6 +30,27 @@ const LOCALES = [
   { code: "ar", name: "العربية" },
   { code: "hi", name: "हिन्दी" }
 ]
+
+async function checkGitHubUserExists(username: string): Promise<boolean> {
+  if (!username.trim()) return false
+  try {
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
+    return res.status === 200
+  } catch {
+    return false
+  }
+}
+
+async function checkUsageExists(username: string, tool: string): Promise<boolean> {
+  try {
+    const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
+    const snapshot = await getDocs(q)
+    return !snapshot.empty
+  } catch (error) {
+    console.error("Erro ao verificar existência no Firestore:", error)
+    return false
+  }
+}
 
 export function Stats() {
   const [type, setType] = useState<"github" | "wakatime">("github")
@@ -133,48 +157,7 @@ export function Stats() {
     }
 
     return ""
-  }, [
-    type,
-    // GitHub
-    username,
-    customTitle,
-    theme,
-    titleColor,
-    textColor,
-    iconColor,
-    ringColor,
-    borderColor,
-    hideBorder,
-    locale,
-    borderRadius,
-    cardWidth,
-    hide,
-    show,
-    hideTitle,
-    hideRank,
-    rankIcon,
-    showIcons,
-    includeAllCommits,
-    lineHeight,
-    excludeRepo,
-    textBold,
-    disableAnimations,
-    numberFormat,
-    numberPrecision,
-    commitsYear,
-    // WakaTime
-    wakaUsername,
-    wakaCustomTitle,
-    wakaHide,
-    wakaHideTitle,
-    wakaCardWidth,
-    wakaLineHeight,
-    wakaHideProgress,
-    wakaLayout,
-    wakaLangsCount,
-    wakaDisplayFormat,
-    wakaDisableAnimations
-  ])
+  }, [type, username, customTitle, theme, titleColor, textColor, iconColor, ringColor, borderColor, hideBorder, locale, borderRadius, cardWidth, hide, show, hideTitle, hideRank, rankIcon, showIcons, includeAllCommits, lineHeight, excludeRepo, textBold, disableAnimations, numberFormat, numberPrecision, commitsYear, wakaUsername, wakaCustomTitle, wakaHide, wakaHideTitle, wakaCardWidth, wakaLineHeight, wakaHideProgress, wakaLayout, wakaLangsCount, wakaDisplayFormat, wakaDisableAnimations])
 
   useEffect(() => {
     const url = buildImageUrl()
@@ -204,6 +187,37 @@ export function Stats() {
 
     return () => clearTimeout(timer)
   }, [buildImageUrl, type, username, wakaUsername, customTitle, wakaCustomTitle])
+
+  const handleCopy = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code)
+      let tool = ""
+      let user = ""
+
+      if (type === "github" && username) {
+        tool = "github-stats"
+        user = username
+      } else if (type === "wakatime" && wakaUsername) {
+        tool = "wakatime-stats"
+        user = wakaUsername
+      }
+
+      if (tool && user) {
+        const cleanUsername = user.trim().toLowerCase()
+        const existsInDb = await checkUsageExists(cleanUsername, tool)
+        if (existsInDb) return
+        const existsOnGitHub = tool === "github-stats" ? await checkGitHubUserExists(user) : true
+        if (!existsOnGitHub) return
+        await addDoc(collection(db, "tool_usage"), {
+          username: cleanUsername,
+          tool,
+          timestamp: new Date()
+        })
+      }
+    } catch (err) {
+      console.error("Erro em handleCopy:", err)
+    }
+  }
 
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
     <div className="input-box">
@@ -480,8 +494,8 @@ export function Stats() {
                       }}
                     />
                   </figure>
-                  <CodeCard code={markdown} lang="Markdown" />
-                  <CodeCard code={`<img src="${imageUrl}" alt="${type === "github" ? "GitHub Stats" : "WakaTime Stats"}" width="${type === "github" ? cardWidth : wakaCardWidth}" height="auto" loading="lazy" />`} lang="HTML" />
+                  <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
+                  <CodeCard code={`<img src="${imageUrl}" alt="${type === "github" ? "GitHub Stats" : "WakaTime Stats"}" width="${type === "github" ? cardWidth : wakaCardWidth}" height="auto" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="${type === "github" ? "GitHub Stats" : "WakaTime Stats"}" width="${type === "github" ? cardWidth : wakaCardWidth}" height="auto" loading="lazy" />`)} />
                 </>
               )}
               {!imageUrl && !loading && <p>Seleccione um tipo e preencha os campos obrigatórios para ver a pré-visualização.</p>}

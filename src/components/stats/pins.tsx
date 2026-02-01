@@ -2,7 +2,10 @@
 import { useState, useEffect, useCallback } from "react"
 import "./stats.css"
 import { CodeCard } from "../card/codecard/codecard"
-import { UserImg } from "../card/userimg/userimg"
+
+// Firebase
+import { db } from "@/lib/firebase"
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
 const COMMON_THEMES = ["default", "dark", "radical", "merko", "gruvbox", "tokyonight", "onedark", "cobalt", "synthwave", "highcontrast", "dracula", "transparent"]
 const LANGS_THEMES = ["default", "dark"]
@@ -25,6 +28,27 @@ const LOCALES = [
   { code: "ar", name: "العربية" },
   { code: "hi", name: "हिन्दी" }
 ]
+
+async function checkGitHubUserExists(username: string): Promise<boolean> {
+  if (!username.trim()) return false
+  try {
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
+    return res.status === 200
+  } catch {
+    return false
+  }
+}
+
+async function checkUsageExists(username: string, tool: string): Promise<boolean> {
+  try {
+    const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
+    const snapshot = await getDocs(q)
+    return !snapshot.empty
+  } catch (error) {
+    console.error("Erro ao verificar existência no Firestore:", error)
+    return false
+  }
+}
 
 export function PinsAndLangs() {
   const [type, setType] = useState<"pin" | "gist" | "langs">("pin")
@@ -164,6 +188,27 @@ export function PinsAndLangs() {
     return () => clearTimeout(timer)
   }, [buildImageUrl, type, repoUrl, gistId, username])
 
+  const handleCopy = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code)
+      if (type === "langs" && username) {
+        const cleanUsername = username.trim().toLowerCase()
+        const tool = "top-langs"
+        const existsInDb = await checkUsageExists(cleanUsername, tool)
+        if (existsInDb) return
+        const existsOnGitHub = await checkGitHubUserExists(username)
+        if (!existsOnGitHub) return
+        await addDoc(collection(db, "tool_usage"), {
+          username: cleanUsername,
+          tool,
+          timestamp: new Date()
+        })
+      }
+    } catch (err) {
+      console.error("Erro em handleCopy:", err)
+    }
+  }
+
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
     <div className="input-box">
       <label htmlFor={id}>{label}</label>
@@ -219,7 +264,6 @@ export function PinsAndLangs() {
               </div>
             )}
 
-            {/* Aparência geral */}
             <div className="box">
               <div className="input-box">
                 <label htmlFor="theme">Tema</label>
@@ -262,7 +306,6 @@ export function PinsAndLangs() {
               )}
             </div>
 
-            {/* Opções específicas */}
             {type === "pin" && (
               <div className="box">
                 <BooleanSelect id="show_owner_pin" label="Mostrar proprietário" value={showOwnerGist} onChange={setShowOwnerGist} />
@@ -354,8 +397,8 @@ export function PinsAndLangs() {
                       }}
                     />
                   </figure>
-                  <CodeCard code={markdown} lang="Markdown" />
-                  <CodeCard code={`<img src="${imageUrl}" alt="Cartão" />`} lang="HTML" />
+                  <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
+                  <CodeCard code={`<img src="${imageUrl}" alt="Cartão" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="Cartão" />`)} />
                 </>
               )}
               {!imageUrl && !loading && <p>Seleccione um tipo e preencha os campos obrigatórios para ver a pré-visualização.</p>}

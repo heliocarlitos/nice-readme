@@ -5,6 +5,10 @@ import { CodeCard } from "../card/codecard/codecard"
 import { UserImg } from "../card/userimg/userimg"
 import { StreakTheme } from "../theme/streak"
 
+// Firebase
+import { db } from "@/lib/firebase"
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+
 const LOCALES = [
   { code: "en", name: "English" },
   { code: "pt_BR", name: "Português" },
@@ -42,6 +46,27 @@ const DATE_FORMAT_OPTIONS = [
   { value: "[Y.]n.j", label: "2020.4.14 / 4.14" },
   { value: "M j[, Y]", label: "Apr 14, 2020 / Apr 14" }
 ]
+
+async function checkGitHubUserExists(username: string): Promise<boolean> {
+  if (!username.trim()) return false
+  try {
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
+    return res.status === 200
+  } catch {
+    return false
+  }
+}
+
+async function checkUsageExists(username: string, tool: string): Promise<boolean> {
+  try {
+    const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
+    const snapshot = await getDocs(q)
+    return !snapshot.empty
+  } catch (error) {
+    console.error("Erro ao verificar existência no Firestore:", error)
+    return false
+  }
+}
 
 export function Stats() {
   const [username, setUsername] = useState("")
@@ -110,6 +135,27 @@ export function Stats() {
 
     return () => clearTimeout(timer)
   }, [username, buildImageUrl])
+
+  const handleCopy = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code)
+      if (username) {
+        const cleanUsername = username.trim().toLowerCase()
+        const tool = "streak-stats"
+        const existsInDb = await checkUsageExists(cleanUsername, tool)
+        if (existsInDb) return
+        const existsOnGitHub = await checkGitHubUserExists(username)
+        if (!existsOnGitHub) return
+        await addDoc(collection(db, "tool_usage"), {
+          username: cleanUsername,
+          tool,
+          timestamp: new Date()
+        })
+      }
+    } catch (err) {
+      console.error("Erro em handleCopy:", err)
+    }
+  }
 
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
     <div className="input-box">
@@ -264,8 +310,8 @@ export function Stats() {
                       }}
                     />
                   </figure>
-                  <CodeCard code={markdown} lang="Markdown" />
-                  <CodeCard code={`<img src="${imageUrl}" alt="GitHub Streak de ${username}" width="${cardWidth}"  height="${cardHeight}" loading='lazy'/>`} lang="HTML" />
+                  <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
+                  <CodeCard code={`<img src="${imageUrl}" alt="GitHub Streak de ${username}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="GitHub Streak de ${username}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`)} />
                 </>
               )}
               {!username && !loading && <p>Introduza um nome de utilizador do GitHub para ver a pré-visualização.</p>}
