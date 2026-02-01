@@ -6,7 +6,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "hutadev.vercel.app"
+        hostname: "github.com",
+        port: "",
+        pathname: "/**"
+      },
+      {
+        protocol: "https",
+        hostname: "hutadev.vercel.app",
+        port: "",
+        pathname: "/**"
       }
     ]
   }

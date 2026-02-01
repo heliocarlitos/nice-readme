@@ -1,8 +1,6 @@
-import { Botao } from "@/components/btn/botao/botao"
 import "./hero.css"
 import { PiStarFourFill } from "react-icons/pi"
-import { FaGithub } from "react-icons/fa6"
-import { HiOutlineArrowSmRight } from "react-icons/hi"
+import { UsersGithub } from "../users-github/users-github"
 
 export function Hero() {
   return (
@@ -15,35 +13,14 @@ export function Hero() {
             </div>
             <p>Melhore seu README.md</p>
           </div>
-          <h1>Criador de Stats</h1>
-          <p className="text">O Nice Readme é uma ferramenta para criar e personalizar estatísticas do GitHub. Ideal para developers que querem um perfil mais organizado. Eu criei esse projecto para ajudar quem esta iniciando no GitHub, quem tem dificuldades de entender documentações mas gostaria de deixar seu README mais limpo, organizado e profissional, sem precisar escrever código.</p>
-          <div className="btn">
-            <Botao
-              className="btn-geral txunar"
-              href="/streak-stats"
-              content={
-                <>
-                  Txunar meu readme
-                  <div className="icon">
-                    <HiOutlineArrowSmRight />
-                  </div>
-                </>
-              }
-            />
 
-            <Botao
-              className="github"
-              href="https://github.com/heliocarlitos/nice-readme"
-              target="_blank"
-              content={
-                <>
-                  <div className="icon">
-                    <FaGithub />
-                  </div>
-                  Github
-                </>
-              }
-            />
+          <h1>Nice Readme - Dedicado para readme e documentações do Github</h1>
+
+          <p className="text">É uma ferramenta para criar e personalizar estatísticas, streak e badges do GitHub. Ideal para developers que querem um perfil mais organizado.</p>
+
+          <div className="user-github">
+            <p className="tt">Alguns perfis do Github já estão usando uma das nossas ferramentas</p>
+            <UsersGithub />
           </div>
         </div>
       </section>

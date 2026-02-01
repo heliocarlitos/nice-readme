@@ -7,9 +7,10 @@ import { LuCopy, LuCopyCheck } from "react-icons/lu"
 interface CodeCardProps {
   code?: ReactNode
   lang?: string
+  onCopy?: () => void // ← nova prop
 }
 
-export function CodeCard({ code, lang }: CodeCardProps) {
+export function CodeCard({ code, lang, onCopy }: CodeCardProps) {
   const [copiado, setCopiado] = useState(false)
 
   function copiarCodigo() {
@@ -20,6 +21,9 @@ export function CodeCard({ code, lang }: CodeCardProps) {
     navigator.clipboard.writeText(texto).then(() => {
       setCopiado(true)
       setTimeout(() => setCopiado(false), 2000)
+
+      // Chama o callback se existir
+      if (onCopy) onCopy()
     })
   }
 
@@ -31,12 +35,10 @@ export function CodeCard({ code, lang }: CodeCardProps) {
     <div className="codecard">
       <div className="btn">
         <p className="tt">{lang}</p>
-
         <button type="button" onClick={copiarCodigo}>
           {copiado ? <LuCopyCheck /> : <LuCopy />}
         </button>
       </div>
-
       <code onMouseDown={impedirSeleccao} onSelect={impedirSeleccao} onDragStart={impedirSeleccao}>
         {code}
       </code>

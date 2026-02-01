@@ -6,14 +6,44 @@ import { UserImg } from "../card/userimg/userimg"
 import { Botao } from "../btn/botao/botao"
 import { MdOpenInNew } from "react-icons/md"
 
+// 🔥 Firebase
+import { db } from "@/lib/firebase"
+import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+
 const STYLES = ["flat", "flat-square", "plastic", "for-the-badge", "social", "pixel"]
 const COMMON_COLORS = ["brightgreen", "green", "yellowgreen", "yellow", "orange", "red", "lightgrey", "blue", "success", "important", "critical", "inactive", "informational", "grey", "blueviolet"]
 const LOGO_SLUGS = ["android", "angular", "ansible", "apple", "assemblyscript", "bootstrap", "c", "circleci", "cplusplus", "css", "dart", "digitalocean", "discord", "docker", "dotnet", "elixir", "facebook", "figma", "firebase", "firefox", "flutter", "git", "github", "githubcopilot", "gitlab", "gmail", "gnubash", "go", "googlechrome", "googlecloud", "haskell", "html5", "intellijidea", "instagram", "ios", "javascript", "jenkins", "jira", "julia", "kotlin", "kubernetes", "linux", "lua", "mongodb", "mysql", "netlify", "nextdotjs", "nodedotjs", "notion", "npm", "php", "postgresql", "postman", "prometheus", "python", "pytorch", "r", "react", "redis", "ruby", "rust", "safari", "sass", "scala", "shell", "slackware", "snapchat", "solidity", "springboot", "sqlite", "swift", "tailwindcss", "telegram", "terraform", "tiktok", "travisci", "typescript", "vercel", "vite", "vuedotjs", "wechat", "webpack", "whatsapp", "yarn", "youtube"]
 
+async function checkGitHubUserExists(username: string): Promise<boolean> {
+  if (!username.trim()) return false
+  try {
+    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
+    return res.status === 200
+  } catch {
+    return false
+  }
+}
+
+async function checkUsageExists(username: string, tool: string): Promise<boolean> {
+  try {
+    const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
+    const snapshot = await getDocs(q)
+    return !snapshot.empty
+  } catch (error) {
+    console.error("Erro ao verificar existência no Firestore:", error)
+    return false
+  }
+}
+
 export function Badges() {
   const [type, setType] = useState<"static" | "logo" | "profile-views">("static")
+  const [username, setUsername] = useState("")
+  const [profileLabel, setProfileLabel] = useState("Vizualizações")
+  const [profileColor, setProfileColor] = useState("blue")
+  const [profileStyle, setProfileStyle] = useState("for-the-badge")
+  const [base, setBase] = useState("")
+  const [abbreviated, setAbbreviated] = useState(false)
 
-  // Badge genérico
   const [label, setLabel] = useState("Github")
   const [message, setMessage] = useState("nicereadme")
   const [color, setColor] = useState("blue")
@@ -25,17 +55,53 @@ export function Badges() {
   const [cacheSeconds, setCacheSeconds] = useState("")
   const [linkUrl, setLinkUrl] = useState("")
 
-  // Visualizações de perfil
-  const [username, setUsername] = useState("")
-  const [profileLabel, setProfileLabel] = useState("Vizualizações")
-  const [profileColor, setProfileColor] = useState("blue")
-  const [profileStyle, setProfileStyle] = useState("for-the-badge")
-  const [base, setBase] = useState("")
-  const [abbreviated, setAbbreviated] = useState(false)
-
   const [imageUrl, setImageUrl] = useState("")
   const [markdown, setMarkdown] = useState("")
   const [loading, setLoading] = useState(false)
+
+  // Função de cópia com depuração
+  const handleCopy = async (code: string, isHtml: boolean = false) => {
+    console.log("handleCopy chamado com código:", code)
+
+    try {
+      await navigator.clipboard.writeText(code)
+      console.log("Código copiado para a área de transferência.")
+
+      // Só processa se for profile-views e tiver username
+      if (type !== "profile-views" || !username.trim()) {
+        console.log("Não é profile-views ou username vazio. Nada a guardar.")
+        return
+      }
+
+      const cleanUsername = username.trim().toLowerCase()
+      const tool = "profile-views"
+
+      // Verifica duplicados
+      const existsInDb = await checkUsageExists(cleanUsername, tool)
+      if (existsInDb) {
+        console.log("Utilizador já existe na base de dados:", cleanUsername)
+        return
+      }
+
+      // Verifica no GitHub
+      const existsOnGitHub = await checkGitHubUserExists(username)
+      if (!existsOnGitHub) {
+        console.warn("Utilizador não existe no GitHub:", username)
+        return
+      }
+
+      // Grava
+      await addDoc(collection(db, "tool_usage"), {
+        username: cleanUsername,
+        tool,
+        timestamp: new Date()
+      })
+
+      console.log("Utilizador guardado com sucesso:", cleanUsername)
+    } catch (err) {
+      console.error("Erro em handleCopy:", err)
+    }
+  }
 
   useEffect(() => {
     let url = ""
@@ -50,9 +116,9 @@ export function Badges() {
 
       const params = new URLSearchParams()
       params.append("username", username.trim())
-      if (profileLabel !== "Profile views") params.append("label", profileLabel)
-      if (profileColor !== "007ec6") params.append("color", profileColor)
-      if (profileStyle !== "flat") params.append("style", profileStyle)
+      if (profileLabel !== "Vizualizações") params.append("label", profileLabel)
+      if (profileColor !== "blue") params.append("color", profileColor)
+      if (profileStyle !== "for-the-badge") params.append("style", profileStyle)
       if (base) params.append("base", base)
       if (abbreviated) params.append("abbreviated", "true")
 
@@ -127,10 +193,10 @@ export function Badges() {
                 <div className="box">
                   <div className="input-box">
                     <label htmlFor="profileLabel">Rótulo</label>
-                    <input type="text" id="profileLabel" value={profileLabel} onChange={e => setProfileLabel(e.target.value)} placeholder="Profile views" />
+                    <input type="text" id="profileLabel" value={profileLabel} onChange={e => setProfileLabel(e.target.value)} placeholder="Vizualizações" />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="profileColor">Cor do fundo(HEX ou nome)</label>
+                    <label htmlFor="profileColor">Cor do fundo (HEX ou nome)</label>
                     <input type="text" id="profileColor" value={profileColor} onChange={e => setProfileColor(e.target.value)} placeholder="ex: 007ec6, green" />
                   </div>
                 </div>
@@ -156,10 +222,11 @@ export function Badges() {
                   <BooleanSelect id="abbreviated" label="Abreviar número (ex: 1.2K)" value={abbreviated} onChange={setAbbreviated} />
                   <div></div>
                 </div>
+
                 {username ? (
                   <div className="info">
                     <p>
-                      As visualização são contadas apartir do momento que você adiciona a Badge no seu Readme.{" "}
+                      As visualizações são contadas a partir do momento que você adiciona a Badge no seu Readme.{" "}
                       <Botao
                         href={`https://github.com/${username}/${username}/edit/main/README.md`}
                         target="_blank"
@@ -174,9 +241,7 @@ export function Badges() {
                       />
                     </p>
                   </div>
-                ) : (
-                  ""
-                )}
+                ) : null}
               </>
             ) : (
               <>
@@ -303,8 +368,12 @@ export function Badges() {
                   ) : (
                     <img className="badge-preview" src={imageUrl} alt="Badge preview" />
                   )}
-                  <CodeCard code={markdown} lang="Markdown" />
-                  <CodeCard code={type === "profile-views" ? `<img src="${imageUrl}" alt="${profileLabel}" />` : linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" />\n</a>` : `<img src="${imageUrl}" alt="Badge" />`} lang="HTML" />
+
+                  {/* Markdown */}
+                  <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
+
+                  {/* HTML */}
+                  <CodeCard code={type === "profile-views" ? `<img src="${imageUrl}" alt="${profileLabel}" />` : linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" />\n</a>` : `<img src="${imageUrl}" alt="Badge" />`} lang="HTML" onCopy={() => handleCopy(type === "profile-views" ? `<img src="${imageUrl}" alt="${profileLabel}" />` : linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" />\n</a>` : `<img src="${imageUrl}" alt="Badge" />`)} />
                 </>
               )}
               {!imageUrl && !loading && <p>Seleccione um tipo e preencha os campos obrigatórios para ver a pré-visualização.</p>}

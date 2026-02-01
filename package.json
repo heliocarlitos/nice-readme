@@ -8,8 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "firebase": "^12.8.0",
     "lenis": "^1.3.17",
-    "next": "16.1.4",
+    "next": "^16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-icons": "^5.5.0"

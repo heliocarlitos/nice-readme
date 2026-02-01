@@ -11,58 +11,30 @@
 .hero .content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   width: 100%;
 }
 
-.hero .tag_ {
+.hero .content .tag_ {
   margin: auto;
 }
 
-.hero .text {
+.hero .content h1 {
+  margin: auto;
+  font-size: clamp(1.5rem, 4vw, 3.2rem);
+  font-weight: 500;
+  width: 100%;
+  max-width: 980px;
+}
+
+.hero .content .text {
   margin: auto;
   width: 100%;
   max-width: 800px;
 }
 
-.hero .btn {
-  gap: 30px;
-  display: none;
-}
-
-.hero h1 {
-  font-size: clamp(1.5rem, 5vw, 3.3rem);
-  font-weight: 800;
-}
-
-.hero .btn button {
-  border-radius: 100px;
-  padding: 10px 20px;
-
-  &:hover,
-  &:focus {
-    opacity: 0.8;
-  }
-
-  &:active {
-    opacity: 1;
-  }
-}
-
-.hero .btn .txunar {
-  &:hover .icon {
-    transform: translateX(10px);
-  }
-}
-
-.hero .btn .github {
-  border: var(--thin-border);
-  background-color: var(--black);
-  color: var(--foreground);
-
-  & .icon svg {
-    color: var(--foreground);
-  }
+.hero .content .user-github .tt {
+  font-weight: 400;
 }
 
 @media (width <= 356px) {
