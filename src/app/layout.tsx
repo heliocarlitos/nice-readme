@@ -7,9 +7,17 @@ import TopProgressLoader from "@/components/topprogressloader/TopProgressLoader"
 import { IrparaTop } from "@/components/btn/irparatop/irparatop"
 
 export const metadata: Metadata = {
-  title: "Nice Readme – Cria estatísticas bonitas para o teu GitHub",
-  description: "Gera automaticamente estatísticas do GitHub, streaks, pins, badges e mais. Torna o teu README profissional, limpo e organizado sem escrever código. Ideal para iniciantes e developers.",
-  keywords: ["github readme", "github stats", "github streak", "readme github", "github profile", "badges github", "github pinned repos", "estatisticas github", "github readme stats", "personalizar readme"],
+  metadataBase: new URL("https://nice-readme.vercel.app"),
+
+  title: {
+    default: "Nice Readme – Personaliza o teu GitHub README sem código",
+    template: "%s | Nice Readme"
+  },
+
+  description: "Cria automaticamente streaks, estatísticas, badges, repositórios destacados e mais para o teu perfil GitHub. Torna o README limpo, profissional e organizado sem escrever código. Ideal para iniciantes e programadores.",
+
+  keywords: ["github readme", "github stats", "github streak", "github streak stats", "readme github", "personalizar readme", "estatísticas github", "badges github", "pinned repositories github", "perfil github bonito", "github profile readme", "ferramenta github readme"],
+
   authors: [{ name: "Hélio Carlitos António", url: "https://heliocarlitos.vercel.app/" }],
   creator: "Hélio Carlitos António",
 
@@ -24,8 +32,8 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Nice Readme – Estatísticas GitHub bonitas e fáceis",
-    description: "Cria um README profissional com streaks, estatísticas, badges e repositórios destacados. Sem código, sem complicações.",
+    title: "Nice Readme – Personaliza o teu GitHub README sem código",
+    description: "Gera streaks, estatísticas gerais, repositórios destacados e badges automaticamente. README profissional e organizado em poucos cliques.",
     url: "https://nice-readme.vercel.app",
     siteName: "Nice Readme",
     images: [
@@ -33,7 +41,7 @@ export const metadata: Metadata = {
         url: "/demo.webp",
         width: 1200,
         height: 630,
-        alt: "Exemplo de README bonito criado com Nice Readme"
+        alt: "Exemplo de perfil GitHub bonito criado com Nice Readme"
       }
     ],
     locale: "pt_PT",
@@ -43,7 +51,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Nice Readme – Torna o teu perfil GitHub mais profissional",
-    description: "Streak stats, GitHub stats, pinned repos, badges — tudo automático e personalizável.",
+    description: "Streak stats, estatísticas, pinned repos, badges — tudo automático e personalizável.",
     images: ["/demo.webp"],
     creator: "@heliocarlitos"
   },
@@ -53,9 +61,19 @@ export const metadata: Metadata = {
   },
 
   category: "Developer Tools",
+  classification: "GitHub Profile Enhancement",
+  applicationName: "Nice Readme",
+
   robots: {
     index: true,
-    follow: true
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1
+    }
   }
 }
 
