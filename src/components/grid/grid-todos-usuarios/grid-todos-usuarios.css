@@ -38,12 +38,14 @@
 
   &:hover img,
   &:focus img {
-    filter: saturate(0.6);
+    transform: scale(105%) rotate(1deg);
   }
 }
 
 .grid-todos-usuarios .card figure {
   width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius);
 }
 
 .grid-todos-usuarios .card figure img {
