@@ -39,7 +39,7 @@ export function UsuarioGuardado() {
 
   return (
     <div className={`usuario-guardado ${visivel ? "entrar" : "sair"}`} onTransitionEnd={handleTransitionEnd}>
-      <p className="text">Ao copiares código de uma ferramenta, guardamos o teu @username GitHub, nome e foto de perfil no Firestore apenas para estatísticas de uso. Não são usados para outros fins nem partilhados.</p>
+      <p className="text">Ao usar uma ferramenta deste site, guardamos o teu @username do Github, nome e foto de perfil. Se não concorda com isso recomendamos que não use essa ferramenta.</p>
 
       <div className="btn">
         <Botao href="https://github.com/heliocarlitos/nice-readme/privacidade.md" className="detal" content="Mais detalhes" target="_blank" />
