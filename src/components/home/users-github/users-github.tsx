@@ -24,7 +24,7 @@ export function UsersGithub() {
         const uniqueUsernames = Array.from(new Set(allUsernames.filter(u => u && typeof u === "string" && u.trim().length > 0 && u !== "anonymous").map(u => u.trim().toLowerCase())))
 
         setTotalCount(uniqueUsernames.length)
-        setUsers(uniqueUsernames.slice(0, 5)) // mostra só 5
+        setUsers(uniqueUsernames.slice(0, 10)) // mostra só 10
       } catch (error) {
         console.error("Erro ao buscar dados:", error)
         setUsers([])

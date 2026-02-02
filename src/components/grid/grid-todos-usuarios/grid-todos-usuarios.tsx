@@ -14,15 +14,28 @@ interface GitHubUser {
   followers: number
 }
 
+function abreviarNumero(num: number): string {
+  if (num < 1000) return num.toString()
+  const unidades = ["", "k", "M", "B"]
+  let indice = 0
+  let valor = num
+  while (valor >= 1000 && indice < unidades.length - 1) {
+    valor /= 1000
+    indice++
+  }
+  const formatado = valor.toFixed(valor % 1 === 0 ? 0 : 1)
+  return formatado + unidades[indice]
+}
+
 export function GridTodosUsuarios() {
   const [allUsers, setAllUsers] = useState<GitHubUser[]>([])
   const [visibleCount, setVisibleCount] = useState(8)
   const [filteredUsers, setFilteredUsers] = useState<GitHubUser[]>([])
+  const [displayedUsers, setDisplayedUsers] = useState<GitHubUser[]>([])
   const [searchTerm, setSearchTerm] = useState("")
   const [loading, setLoading] = useState(true)
   const loaderRef = useRef<HTMLDivElement>(null)
 
-  // Buscar todos os utilizadores únicos
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -48,11 +61,9 @@ export function GridTodosUsuarios() {
         const results = await Promise.all(githubPromises)
         const validUsers = results.filter((user): user is GitHubUser => user !== null)
         setAllUsers(validUsers)
-        setFilteredUsers(validUsers.slice(0, 8))
       } catch (error) {
         console.error("Erro ao buscar utilizadores:", error)
         setAllUsers([])
-        setFilteredUsers([])
       } finally {
         setLoading(false)
       }
@@ -61,30 +72,34 @@ export function GridTodosUsuarios() {
     fetchUsers()
   }, [])
 
-  // Actualizar lista filtrada sempre que houver pesquisa ou mudança nos dados
   useEffect(() => {
     let result = allUsers
+
     if (searchTerm.trim()) {
       const term = searchTerm.trim().toLowerCase()
       result = allUsers.filter(user => user.username.toLowerCase().includes(term) || (user.name && user.name.toLowerCase().includes(term)))
     }
-    setFilteredUsers(result.slice(0, visibleCount))
-  }, [searchTerm, allUsers, visibleCount])
 
-  // Função para carregar mais ao rolar
+    setFilteredUsers(result)
+    setVisibleCount(8)
+  }, [searchTerm, allUsers])
+
+  useEffect(() => {
+    setDisplayedUsers(filteredUsers.slice(0, visibleCount))
+  }, [filteredUsers, visibleCount])
+
   const loadMore = useCallback(() => {
-    setVisibleCount(prev => Math.min(prev + 4, filteredUsers.length))
+    setVisibleCount(prev => Math.min(prev + 8, filteredUsers.length))
   }, [filteredUsers.length])
 
-  // Observar scroll
   useEffect(() => {
     const observer = new IntersectionObserver(
       entries => {
-        if (entries[0].isIntersecting && filteredUsers.length > visibleCount) {
+        if (entries[0].isIntersecting && displayedUsers.length < filteredUsers.length) {
           loadMore()
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.1 }
     )
 
     if (loaderRef.current) {
@@ -96,7 +111,7 @@ export function GridTodosUsuarios() {
         observer.unobserve(loaderRef.current)
       }
     }
-  }, [loadMore, filteredUsers.length, visibleCount])
+  }, [loadMore, displayedUsers.length, filteredUsers.length])
 
   if (loading) {
     return (
@@ -112,21 +127,12 @@ export function GridTodosUsuarios() {
         <div className="icon">
           <FaSearch />
         </div>
-        <input
-          id="pesquisar"
-          type="text"
-          placeholder="Pesquisar usuário..."
-          value={searchTerm}
-          onChange={e => {
-            setSearchTerm(e.target.value)
-            setVisibleCount(8)
-          }}
-        />
+        <input id="pesquisar" type="text" placeholder="Pesquisar usuário..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
       </label>
 
       <div className="grid-todos-usuarios">
-        {filteredUsers.length > 0 ? (
-          filteredUsers.map(user => (
+        {displayedUsers.length > 0 ? (
+          displayedUsers.map(user => (
             <Botao
               key={user.username}
               className="card"
@@ -135,11 +141,13 @@ export function GridTodosUsuarios() {
               content={
                 <>
                   <figure>
-                    <Image src={`https://github.com/${user.username}.png`} width={100} height={100} alt={`Foto de perfil do Github de ${user.username}`} unoptimized loading="lazy" />
+                    <Image src={`https://github.com/${user.username}.png`} width={100} height={100} alt={`Foto de perfil do GitHub de ${user.username}`} unoptimized loading="lazy" />
                   </figure>
                   <div className="detal">
                     <p className="tt">{user.name}</p>
-                    <p className="text">{user.followers} seguidores</p>
+                    <p className="text">
+                      {abreviarNumero(user.followers)} seguidor{user.followers === 1 ? "" : "es"}
+                    </p>
                   </div>
                 </>
               }
@@ -149,7 +157,7 @@ export function GridTodosUsuarios() {
           <p>Nenhum utilizador encontrado.</p>
         )}
 
-        <div ref={loaderRef} style={{ height: "1px" }} />
+        {displayedUsers.length < filteredUsers.length && <div ref={loaderRef} style={{ height: "20px" }} />}
       </div>
     </>
   )

@@ -30,6 +30,7 @@
   flex-direction: column;
   gap: 10px;
   width: 100%;
+  max-width: 300px;
 
   &:hover .tt,
   &:focus .tt {
