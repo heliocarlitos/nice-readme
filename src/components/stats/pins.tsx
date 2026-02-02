@@ -269,14 +269,13 @@ export function PinsAndLangs() {
                 <label htmlFor="border_radius">Raio da borda</label>
                 <input type="number" id="border_radius" step="0.1" min="0" value={borderRadius} onChange={e => setBorderRadius(parseFloat(e.target.value) || 0)} />
               </div>
-              {type === "langs" ? (
-                !hideTitleLangs ? (
-                  <div className="input-box">
-                    <label htmlFor="custom_title">Título personalizado</label>
-                    <input type="text" id="custom_title" value={customTitle} onChange={e => setCustomTitle(e.target.value)} placeholder="Linguagens mais usadas" />
-                  </div>
-                ) : null
-              ) : (
+              {type === "langs" && !hideTitleLangs && (
+                <div className="input-box">
+                  <label htmlFor="custom_title">Título personalizado</label>
+                  <input type="text" id="custom_title" value={customTitle} onChange={e => setCustomTitle(e.target.value)} placeholder="Linguagens mais usadas" />
+                </div>
+              )}
+              {type !== "langs" && (
                 <div className="input-box">
                   <label htmlFor="locale">Idioma</label>
                   <select id="locale" value={locale} onChange={e => setLocale(e.target.value)}>
