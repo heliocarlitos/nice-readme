@@ -4,7 +4,6 @@ import "./stats.css"
 import { CodeCard } from "../card/codecard/codecard"
 import { StatsTheme } from "../theme/stats"
 
-// Firebase
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
@@ -46,20 +45,14 @@ async function checkUsageExists(username: string, tool: string): Promise<boolean
     const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
     const snapshot = await getDocs(q)
     return !snapshot.empty
-  } catch (error) {
-    console.error("Erro ao verificar existência no Firestore:", error)
+  } catch {
     return false
   }
 }
 
 export function Stats() {
-  useEffect(() => {
-    console.log("FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
-  }, [])
-
   const [type, setType] = useState<"github" | "wakatime">("github")
 
-  // GitHub Stats
   const [username, setUsername] = useState("")
   const [customTitle, setCustomTitle] = useState("GitHub Stats")
   const [theme, setTheme] = useState("default")
@@ -87,7 +80,6 @@ export function Stats() {
   const [numberPrecision, setNumberPrecision] = useState("")
   const [commitsYear, setCommitsYear] = useState<number | "">("")
 
-  // WakaTime Stats
   const [wakaUsername, setWakaUsername] = useState("")
   const [wakaCustomTitle, setWakaCustomTitle] = useState("WakaTime Stats")
   const [wakaHide, setWakaHide] = useState("")
@@ -109,7 +101,7 @@ export function Stats() {
       if (!username.trim()) return ""
       const params = new URLSearchParams({
         username: username.trim(),
-        custom_title: encodeURIComponent(customTitle),
+        custom_title: customTitle,
         theme,
         title_color: titleColor,
         text_color: textColor,
@@ -144,7 +136,7 @@ export function Stats() {
       if (!wakaUsername.trim()) return ""
       const params = new URLSearchParams({
         username: wakaUsername.trim(),
-        custom_title: encodeURIComponent(wakaCustomTitle),
+        custom_title: wakaCustomTitle,
         card_width: String(wakaCardWidth),
         line_height: String(wakaLineHeight),
         layout: wakaLayout,
@@ -218,9 +210,7 @@ export function Stats() {
           timestamp: new Date()
         })
       }
-    } catch (err) {
-      console.error("Erro em handleCopy:", err)
-    }
+    } catch {}
   }
 
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (

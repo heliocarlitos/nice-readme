@@ -5,6 +5,8 @@ import { db } from "@/lib/firebase"
 import { collection, query, where, getDocs, deleteDoc, doc } from "firebase/firestore"
 import Image from "next/image"
 import "./admin.css"
+import { FaPowerOff, FaRegTrashCan } from "react-icons/fa6"
+import { FaSearch } from "react-icons/fa"
 
 interface ToolUsage {
   id: string
@@ -202,13 +204,19 @@ export default function AdminDashboard() {
       <header className="admin-header">
         <h1>Dashboard de Administração</h1>
         <button onClick={handleLogout} className="admin-logout-btn">
+          <div className="icon">
+            <FaPowerOff />
+          </div>
           Sair
         </button>
       </header>
 
       <div className="admin-search-section">
-        <input type="text" placeholder="Pesquisar utilizador pelo username..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={e => handleKeyDown(e, handleSearch)} className="admin-input" />
+        <input type="text" placeholder="Pesquisar username..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={e => handleKeyDown(e, handleSearch)} className="admin-input" />
         <button onClick={handleSearch} className="admin-btn" disabled={loading}>
+          <div className="icon">
+            <FaSearch />
+          </div>
           {loading ? "A procurar..." : "Pesquisar"}
         </button>
       </div>
@@ -244,7 +252,10 @@ export default function AdminDashboard() {
 
           {tools.length > 0 && (
             <button onClick={handleDelete} className="admin-delete-btn">
-              Eliminar Todos os Dados
+              <div className="icon">
+                <FaRegTrashCan />
+              </div>
+              Eliminar usuário
             </button>
           )}
         </div>

@@ -38,7 +38,7 @@
 }
 
 .admin-login-overlay .admin-btn {
-  width: 100%;
+  width: fit-content;
   padding: 0.75rem;
   background: var(--card-foreground);
   color: var(--bg);
@@ -67,46 +67,71 @@
 
 .admin-container {
   padding: 2rem;
-  max-width: 1200px;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto;
   color: var(--foreground);
 }
 
 .admin-container .admin-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
   margin-bottom: 2rem;
+  gap: 20px;
 }
 
 .admin-container .admin-header h1 {
   color: var(--foreground);
+  display: none;
 }
 
 .admin-container .admin-logout-btn {
-  background: var(--destructive);
-  color: var(--destructive-foreground);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius);
-  cursor: pointer;
-  font-weight: bold;
-}
+  padding: 10px;
+  border-radius: 100px;
+  border: 1px solid transparent;
 
-.admin-container .admin-logout-btn:hover {
-  opacity: 0.9;
+  &:hover,
+  &:focus {
+    border: var(--thin-border);
+  }
+
+  & svg {
+    color: var(--destructive);
+  }
 }
 
 .admin-container .admin-search-section {
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  flex-wrap: wrap;
+  align-items: center;
 }
 
 .admin-container .admin-search-section .admin-input {
   flex: 1;
   min-width: 200px;
+}
+
+.admin-container .admin-search-section .admin-btn {
+  background-color: var(--white);
+  color: var(--black);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+
+  &:hover,
+  &:focus {
+    background-color: var(--black);
+    color: var(--white);
+
+    & svg {
+      color: var(--white);
+    }
+  }
+
+  & svg {
+    color: var(--black);
+  }
 }
 
 .admin-container .admin-message {
@@ -183,17 +208,24 @@
 .admin-container .admin-delete-btn {
   background: var(--destructive);
   color: var(--destructive-foreground);
-  border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 10px;
+  width: calc(100% - 20px);
   border-radius: var(--radius);
-  font-size: 1rem;
-  cursor: pointer;
   margin-top: 1.5rem;
   font-weight: bold;
-}
+  border: 1px solid transparent;
 
-.admin-container .admin-delete-btn:hover {
-  opacity: 0.9;
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:focus {
+    border: 1px solid var(--foreground);
+  }
+
+  & svg {
+    color: var(--destructive-foreground);
+  }
 }
 
 .admin-delete-overlay {
@@ -203,10 +235,11 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1001;
+  z-index: 9999;
 }
 
 .admin-delete-overlay .admin-delete-popup {

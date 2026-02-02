@@ -43,13 +43,13 @@
   }
 }
 
-.grid-todos-usuarios .card figure {
+.grid-todos-usuarios .card .user-photo {
   width: 100%;
   overflow: hidden;
   border-radius: var(--radius);
 }
 
-.grid-todos-usuarios .card figure img {
+.grid-todos-usuarios .card .user-photo img {
   aspect-ratio: 14/9;
   object-fit: cover;
   width: 100%;

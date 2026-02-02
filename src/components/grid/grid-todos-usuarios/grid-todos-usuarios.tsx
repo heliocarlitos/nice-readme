@@ -140,7 +140,7 @@ export function GridTodosUsuarios() {
               target="_blank"
               content={
                 <>
-                  <figure>
+                  <figure className="user-photo">
                     <Image src={`https://github.com/${user.username}.png`} width={100} height={100} alt={`Foto de perfil do GitHub de ${user.username}`} unoptimized loading="lazy" />
                   </figure>
                   <div className="detal">

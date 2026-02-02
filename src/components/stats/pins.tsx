@@ -3,7 +3,6 @@ import { useState, useEffect, useCallback } from "react"
 import "./stats.css"
 import { CodeCard } from "../card/codecard/codecard"
 
-// Firebase
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
@@ -44,17 +43,12 @@ async function checkUsageExists(username: string, tool: string): Promise<boolean
     const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
     const snapshot = await getDocs(q)
     return !snapshot.empty
-  } catch (error) {
-    console.error("Erro ao verificar existência no Firestore:", error)
+  } catch {
     return false
   }
 }
 
 export function PinsAndLangs() {
-  useEffect(() => {
-    console.log("FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
-  }, [])
-
   const [type, setType] = useState<"pin" | "gist" | "langs">("pin")
 
   const [username, setUsername] = useState("")
@@ -62,14 +56,11 @@ export function PinsAndLangs() {
   const [hideBorder, setHideBorder] = useState(false)
   const [borderRadius, setBorderRadius] = useState(4.5)
 
-  // Pin
   const [repoUrl, setRepoUrl] = useState("")
 
-  // Gist
   const [gistId, setGistId] = useState("709fbee67b48e330507b9b7f10fef16f")
   const [showOwnerGist, setShowOwnerGist] = useState(false)
 
-  // Top Languages
   const [customTitle, setCustomTitle] = useState("Linguagens mais usadas")
   const [hideLangs, setHideLangs] = useState("")
   const [hideTitleLangs, setHideTitleLangs] = useState(false)
@@ -143,7 +134,7 @@ export function PinsAndLangs() {
         locale
       })
       if (!hideTitleLangs) {
-        params.append("custom_title", encodeURIComponent(customTitle))
+        params.append("custom_title", customTitle)
       }
       if (hideLangs) params.append("hide", hideLangs)
       if (hideTitleLangs) params.append("hide_title", "true")
@@ -179,7 +170,7 @@ export function PinsAndLangs() {
       } else if (type === "gist") {
         md = `[![Gist Card](${url})](https://gist.github.com/${gistId})`
       } else {
-        md = `[![Top Langs](${url})](https://github.com/${username})`
+        md = `[![${customTitle}](${url})](https://github.com/${username})`
       }
       setMarkdown(md)
 
@@ -190,7 +181,7 @@ export function PinsAndLangs() {
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [buildImageUrl, type, repoUrl, gistId, username])
+  }, [buildImageUrl, type, repoUrl, gistId, username, customTitle])
 
   const handleCopy = async (code: string) => {
     try {
@@ -208,9 +199,7 @@ export function PinsAndLangs() {
           timestamp: new Date()
         })
       }
-    } catch (err) {
-      console.error("Erro em handleCopy:", err)
-    }
+    } catch {}
   }
 
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
@@ -233,7 +222,7 @@ export function PinsAndLangs() {
 
           <div className="content">
             <div className="input-box">
-              <label htmlFor="card_type">Tipo de Card Pin</label>
+              <label htmlFor="card_type">Tipo de Card</label>
               <select id="card_type" value={type} onChange={e => setType(e.target.value as any)}>
                 <option value="pin">Repositório Extra (Pin)</option>
                 <option value="gist">Gist Pin</option>
@@ -384,7 +373,7 @@ export function PinsAndLangs() {
 
         <div className="container">
           <div className="intro">
-            <h2>Preview do Pins</h2>
+            <h2>Preview do Card</h2>
           </div>
 
           <div className="content">
@@ -397,7 +386,7 @@ export function PinsAndLangs() {
                       src={imageUrl}
                       alt={`Pré-visualização do cartão ${type}`}
                       onError={e => {
-                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifique sua conexão de internet."
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifique se o utilizador ou repositório existe."
                       }}
                     />
                   </figure>
