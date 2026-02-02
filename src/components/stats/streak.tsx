@@ -5,13 +5,13 @@ import { CodeCard } from "../card/codecard/codecard"
 import { UserImg } from "../card/userimg/userimg"
 import { StreakTheme } from "../theme/streak"
 
-// Firebase
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
 const LOCALES = [
   { code: "en", name: "English" },
-  { code: "pt_BR", name: "Português" },
+  { code: "pt_BR", name: "Português (Brasil)" },
+  { code: "pt_PT", name: "Português (Portugal)" },
   { code: "es", name: "Español" },
   { code: "fr", name: "Français" },
   { code: "de", name: "Deutsch" },
@@ -35,16 +35,15 @@ const EXCLUDE_DAYS_OPTIONS = [
   { value: "Wed", label: "Quarta-feira" },
   { value: "Thu", label: "Quinta-feira" },
   { value: "Fri", label: "Sexta-feira" },
-  { value: "Mon,Tue,Wed,Thu,Fri", label: "Dias úteis (Seg–Sex)" },
-  { value: "Sun,Mon,Tue,Wed,Thu,Fri,Sat", label: "Todos os dias (inválido, mas possível)" }
+  { value: "Mon,Tue,Wed,Thu,Fri", label: "Dias úteis (Seg–Sex)" }
 ]
 
 const DATE_FORMAT_OPTIONS = [
   { value: "", label: "Padrão do locale" },
-  { value: "d F[, Y]", label: "14 April, 2020 / 14 April" },
+  { value: "d F[, Y]", label: "14 April, 2020" },
   { value: "j/n/Y", label: "14/4/2020" },
-  { value: "[Y.]n.j", label: "2020.4.14 / 4.14" },
-  { value: "M j[, Y]", label: "Apr 14, 2020 / Apr 14" }
+  { value: "[Y.]n.j", label: "2020.4.14" },
+  { value: "M j[, Y]", label: "Apr 14, 2020" }
 ]
 
 async function checkGitHubUserExists(username: string): Promise<boolean> {
@@ -62,22 +61,17 @@ async function checkUsageExists(username: string, tool: string): Promise<boolean
     const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
     const snapshot = await getDocs(q)
     return !snapshot.empty
-  } catch (error) {
-    console.error("Erro ao verificar existência no Firestore:", error)
+  } catch {
     return false
   }
 }
 
 export function Stats() {
-  useEffect(() => {
-    console.log("FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
-  }, [])
-
   const [username, setUsername] = useState("")
   const [theme, setTheme] = useState("default")
   const [hideBorder, setHideBorder] = useState(false)
   const [borderRadius, setBorderRadius] = useState(4.5)
-  const [locale, setLocale] = useState("pt")
+  const [locale, setLocale] = useState("pt_BR")
   const [shortNumbers, setShortNumbers] = useState(false)
   const [mode, setMode] = useState<"daily" | "weekly">("daily")
   const [excludeDays, setExcludeDays] = useState("")
@@ -94,71 +88,70 @@ export function Stats() {
   const [markdown, setMarkdown] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const buildImageUrl = useCallback(
-    (user: string) => {
-      if (!user.trim()) return ""
-      const params = new URLSearchParams({
-        user: user.trim(),
-        theme,
-        hide_border: String(hideBorder),
-        border_radius: String(borderRadius),
-        locale,
-        short_numbers: String(shortNumbers),
-        mode,
-        disable_animations: String(disableAnimations),
-        card_width: String(cardWidth),
-        card_height: String(cardHeight),
-        hide_total_contributions: String(hideTotalContributions),
-        hide_current_streak: String(hideCurrentStreak),
-        hide_longest_streak: String(hideLongestStreak)
-      })
+  const buildImageUrl = useCallback(() => {
+    if (!username.trim()) return ""
+    const params = new URLSearchParams({
+      user: username.trim(),
+      theme,
+      hide_border: String(hideBorder),
+      border_radius: String(borderRadius),
+      locale,
+      short_numbers: String(shortNumbers),
+      mode,
+      disable_animations: String(disableAnimations),
+      card_width: String(cardWidth),
+      card_height: String(cardHeight),
+      hide_total_contributions: String(hideTotalContributions),
+      hide_current_streak: String(hideCurrentStreak),
+      hide_longest_streak: String(hideLongestStreak)
+    })
 
-      if (excludeDays) params.append("exclude_days", excludeDays)
-      if (startingYear !== "") params.append("starting_year", String(startingYear))
-      if (dateFormat) params.append("date_format", dateFormat)
+    if (excludeDays) params.append("exclude_days", excludeDays)
+    if (startingYear !== "") params.append("starting_year", String(startingYear))
+    if (dateFormat) params.append("date_format", dateFormat)
 
-      return `https://github-streak-stats-ruby.vercel.app/?${params.toString()}`
-    },
-    [theme, hideBorder, borderRadius, locale, shortNumbers, mode, excludeDays, disableAnimations, cardWidth, cardHeight, hideTotalContributions, hideCurrentStreak, hideLongestStreak, startingYear, dateFormat]
-  )
+    return `https://github-streak-stats-ruby.vercel.app/?${params.toString()}`
+  }, [username, theme, hideBorder, borderRadius, locale, shortNumbers, mode, excludeDays, disableAnimations, cardWidth, cardHeight, hideTotalContributions, hideCurrentStreak, hideLongestStreak, startingYear, dateFormat])
 
   useEffect(() => {
     if (!username.trim()) {
       setImageUrl("")
       setMarkdown("")
+      setLoading(false)
       return
     }
 
     setLoading(true)
-    const timer = setTimeout(() => {
-      const url = buildImageUrl(username)
-      setImageUrl(url)
-      setMarkdown(`[![GitHub Streak](${url})](https://git.io/streak-stats)`)
-      setLoading(false)
-    }, 1000)
+    const url = buildImageUrl()
+    setImageUrl(url)
+    setMarkdown(`[![GitHub Streak](${url})](https://github.com/${username.trim()})`)
 
-    return () => clearTimeout(timer)
+    const img = new Image()
+    img.onload = () => setLoading(false)
+    img.onerror = () => setLoading(false)
+    img.src = url
   }, [username, buildImageUrl])
 
   const handleCopy = async (code: string) => {
     try {
       await navigator.clipboard.writeText(code)
-      if (username) {
-        const cleanUsername = username.trim().toLowerCase()
-        const tool = "streak-stats"
-        const existsInDb = await checkUsageExists(cleanUsername, tool)
-        if (existsInDb) return
-        const existsOnGitHub = await checkGitHubUserExists(username)
-        if (!existsOnGitHub) return
-        await addDoc(collection(db, "tool_usage"), {
-          username: cleanUsername,
-          tool,
-          timestamp: new Date()
-        })
-      }
-    } catch (err) {
-      console.error("Erro em handleCopy:", err)
-    }
+      if (!username.trim()) return
+
+      const cleanUsername = username.trim().toLowerCase()
+      const tool = "streak-stats"
+
+      const existsInDb = await checkUsageExists(cleanUsername, tool)
+      if (existsInDb) return
+
+      const existsOnGitHub = await checkGitHubUserExists(username)
+      if (!existsOnGitHub) return
+
+      await addDoc(collection(db, "tool_usage"), {
+        username: cleanUsername,
+        tool,
+        timestamp: new Date()
+      })
+    } catch {}
   }
 
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
@@ -184,7 +177,7 @@ export function Stats() {
               <label htmlFor="username">
                 Nome de utilizador <span>*</span>
               </label>
-              <input type="text" id="username" className="user-input" value={username} onChange={e => setUsername(e.target.value)} placeholder="heliocarlitos" />
+              <input type="text" id="username" className="user-input" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="heliocarlitos" />
             </div>
 
             <div className="box">
@@ -259,7 +252,6 @@ export function Stats() {
 
             <div className="box">
               <BooleanSelect id="hide_longest_streak" label="Ocultar maior sequência" value={hideLongestStreak} onChange={setHideLongestStreak} />
-
               <div className="input-box">
                 <label htmlFor="date_format">Formato da data</label>
                 <select id="date_format" value={dateFormat} onChange={e => setDateFormat(e.target.value)}>
@@ -275,18 +267,7 @@ export function Stats() {
             <div className="box">
               <div className="input-box">
                 <label htmlFor="starting_year">Ano inicial (opcional)</label>
-                <input
-                  type="number"
-                  id="starting_year"
-                  min="2005"
-                  max={new Date().getFullYear()}
-                  value={startingYear}
-                  onChange={e => {
-                    const val = e.target.value ? parseInt(e.target.value) : ""
-                    setStartingYear(val)
-                  }}
-                  placeholder="ex: 2017"
-                />
+                <input type="number" id="starting_year" min="2005" max={new Date().getFullYear()} value={startingYear} onChange={e => setStartingYear(e.target.value ? parseInt(e.target.value) : "")} placeholder="ex: 2017" />
               </div>
             </div>
           </div>
@@ -298,7 +279,7 @@ export function Stats() {
           </div>
 
           <div className="content">
-            {imageUrl && !loading && <UserImg url={username} />}
+            {username.trim() && imageUrl && <UserImg url={username.trim()} />}
             <div className="bag-code">
               {loading && <p>A carregar...</p>}
               {imageUrl && !loading && (
@@ -306,19 +287,19 @@ export function Stats() {
                   <figure>
                     <img
                       src={imageUrl}
-                      alt="Pré-visualização das estatísticas de sequência do GitHub"
+                      alt="Pré-visualização da sequência de contribuições GitHub"
                       width={cardWidth}
                       height={cardHeight}
                       onError={e => {
-                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifique se o utilizador existe e tem contribuições públicas."
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifica se o utilizador existe e tem contribuições públicas."
                       }}
                     />
                   </figure>
                   <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
-                  <CodeCard code={`<img src="${imageUrl}" alt="GitHub Streak de ${username}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="GitHub Streak de ${username}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`)} />
+                  <CodeCard code={`<img src="${imageUrl}" alt="GitHub Streak de ${username.trim()}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="GitHub Streak de ${username.trim()}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`)} />
                 </>
               )}
-              {!username && !loading && <p>Introduza um nome de utilizador do GitHub para ver a pré-visualização.</p>}
+              {!username.trim() && !loading && <p>Introduz um nome de utilizador do GitHub para ver a pré-visualização.</p>}
             </div>
           </div>
         </div>

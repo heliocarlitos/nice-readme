@@ -58,7 +58,7 @@ export function PinsAndLangs() {
 
   const [repoUrl, setRepoUrl] = useState("")
 
-  const [gistId, setGistId] = useState("709fbee67b48e330507b9b7f10fef16f")
+  const [gistId, setGistId] = useState("")
   const [showOwnerGist, setShowOwnerGist] = useState(false)
 
   const [customTitle, setCustomTitle] = useState("Linguagens mais usadas")
@@ -81,9 +81,7 @@ export function PinsAndLangs() {
     try {
       const cleanUrl = url.trim().replace(/\/$/, "")
       const match = cleanUrl.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)/)
-      if (match) {
-        return { username: match[1], repo: match[2] }
-      }
+      if (match) return { username: match[1], repo: match[2] }
     } catch {}
     return null
   }
@@ -133,9 +131,7 @@ export function PinsAndLangs() {
         card_width: String(cardWidth),
         locale
       })
-      if (!hideTitleLangs) {
-        params.append("custom_title", customTitle)
-      }
+      if (!hideTitleLangs) params.append("custom_title", customTitle)
       if (hideLangs) params.append("hide", hideLangs)
       if (hideTitleLangs) params.append("hide_title", "true")
       if (langsCount !== "") params.append("langs_count", String(langsCount))
@@ -159,34 +155,31 @@ export function PinsAndLangs() {
     }
 
     setLoading(true)
-    const timer = setTimeout(() => {
-      setImageUrl(url)
-      let md = ""
-      if (type === "pin") {
-        const parsed = parseRepoUrl(repoUrl)
-        if (parsed) {
-          md = `[![${parsed.repo}](${url})](https://github.com/${parsed.username}/${parsed.repo})`
-        }
-      } else if (type === "gist") {
-        md = `[![Gist Card](${url})](https://gist.github.com/${gistId})`
-      } else {
-        md = `[![${customTitle}](${url})](https://github.com/${username})`
+    setImageUrl(url)
+
+    let md = ""
+    if (type === "pin") {
+      const parsed = parseRepoUrl(repoUrl)
+      if (parsed) {
+        md = `[![${parsed.repo}](${url})](https://github.com/${parsed.username}/${parsed.repo})`
       }
-      setMarkdown(md)
+    } else if (type === "gist") {
+      md = `[![Gist Card](${url})](https://gist.github.com/${gistId.trim()})`
+    } else {
+      md = `[![${customTitle}](${url})](https://github.com/${username.trim()})`
+    }
+    setMarkdown(md)
 
-      const img = new Image()
-      img.onload = () => setLoading(false)
-      img.onerror = () => setLoading(false)
-      img.src = url
-    }, 500)
-
-    return () => clearTimeout(timer)
+    const img = new Image()
+    img.onload = () => setLoading(false)
+    img.onerror = () => setLoading(false)
+    img.src = url
   }, [buildImageUrl, type, repoUrl, gistId, username, customTitle])
 
   const handleCopy = async (code: string) => {
     try {
       await navigator.clipboard.writeText(code)
-      if (type === "langs" && username) {
+      if (type === "langs" && username.trim()) {
         const cleanUsername = username.trim().toLowerCase()
         const tool = "top-langs"
         const existsInDb = await checkUsageExists(cleanUsername, tool)
@@ -223,7 +216,7 @@ export function PinsAndLangs() {
           <div className="content">
             <div className="input-box">
               <label htmlFor="card_type">Tipo de Card</label>
-              <select id="card_type" value={type} onChange={e => setType(e.target.value as any)}>
+              <select id="card_type" value={type} onChange={e => setType(e.target.value as "pin" | "gist" | "langs")}>
                 <option value="pin">Repositório Extra (Pin)</option>
                 <option value="gist">Gist Pin</option>
                 <option value="langs">Top Languages</option>
@@ -235,7 +228,7 @@ export function PinsAndLangs() {
                 <label htmlFor="repo_url">
                   URL do repositório <span>*</span>
                 </label>
-                <input type="text" id="repo_url" value={repoUrl} onChange={e => setRepoUrl(e.target.value)} placeholder="https://github.com/heliocarlitos/nice-readme" />
+                <input type="text" id="repo_url" value={repoUrl} onChange={e => setRepoUrl(e.target.value.trim())} placeholder="https://github.com/heliocarlitos/nice-readme" />
               </div>
             )}
 
@@ -244,7 +237,7 @@ export function PinsAndLangs() {
                 <label htmlFor="gist_id">
                   ID do Gist <span>*</span>
                 </label>
-                <input type="text" id="gist_id" value={gistId} onChange={e => setGistId(e.target.value)} placeholder="709fbee67b48e330507b9b7f10fef16f" />
+                <input type="text" id="gist_id" value={gistId} onChange={e => setGistId(e.target.value.trim())} placeholder="709fbee67b48e330507b9b7f10fef16f" />
               </div>
             )}
 
@@ -253,7 +246,7 @@ export function PinsAndLangs() {
                 <label htmlFor="username">
                   Nome de utilizador <span>*</span>
                 </label>
-                <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value)} placeholder="heliocarlitos" />
+                <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="heliocarlitos" />
               </div>
             )}
 
@@ -282,9 +275,7 @@ export function PinsAndLangs() {
                     <label htmlFor="custom_title">Título personalizado</label>
                     <input type="text" id="custom_title" value={customTitle} onChange={e => setCustomTitle(e.target.value)} placeholder="Linguagens mais usadas" />
                   </div>
-                ) : (
-                  <div></div>
-                )
+                ) : null
               ) : (
                 <div className="input-box">
                   <label htmlFor="locale">Idioma</label>
@@ -323,7 +314,7 @@ export function PinsAndLangs() {
                 <div className="box">
                   <div className="input-box">
                     <label htmlFor="layout">Layout</label>
-                    <select id="layout" value={layout} onChange={e => setLayout(e.target.value as any)}>
+                    <select id="layout" value={layout} onChange={e => setLayout(e.target.value as "normal" | "compact" | "donut" | "donut-vertical" | "pie")}>
                       {LAYOUTS.map(l => (
                         <option key={l} value={l}>
                           {l}
@@ -348,7 +339,7 @@ export function PinsAndLangs() {
                 <div className="box">
                   <div className="input-box">
                     <label htmlFor="stats_format">Formato das estatísticas</label>
-                    <select id="stats_format" value={statsFormat} onChange={e => setStatsFormat(e.target.value as any)}>
+                    <select id="stats_format" value={statsFormat} onChange={e => setStatsFormat(e.target.value as "percentages" | "bytes")}>
                       <option value="percentages">Percentagem</option>
                       <option value="bytes">Bytes</option>
                     </select>
@@ -385,16 +376,17 @@ export function PinsAndLangs() {
                     <img
                       src={imageUrl}
                       alt={`Pré-visualização do cartão ${type}`}
+                      loading="lazy"
                       onError={e => {
-                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifique se o utilizador ou repositório existe."
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifica se o utilizador, repositório ou Gist existe."
                       }}
                     />
                   </figure>
                   <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
-                  <CodeCard code={`<img src="${imageUrl}" alt="Cartão" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="Cartão" />`)} />
+                  <CodeCard code={`<img src="${imageUrl}" alt="Cartão ${type}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="Cartão ${type}" loading="lazy" />`)} />
                 </>
               )}
-              {!imageUrl && !loading && <p>Seleccione um tipo e preencha os campos obrigatórios para ver a pré-visualização.</p>}
+              {!imageUrl && !loading && <p>Preenche os campos obrigatórios para ver a pré-visualização.</p>}
             </div>
           </div>
         </div>

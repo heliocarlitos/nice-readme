@@ -8,7 +8,8 @@ import { MdOpenInNew } from "react-icons/md"
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
-const STYLES = ["flat", "flat-square", "plastic", "for-the-badge", "social", "pixel"]
+const PROFILE_STYLES = ["flat", "flat-square", "plastic", "for-the-badge"]
+const BADGE_STYLES = ["flat", "flat-square", "plastic", "for-the-badge", "social", "pixel"]
 const COMMON_COLORS = ["brightgreen", "green", "yellowgreen", "yellow", "orange", "red", "lightgrey", "blue", "success", "important", "critical", "inactive", "informational", "grey", "blueviolet"]
 const LOGO_SLUGS = ["android", "angular", "ansible", "apple", "assemblyscript", "bootstrap", "c", "circleci", "cplusplus", "css", "dart", "digitalocean", "discord", "docker", "dotnet", "elixir", "facebook", "figma", "firebase", "firefox", "flutter", "git", "github", "githubcopilot", "gitlab", "gmail", "gnubash", "go", "googlechrome", "googlecloud", "haskell", "html5", "intellijidea", "instagram", "ios", "javascript", "jenkins", "jira", "julia", "kotlin", "kubernetes", "linux", "lua", "mongodb", "mysql", "netlify", "nextdotjs", "nodedotjs", "notion", "npm", "php", "postgresql", "postman", "prometheus", "python", "pytorch", "r", "react", "redis", "ruby", "rust", "safari", "sass", "scala", "shell", "slackware", "snapchat", "solidity", "springboot", "sqlite", "swift", "tailwindcss", "telegram", "terraform", "tiktok", "travisci", "typescript", "vercel", "vite", "vuedotjs", "wechat", "webpack", "whatsapp", "yarn", "youtube"]
 
@@ -27,27 +28,22 @@ async function checkUsageExists(username: string, tool: string): Promise<boolean
     const q = query(collection(db, "tool_usage"), where("username", "==", username.trim().toLowerCase()), where("tool", "==", tool))
     const snapshot = await getDocs(q)
     return !snapshot.empty
-  } catch (error) {
-    console.error("Erro ao verificar existência no Firestore:", error)
+  } catch {
     return false
   }
 }
 
 export function Badges() {
-  useEffect(() => {
-    console.log("FIREBASE_PROJECT_ID:", process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
-  }, [])
-
   const [type, setType] = useState<"static" | "logo" | "profile-views">("static")
   const [username, setUsername] = useState("")
-  const [profileLabel, setProfileLabel] = useState("Vizualizações")
+  const [profileLabel, setProfileLabel] = useState("Visualizações")
   const [profileColor, setProfileColor] = useState("blue")
   const [profileStyle, setProfileStyle] = useState("for-the-badge")
   const [base, setBase] = useState("")
   const [abbreviated, setAbbreviated] = useState(false)
 
-  const [label, setLabel] = useState("Github")
-  const [message, setMessage] = useState("nicereadme")
+  const [label, setLabel] = useState("")
+  const [message, setMessage] = useState("")
   const [color, setColor] = useState("blue")
   const [style, setStyle] = useState("flat")
   const [logo, setLogo] = useState("github")
@@ -61,94 +57,83 @@ export function Badges() {
   const [markdown, setMarkdown] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const handleCopy = async (code: string, isHtml: boolean = false) => {
-    console.log("handleCopy chamado com código:", code)
-
+  const handleCopy = async (code: string) => {
     try {
       await navigator.clipboard.writeText(code)
-      console.log("Código copiado para a área de transferência.")
 
-      if (type !== "profile-views" || !username.trim()) {
-        console.log("Não é profile-views ou username vazio. Nada a guardar.")
-        return
-      }
+      if (type !== "profile-views" || !username.trim()) return
 
       const cleanUsername = username.trim().toLowerCase()
       const tool = "profile-views"
 
       const existsInDb = await checkUsageExists(cleanUsername, tool)
-      if (existsInDb) {
-        console.log("Utilizador já existe na base de dados:", cleanUsername)
-        return
-      }
+      if (existsInDb) return
 
       const existsOnGitHub = await checkGitHubUserExists(username)
-      if (!existsOnGitHub) {
-        console.warn("Utilizador não existe no GitHub:", username)
-        return
-      }
+      if (!existsOnGitHub) return
 
       await addDoc(collection(db, "tool_usage"), {
         username: cleanUsername,
         tool,
         timestamp: new Date()
       })
-
-      console.log("Utilizador guardado com sucesso:", cleanUsername)
-    } catch (err) {
-      console.error("Erro em handleCopy:", err)
-    }
+    } catch {}
   }
 
   useEffect(() => {
     let url = ""
     let md = ""
 
+    setLoading(true)
+
     if (type === "profile-views") {
       if (!username.trim()) {
         setImageUrl("")
         setMarkdown("")
+        setLoading(false)
         return
       }
 
       const params = new URLSearchParams()
       params.append("username", username.trim())
-      if (profileLabel !== "Vizualizações") params.append("label", profileLabel)
-      if (profileColor !== "blue") params.append("color", profileColor)
-      if (profileStyle !== "for-the-badge") params.append("style", profileStyle)
-      if (base) params.append("base", base)
+      if (profileLabel.trim() && profileLabel !== "Visualizações") params.append("label", profileLabel.trim())
+      if (profileColor.trim() && profileColor !== "blue") params.append("color", profileColor.trim())
+      if (profileStyle) params.append("style", profileStyle)
+      if (base.trim()) params.append("base", base.trim())
       if (abbreviated) params.append("abbreviated", "true")
 
       url = `https://komarev.com/ghpvc/?${params.toString()}`
-      md = `![${profileLabel}](${url})`
+      md = `![${profileLabel}](${url})](https://github.com/${username.trim()})`
     } else {
-      let path = ""
-      if (label) {
-        path = `${encodeURIComponent(label)}-${encodeURIComponent(message)}-${color}`
-      } else {
-        path = `${encodeURIComponent(message)}-${color}`
+      if (!message.trim()) {
+        setImageUrl("")
+        setMarkdown("")
+        setLoading(false)
+        return
       }
+
+      let path = label.trim() ? `${label.trim()}-${message.trim()}-${color.trim()}` : `${message.trim()}-${color.trim()}`
 
       const params = new URLSearchParams()
-      if (style && style !== "flat") params.append("style", style)
+      if (style) params.append("style", style)
       if (type === "logo" && logo) params.append("logo", logo)
-      if (logoColor) params.append("logoColor", logoColor)
+      if (logoColor.trim()) params.append("logoColor", logoColor.trim())
       if (logoSize) params.append("logoSize", logoSize)
-      if (labelColor) params.append("labelColor", labelColor)
-      if (cacheSeconds) params.append("cacheSeconds", cacheSeconds)
+      if (labelColor.trim()) params.append("labelColor", labelColor.trim())
+      if (cacheSeconds.trim()) params.append("cacheSeconds", cacheSeconds.trim())
 
       url = `https://img.shields.io/badge/${path}${params.toString() ? `?${params.toString()}` : ""}`
-      if (linkUrl) {
-        md = `[![Badge](${url})](${linkUrl})`
-      } else {
-        md = `![Badge](${url})`
-      }
+      md = linkUrl.trim() ? `[![Badge](${url})](${linkUrl.trim()})` : `![Badge](${url})`
     }
 
     setImageUrl(url)
     setMarkdown(md)
-    setLoading(false)
-  }, [type, label, message, color, style, logo, logoColor, logoSize, labelColor, cacheSeconds, linkUrl, username, profileLabel, profileColor, profileStyle, base, abbreviated])
+
+    const img = new Image()
+    img.onload = () => setLoading(false)
+    img.onerror = () => setLoading(false)
+    img.src = url
+  }, [type, username, profileLabel, profileColor, profileStyle, base, abbreviated, label, message, color, style, logo, logoColor, logoSize, labelColor, cacheSeconds, linkUrl])
 
   const BooleanSelect = ({ id, label: selectLabel, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
     <div className="input-box">
@@ -171,7 +156,7 @@ export function Badges() {
           <div className="content">
             <div className="input-box">
               <label htmlFor="badge_type">Tipo de badge</label>
-              <select id="badge_type" value={type} onChange={e => setType(e.target.value as any)}>
+              <select id="badge_type" value={type} onChange={e => setType(e.target.value as "static" | "logo" | "profile-views")}>
                 <option value="static">Sem logotipo</option>
                 <option value="logo">Com logotipo</option>
                 <option value="profile-views">Visualizações de perfil</option>
@@ -184,25 +169,25 @@ export function Badges() {
                   <label htmlFor="username">
                     Nome de utilizador <span>*</span>
                   </label>
-                  <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value)} placeholder="heliocarlitos" />
+                  <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="heliocarlitos" />
                 </div>
 
                 <div className="box">
                   <div className="input-box">
                     <label htmlFor="profileLabel">Rótulo</label>
-                    <input type="text" id="profileLabel" value={profileLabel} onChange={e => setProfileLabel(e.target.value)} placeholder="Vizualizações" />
+                    <input type="text" id="profileLabel" value={profileLabel} onChange={e => setProfileLabel(e.target.value)} placeholder="Visualizações" />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="profileColor">Cor do fundo (HEX ou nome)</label>
-                    <input type="text" id="profileColor" value={profileColor} onChange={e => setProfileColor(e.target.value)} placeholder="ex: 007ec6, green" />
+                    <label htmlFor="profileColor">Cor do fundo (nome ou HEX)</label>
+                    <input type="text" id="profileColor" value={profileColor} onChange={e => setProfileColor(e.target.value.trim())} placeholder="ex: blue, #007ec6" />
                   </div>
                 </div>
 
                 <div className="box">
                   <div className="input-box">
-                    <label htmlFor="profileStyle">Layout</label>
+                    <label htmlFor="profileStyle">Estilo</label>
                     <select id="profileStyle" value={profileStyle} onChange={e => setProfileStyle(e.target.value)}>
-                      {STYLES.map(s => (
+                      {PROFILE_STYLES.map(s => (
                         <option key={s} value={s}>
                           {s}
                         </option>
@@ -220,12 +205,12 @@ export function Badges() {
                   <div></div>
                 </div>
 
-                {username ? (
+                {username.trim() && (
                   <div className="info">
                     <p>
-                      As visualizações são contadas a partir do momento que você adiciona a Badge no seu Readme.{" "}
+                      As visualizações são contadas a partir do momento que adicionares a badge no teu README.
                       <Botao
-                        href={`https://github.com/${username}/${username}/edit/main/README.md`}
+                        href={`https://github.com/${username}/edit/main/README.md`}
                         target="_blank"
                         content={
                           <>
@@ -238,7 +223,7 @@ export function Badges() {
                       />
                     </p>
                   </div>
-                ) : null}
+                )}
               </>
             ) : (
               <>
@@ -248,15 +233,17 @@ export function Badges() {
                     <input type="text" id="label" value={label} onChange={e => setLabel(e.target.value)} placeholder="ex: Github" />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="message">Mensagem</label>
-                    <input type="text" id="message" value={message} onChange={e => setMessage(e.target.value)} placeholder="ex: passing" />
+                    <label htmlFor="message">
+                      Mensagem <span>*</span>
+                    </label>
+                    <input type="text" id="message" value={message} onChange={e => setMessage(e.target.value.trim())} placeholder="ex: nicereadme" />
                   </div>
                 </div>
 
                 <div className="box">
                   <div className="input-box">
-                    <label htmlFor="color">Cor do fundo (Name, HEX, RGB)</label>
-                    <input type="text" id="color" value={color} onChange={e => setColor(e.target.value)} placeholder="ex: brightgreen, #ff69b4, rgb(255,0,0)" />
+                    <label htmlFor="color">Cor do fundo (nome ou HEX)</label>
+                    <input type="text" id="color" value={color} onChange={e => setColor(e.target.value.trim())} placeholder="ex: blue, #007ec6" />
                   </div>
                   <div className="input-box">
                     <label htmlFor="common_colors">Cores comuns</label>
@@ -272,16 +259,16 @@ export function Badges() {
 
                 <div className="box">
                   <div className="input-box">
-                    <label htmlFor="style">Layout</label>
+                    <label htmlFor="style">Estilo</label>
                     <select id="style" value={style} onChange={e => setStyle(e.target.value)}>
-                      {STYLES.filter(s => s !== "pixel").map(s => (
+                      {BADGE_STYLES.map(s => (
                         <option key={s} value={s}>
                           {s}
                         </option>
                       ))}
                     </select>
                   </div>
-                  {type === "logo" ? (
+                  {type === "logo" && (
                     <div className="input-box">
                       <label htmlFor="logo">Logotipo (Simple Icons)</label>
                       <select id="logo" value={logo} onChange={e => setLogo(e.target.value)}>
@@ -292,8 +279,6 @@ export function Badges() {
                         ))}
                       </select>
                     </div>
-                  ) : (
-                    <div></div>
                   )}
                 </div>
 
@@ -302,7 +287,7 @@ export function Badges() {
                     <div className="box">
                       <div className="input-box">
                         <label htmlFor="logoColor">Cor do logotipo</label>
-                        <input type="text" id="logoColor" value={logoColor} onChange={e => setLogoColor(e.target.value)} placeholder="ex: white, #ffffff, hsl(0, 0%, 100%)" />
+                        <input type="text" id="logoColor" value={logoColor} onChange={e => setLogoColor(e.target.value.trim())} placeholder="ex: white, #ffffff" />
                       </div>
                       <div className="input-box">
                         <label htmlFor="logoSize">Tamanho do logotipo</label>
@@ -316,7 +301,7 @@ export function Badges() {
                     <div className="box">
                       <div className="input-box">
                         <label htmlFor="labelColor">Cor do rótulo</label>
-                        <input type="text" id="labelColor" value={labelColor} onChange={e => setLabelColor(e.target.value)} placeholder="ex: #ff0000, red, rgb(255,0,0), hsl(0,100%,50%)" />
+                        <input type="text" id="labelColor" value={labelColor} onChange={e => setLabelColor(e.target.value.trim())} placeholder="ex: #ff0000, red" />
                       </div>
                       <div className="input-box">
                         <label htmlFor="cacheSeconds">Cache (segundos)</label>
@@ -329,17 +314,7 @@ export function Badges() {
                 <div className="box">
                   <div className="input-box">
                     <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
-                    <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value)} placeholder="https://exemplo.com" />
-                  </div>
-                  <div></div>
-                </div>
-
-                <div className="box">
-                  <div className="input-box">
-                    <label>Documentação</label>
-                    <a href="https://simpleicons.org/" target="_blank" rel="noopener noreferrer">
-                      Ver ícones disponíveis
-                    </a>
+                    <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="https://exemplo.com" />
                   </div>
                   <div></div>
                 </div>
@@ -350,28 +325,30 @@ export function Badges() {
 
         <div className="container">
           <div className="intro">
-            <h2>Preview do Badges</h2>
+            <h2>Preview do Badge</h2>
           </div>
 
           <div className="content">
             <div className="bag-code">
               {loading && <p>A carregar...</p>}
+
               {imageUrl && !loading && (
                 <>
-                  {type !== "profile-views" && linkUrl ? (
+                  {linkUrl && type !== "profile-views" ? (
                     <a href={linkUrl} target="_blank" rel="noopener noreferrer">
-                      <img className="badge-preview" src={imageUrl} alt="Badge preview" />
+                      <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
                     </a>
                   ) : (
-                    <img className="badge-preview" src={imageUrl} alt="Badge preview" />
+                    <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
                   )}
 
                   <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                  <CodeCard code={type === "profile-views" ? `<img src="${imageUrl}" alt="${profileLabel}" />` : linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" />\n</a>` : `<img src="${imageUrl}" alt="Badge" />`} lang="HTML" onCopy={() => handleCopy(type === "profile-views" ? `<img src="${imageUrl}" alt="${profileLabel}" />` : linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" />\n</a>` : `<img src="${imageUrl}" alt="Badge" />`)} />
+                  <CodeCard code={linkUrl && type !== "profile-views" ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" loading="lazy" />\n</a>` : `<img src="${imageUrl}" alt="${type === "profile-views" ? profileLabel : "Badge"}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(linkUrl && type !== "profile-views" ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" loading="lazy" />\n</a>` : `<img src="${imageUrl}" alt="${type === "profile-views" ? profileLabel : "Badge"}" loading="lazy" />`)} />
                 </>
               )}
-              {!imageUrl && !loading && <p>Seleccione um tipo e preencha os campos obrigatórios para ver a pré-visualização.</p>}
+
+              {!imageUrl && !loading && <p>Preenche os campos obrigatórios para ver a pré-visualização.</p>}
             </div>
           </div>
         </div>

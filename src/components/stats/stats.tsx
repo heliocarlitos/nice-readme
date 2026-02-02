@@ -165,51 +165,51 @@ export function Stats() {
     }
 
     setLoading(true)
-    const timer = setTimeout(() => {
-      setImageUrl(url)
-      let md = ""
-      if (type === "github") {
-        md = `[![${customTitle}](${url})](https://github.com/${username})`
-      } else {
-        md = `[![${wakaCustomTitle}](${url})](https://nice-readme.vercel.app/)`
-      }
-      setMarkdown(md)
+    setImageUrl(url)
 
-      const img = new Image()
-      img.onload = () => setLoading(false)
-      img.onerror = () => setLoading(false)
-      img.src = url
-    }, 500)
+    let md = ""
+    if (type === "github") {
+      md = `[![${customTitle}](${url})](https://github.com/${username.trim()})`
+    } else {
+      md = `[![${wakaCustomTitle}](${url})](https://wakatime.com/@${wakaUsername.trim()})`
+    }
+    setMarkdown(md)
 
-    return () => clearTimeout(timer)
+    const img = new Image()
+    img.onload = () => setLoading(false)
+    img.onerror = () => setLoading(false)
+    img.src = url
   }, [buildImageUrl, type, username, wakaUsername, customTitle, wakaCustomTitle])
 
   const handleCopy = async (code: string) => {
     try {
       await navigator.clipboard.writeText(code)
+
       let tool = ""
       let user = ""
 
-      if (type === "github" && username) {
+      if (type === "github" && username.trim()) {
         tool = "github-stats"
         user = username
-      } else if (type === "wakatime" && wakaUsername) {
+      } else if (type === "wakatime" && wakaUsername.trim()) {
         tool = "wakatime-stats"
         user = wakaUsername
       }
 
-      if (tool && user) {
-        const cleanUsername = user.trim().toLowerCase()
-        const existsInDb = await checkUsageExists(cleanUsername, tool)
-        if (existsInDb) return
-        const existsOnGitHub = tool === "github-stats" ? await checkGitHubUserExists(user) : true
-        if (!existsOnGitHub) return
-        await addDoc(collection(db, "tool_usage"), {
-          username: cleanUsername,
-          tool,
-          timestamp: new Date()
-        })
-      }
+      if (!tool || !user) return
+
+      const cleanUsername = user.trim().toLowerCase()
+      const existsInDb = await checkUsageExists(cleanUsername, tool)
+      if (existsInDb) return
+
+      const existsOnGitHub = tool === "github-stats" ? await checkGitHubUserExists(user) : true
+      if (!existsOnGitHub) return
+
+      await addDoc(collection(db, "tool_usage"), {
+        username: cleanUsername,
+        tool,
+        timestamp: new Date()
+      })
     } catch {}
   }
 
@@ -234,7 +234,7 @@ export function Stats() {
           <div className="content">
             <div className="input-box">
               <label htmlFor="stats_type">Tipo de estatísticas</label>
-              <select id="stats_type" value={type} onChange={e => setType(e.target.value as any)}>
+              <select id="stats_type" value={type} onChange={e => setType(e.target.value as "github" | "wakatime")}>
                 <option value="github">GitHub Stats</option>
                 <option value="wakatime">WakaTime Stats</option>
               </select>
@@ -246,7 +246,7 @@ export function Stats() {
                   <label htmlFor="username">
                     Nome de utilizador do GitHub <span>*</span>
                   </label>
-                  <input type="text" id="username" className="user-input" value={username} onChange={e => setUsername(e.target.value)} placeholder="heliocarlitos" />
+                  <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="heliocarlitos" />
                 </div>
 
                 <div className="box">
@@ -319,26 +319,12 @@ export function Stats() {
 
                 <div className="box">
                   <div className="input-box">
-                    <label htmlFor="hide">Ocultar (ex: stars,commits)</label>
-                    <select id="hide" value={hide} onChange={e => setHide(e.target.value)}>
-                      <option value="">Nenhum</option>
-                      {HIDE_OPTIONS.map(opt => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
+                    <label htmlFor="hide">Ocultar (separar por vírgula)</label>
+                    <input type="text" id="hide" value={hide} onChange={e => setHide(e.target.value)} placeholder="stars,commits" />
                   </div>
                   <div className="input-box">
-                    <label htmlFor="show">Mostrar (ex: reviews,prs_merged)</label>
-                    <select id="show" value={show} onChange={e => setShow(e.target.value)}>
-                      <option value="">Nenhum</option>
-                      {SHOW_OPTIONS.map(opt => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
+                    <label htmlFor="show">Mostrar (separar por vírgula)</label>
+                    <input type="text" id="show" value={show} onChange={e => setShow(e.target.value)} placeholder="reviews,prs_merged" />
                   </div>
                 </div>
 
@@ -350,7 +336,7 @@ export function Stats() {
                 <div className="box">
                   <div className="input-box">
                     <label htmlFor="rank_icon">Ícone do rank</label>
-                    <select id="rank_icon" value={rankIcon} onChange={e => setRankIcon(e.target.value as any)}>
+                    <select id="rank_icon" value={rankIcon} onChange={e => setRankIcon(e.target.value as "default" | "github" | "percentile")}>
                       <option value="default">Padrão</option>
                       <option value="github">GitHub</option>
                       <option value="percentile">Percentil</option>
@@ -402,7 +388,7 @@ export function Stats() {
                   <label htmlFor="waka_username">
                     Nome de utilizador do WakaTime <span>*</span>
                   </label>
-                  <input type="text" id="waka_username" className="user-input" value={wakaUsername} onChange={e => setWakaUsername(e.target.value)} placeholder="heliocarlitos" />
+                  <input type="text" id="waka_username" value={wakaUsername} onChange={e => setWakaUsername(e.target.value.trim())} placeholder="heliocarlitos" />
                 </div>
 
                 <div className="box">
@@ -435,7 +421,7 @@ export function Stats() {
                 <div className="box">
                   <div className="input-box">
                     <label htmlFor="waka_layout">Layout</label>
-                    <select id="waka_layout" value={wakaLayout} onChange={e => setWakaLayout(e.target.value as any)}>
+                    <select id="waka_layout" value={wakaLayout} onChange={e => setWakaLayout(e.target.value as "default" | "compact")}>
                       {WAKATIME_LAYOUTS.map(l => (
                         <option key={l} value={l}>
                           {l}
@@ -445,7 +431,7 @@ export function Stats() {
                   </div>
                   <div className="input-box">
                     <label htmlFor="waka_display_format">Formato</label>
-                    <select id="waka_display_format" value={wakaDisplayFormat} onChange={e => setWakaDisplayFormat(e.target.value as any)}>
+                    <select id="waka_display_format" value={wakaDisplayFormat} onChange={e => setWakaDisplayFormat(e.target.value as "time" | "percent")}>
                       {WAKATIME_DISPLAY_FORMATS.map(f => (
                         <option key={f} value={f}>
                           {f === "time" ? "Tempo" : "Percentagem"}
@@ -483,16 +469,17 @@ export function Stats() {
                       alt={`Pré-visualização das estatísticas de ${type}`}
                       width={type === "github" ? cardWidth : wakaCardWidth}
                       height="auto"
+                      loading="lazy"
                       onError={e => {
-                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifique se o utilizador existe e tem perfil público."
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifica se o utilizador existe e tem perfil público."
                       }}
                     />
                   </figure>
                   <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
-                  <CodeCard code={`<img src="${imageUrl}" alt="${type === "github" ? "GitHub Stats" : "WakaTime Stats"}" width="${type === "github" ? cardWidth : wakaCardWidth}" height="auto" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="${type === "github" ? "GitHub Stats" : "WakaTime Stats"}" width="${type === "github" ? cardWidth : wakaCardWidth}" height="auto" loading="lazy" />`)} />
+                  <CodeCard code={`<img src="${imageUrl}" alt="${type === "github" ? customTitle : wakaCustomTitle}" width="${type === "github" ? cardWidth : wakaCardWidth}" height="auto" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="${type === "github" ? customTitle : wakaCustomTitle}" width="${type === "github" ? cardWidth : wakaCardWidth}" height="auto" loading="lazy" />`)} />
                 </>
               )}
-              {!imageUrl && !loading && <p>Seleccione um tipo e preencha os campos obrigatórios para ver a pré-visualização.</p>}
+              {!imageUrl && !loading && <p>Preenche os campos obrigatórios para ver a pré-visualização.</p>}
             </div>
           </div>
         </div>
