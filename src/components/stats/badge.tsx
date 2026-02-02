@@ -103,7 +103,7 @@ export function Badges() {
       if (abbreviated) params.append("abbreviated", "true")
 
       url = `https://komarev.com/ghpvc/?${params.toString()}`
-      md = `![${profileLabel}](${url})](https://github.com/${username.trim()})`
+      md = `[![${profileLabel}](${url})](https://github.com/${username.trim()})`
     } else {
       if (!message.trim()) {
         setImageUrl("")
@@ -344,7 +344,7 @@ export function Badges() {
 
                   <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                  <CodeCard code={linkUrl && type !== "profile-views" ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" loading="lazy" />\n</a>` : `<img src="${imageUrl}" alt="${type === "profile-views" ? profileLabel : "Badge"}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(linkUrl && type !== "profile-views" ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${imageUrl}" alt="Badge" loading="lazy" />\n</a>` : `<img src="${imageUrl}" alt="${type === "profile-views" ? profileLabel : "Badge"}" loading="lazy" />`)} />
+                  <CodeCard code={linkUrl && type !== "profile-views" ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<img src="${imageUrl}" alt="${type === "profile-views" ? profileLabel : "Badge"}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(linkUrl && type !== "profile-views" ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<img src="${imageUrl}" alt="${type === "profile-views" ? profileLabel : "Badge"}" loading="lazy" />`)} />
                 </>
               )}
 
