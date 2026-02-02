@@ -42,7 +42,7 @@ export function UsuarioGuardado() {
       <p className="text">Ao usar uma ferramenta deste site, guardamos o teu @username do Github, nome e foto de perfil. Se não concorda com isso recomendamos que não use essa ferramenta.</p>
 
       <div className="btn">
-        <Botao href="https://github.com/heliocarlitos/nice-readme/privacidade.md" className="detal" content="Mais detalhes" target="_blank" />
+        <Botao href="https://github.com/heliocarlitos/nice-readme/blob/main/privacidade.md" className="detal" content="Mais detalhes" target="_blank" />
         <Botao onClick={aceitar} className="aceitar" content="Compreendi" />
       </div>
     </div>
