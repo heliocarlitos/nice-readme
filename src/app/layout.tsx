@@ -5,6 +5,7 @@ import "./globals.css"
 import { LenisWrapper } from "@/components/leniswrapper/page"
 import TopProgressLoader from "@/components/topprogressloader/TopProgressLoader"
 import { IrparaTop } from "@/components/btn/irparatop/irparatop"
+import { UsuarioGuardado } from "@/components/avisos/usuario-guardado/usuario-guardado"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nice-readme.vercel.app"),
@@ -87,6 +88,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main>{children}</main>
         </LenisWrapper>
         <IrparaTop />
+        <UsuarioGuardado />
       </body>
     </html>
   )

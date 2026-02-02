@@ -1,0 +1,50 @@
+"use client"
+import { useEffect, useState } from "react"
+import { Botao } from "@/components/btn/botao/botao"
+import "./usuario-guardado.css"
+
+const LOCALSTORAGE_KEY = "aceitou-aviso-dados-github"
+
+export function UsuarioGuardado() {
+  const [visivel, setVisivel] = useState(false)
+  const [deveMontar, setDeveMontar] = useState(false)
+
+  useEffect(() => {
+    if (localStorage.getItem(LOCALSTORAGE_KEY)) {
+      return
+    }
+
+    const timer = setTimeout(() => {
+      setDeveMontar(true)
+      setTimeout(() => {
+        setVisivel(true)
+      }, 50)
+    }, 3000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  function aceitar() {
+    localStorage.setItem(LOCALSTORAGE_KEY, "true")
+    setVisivel(false)
+  }
+
+  function handleTransitionEnd() {
+    if (!visivel) {
+      setDeveMontar(false)
+    }
+  }
+
+  if (!deveMontar) return null
+
+  return (
+    <div className={`usuario-guardado ${visivel ? "entrar" : "sair"}`} onTransitionEnd={handleTransitionEnd}>
+      <p className="text">Ao copiares código de uma ferramenta, guardamos o teu @username GitHub, nome e foto de perfil no Firestore apenas para estatísticas de uso. Não são usados para outros fins nem partilhados.</p>
+
+      <div className="btn">
+        <Botao href="https://github.com/heliocarlitos/nice-readme/privacidade.md" className="detal" content="Mais detalhes" target="_blank" />
+        <Botao onClick={aceitar} className="aceitar" content="Compreendi" />
+      </div>
+    </div>
+  )
+}
