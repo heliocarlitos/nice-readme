@@ -31,8 +31,14 @@
   gap: 10px;
   width: 100%;
 
-  &:hover .tt {
+  &:hover .tt,
+  &:focus .tt {
     text-decoration: underline;
+  }
+
+  &:hover img,
+  &:focus img {
+    filter: saturate(0.6);
   }
 }
 
@@ -46,6 +52,7 @@
   width: 100%;
   height: auto;
   border-radius: var(--radius);
+  transition: 0.3s ease;
 }
 
 .grid-todos-usuarios .card .detal {
