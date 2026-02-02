@@ -1,11 +1,12 @@
 "use client"
+
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import "./users-github.css"
 import user_default from "@/assets/user_default.webp"
 import { Botao } from "@/components/btn/botao/botao"
 import { db } from "@/lib/firebase"
-import { collection, getCountFromServer, getDocs, query, orderBy, limit } from "firebase/firestore"
+import { collection, getDocs, query, orderBy, limit } from "firebase/firestore"
 
 export function UsersGithub() {
   const [users, setUsers] = useState<string[]>([])
@@ -15,17 +16,15 @@ export function UsersGithub() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const countSnapshot = await getCountFromServer(collection(db, "tool_usage"))
-        setTotalCount(countSnapshot.data().count)
-
-        const q = query(collection(db, "tool_usage"), orderBy("timestamp", "desc"), limit(20))
+        // Buscar todos os documentos para contar usernames únicos
+        const q = query(collection(db, "tool_usage"), orderBy("timestamp", "desc"), limit(100))
         const snapshot = await getDocs(q)
 
-        const uniqueUsernames = Array.from(new Set(snapshot.docs.map(doc => (doc.data() as { username: string }).username)))
-          .filter(username => username && username.trim().length > 0 && username !== "anonymous")
-          .map(u => u.trim())
+        const allUsernames = snapshot.docs.map(doc => (doc.data() as { username: string }).username)
+        const uniqueUsernames = Array.from(new Set(allUsernames.filter(u => u && typeof u === "string" && u.trim().length > 0 && u !== "anonymous").map(u => u.trim().toLowerCase())))
 
-        setUsers(uniqueUsernames.slice(0, 15))
+        setTotalCount(uniqueUsernames.length)
+        setUsers(uniqueUsernames.slice(0, 5)) // mostra só 5
       } catch (error) {
         console.error("Erro ao buscar dados:", error)
         setUsers([])

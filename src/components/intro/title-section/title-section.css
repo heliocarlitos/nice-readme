@@ -1,0 +1,11 @@
+.title-section {
+  width: 100%;
+  max-width: 750px;
+}
+
+.title-section h1 {
+  font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 10px;
+}

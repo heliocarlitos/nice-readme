@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { db } from "@/lib/firebase"
-import { collection, getCountFromServer } from "firebase/firestore"
+import { collection, getDocs, query } from "firebase/firestore"
 
 type Props = {
   onCount?: (total: number) => void
@@ -22,20 +22,30 @@ export function TotalDeUsuariosBd({ onCount }: Props = {}) {
   const [count, setCount] = useState<number>(0)
 
   useEffect(() => {
-    const fetchCount = async () => {
+    const fetchUniqueUserCount = async () => {
       try {
-        const snapshot = await getCountFromServer(collection(db, "tool_usage"))
-        const total = snapshot.data().count
+        const q = query(collection(db, "tool_usage"))
+        const snapshot = await getDocs(q)
+        const usernames = new Set<string>()
+
+        snapshot.docs.forEach(doc => {
+          const data = doc.data()
+          if (data.username && typeof data.username === "string") {
+            usernames.add(data.username.trim().toLowerCase())
+          }
+        })
+
+        const total = usernames.size
         setCount(total)
         onCount?.(total)
       } catch (error) {
-        console.error("Erro ao buscar contagem:", error)
+        console.error("Erro ao buscar contagem de utilizadores únicos:", error)
         setCount(0)
         onCount?.(0)
       }
     }
 
-    fetchCount()
+    fetchUniqueUserCount()
   }, [onCount])
 
   return <span>{formatCompactNumber(count)}</span>

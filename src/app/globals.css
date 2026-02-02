@@ -3,6 +3,7 @@
   src: url("../fonts/Montserrat.ttf") format("truetype");
   font-style: normal;
   font-display: swap;
+  font-weight: 450;
 }
 
 @font-face {
@@ -10,6 +11,7 @@
   src: url("../fonts/Fira.ttf") format("truetype");
   font-style: normal;
   font-display: swap;
+  font-weight: 450;
 }
 
 * {
@@ -18,7 +20,6 @@
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   font-family: "Montserrat", Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: 400;
 }
 
 html {
@@ -89,6 +90,21 @@ select {
   all: unset;
   transition: 0.3s ease;
   cursor: pointer;
+}
+
+input {
+  border: var(--thin-border);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  color: var(--white);
+  cursor: text;
+  &:focus {
+    border: 1px solid var(--white);
+  }
+
+  &::placeholder {
+    color: var(--text);
+  }
 }
 
 label {
@@ -209,6 +225,7 @@ figure {
   gap: 10px;
   aspect-ratio: 1/1;
   transition: 0.3s ease;
+  width: fit-content;
 }
 
 .icon svg {

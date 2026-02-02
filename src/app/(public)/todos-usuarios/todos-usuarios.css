@@ -1,0 +1,12 @@
+.todos-usuarios {
+  padding-inline: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+@media (width <= 370px) {
+  .todos-usuarios {
+    gap: 20px;
+  }
+}
