@@ -363,7 +363,7 @@ export function PinsAndLangs() {
 
         <div className="container">
           <div className="intro">
-            <h2>Preview do Card</h2>
+            <h2>Preview do Card Pins</h2>
           </div>
 
           <div className="content">
