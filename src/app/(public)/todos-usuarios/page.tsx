@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     title: "Todos os utilizadores GitHub | Nice Readme",
     description: "Veja os perfis reais de quem já adoptou streaks, estatísticas e badges com Nice Readme.",
     images: ["/todos-usuarios.png"],
-    creator: "@heliocarlitos"
+    creator: "@heliocarlitoss"
   },
 
   alternates: {

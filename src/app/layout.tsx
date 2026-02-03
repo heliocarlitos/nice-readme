@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     title: "Nice Readme – Torna o teu perfil GitHub mais profissional",
     description: "Streak stats, estatísticas, pinned repos, badges — tudo automático e personalizável.",
     images: ["/demo.png"],
-    creator: "@heliocarlitos"
+    creator: "@heliocarlitoss"
   },
 
   alternates: {
