@@ -16,8 +16,23 @@ export default function RepoStars() {
   const [display, setDisplay] = useState("...")
 
   useEffect(() => {
-    fetch("https://api.github.com/repos/heliocarlitos/nice-readme")
-      .then(r => r.json())
+    const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN || ""
+
+    if (!token) {
+      setDisplay("—")
+      return
+    }
+
+    fetch("https://api.github.com/repos/heliocarlitos/nice-readme", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json"
+      }
+    })
+      .then(r => {
+        if (!r.ok) throw new Error("Erro na API")
+        return r.json()
+      })
       .then(data => {
         const count = data.stargazers_count
         if (typeof count === "number") {
