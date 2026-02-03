@@ -81,6 +81,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt">
+      <head>
+        <meta name="theme-color" content="#1a1a1a" />
+      </head>
       <body>
         <TopProgressLoader />
         <Header />
