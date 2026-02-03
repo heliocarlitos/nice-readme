@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: "Nice Readme",
     images: [
       {
-        url: "/demo.webp",
+        url: "/demo.png",
         width: 1200,
         height: 630,
         alt: "Exemplo de perfil GitHub bonito criado com Nice Readme"
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Nice Readme – Torna o teu perfil GitHub mais profissional",
     description: "Streak stats, estatísticas, pinned repos, badges — tudo automático e personalizável.",
-    images: ["/demo.webp"],
+    images: ["/demo.png"],
     creator: "@heliocarlitos"
   },
 
