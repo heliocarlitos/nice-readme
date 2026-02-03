@@ -1,0 +1,48 @@
+.reportarbug {
+  position: fixed;
+  bottom: 20px;
+  left: 30px;
+  z-index: 9999;
+}
+
+.reportarbug button {
+  background-color: var(--white);
+  padding: 5px;
+  border-radius: 100px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  opacity: 0.3;
+
+  & svg {
+    color: var(--black);
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+
+  &:hover::after,
+  &:focus::after {
+    font-size: 0.7rem;
+    top: -23px;
+    opacity: 1;
+  }
+
+  &::after {
+    content: "Report bugs";
+    position: absolute;
+    text-align: center;
+    background-color: var(--white);
+    color: var(--black);
+    text-wrap: nowrap;
+    border-radius: 3px;
+    transition: 0.3s ease;
+    padding: 3px 5px;
+    opacity: 0;
+    font-size: 0;
+    top: 0;
+    font-weight: bold;
+  }
+}

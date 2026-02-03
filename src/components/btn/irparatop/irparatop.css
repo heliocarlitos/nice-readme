@@ -1,7 +1,7 @@
 .ir-para-top {
   position: fixed;
   bottom: 30px;
-  right: 30px;
+  right: 20px;
   background-color: var(--bg-sec);
   padding: 10px;
   border-radius: 100px;

@@ -38,7 +38,7 @@ export function UsersGithub() {
   }, [])
 
   if (loading) {
-    return <div className="users-github">A carregar...</div>
+    return <div className="users-github">A carregando usuários...</div>
   }
 
   const exibidos = users.length
