@@ -14,8 +14,6 @@
   padding: 30px;
   border-radius: var(--radius);
   border: var(--thin-border);
-  width: 100%;
-  max-width: 1000px;
 }
 
 .features .card-feature:nth-child(odd) {
@@ -80,15 +78,29 @@
   }
 }
 
+@media (width <= 542px) {
+  .features {
+    margin-top: 30px;
+  }
+}
+
 @media (width <= 430px) {
   .features {
     gap: 30px;
+    margin-top: 50px;
   }
+
   .features .card-feature {
     padding: 20px;
   }
 
   .features .card-feature .info .tt {
     font-size: 1.2rem;
+  }
+}
+
+@media (width <= 386px) {
+  .features {
+    margin-top: 100px;
   }
 }

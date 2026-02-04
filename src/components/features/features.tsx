@@ -1,4 +1,5 @@
 import { Botao } from "../btn/botao/botao"
+import { TitleSection } from "../intro/title-section/title-section"
 import "./features.css"
 
 export function Features() {
@@ -68,20 +69,23 @@ export function Features() {
   ]
 
   return (
-    <section className="features">
-      {features.map(feature => (
-        <div className="card-feature" key={feature.id}>
-          <div className="info">
-            <div className="detal">
-              <div className="tt">{feature.title}</div>
-              <p className="text">{feature.desc}</p>
+    <>
+      <section className="features">
+        <TitleSection title="Funcionalidades" text="Cada gerador permite personalização completa: temas, cores, estilos de badge, idiomas, tamanhos de cartão, formatação de números, exclusão de itens, entre outros. As pré-visualizações apresentadas nestas páginas utilizam sempre as configurações padrão, sem qualquer alteração visual ou funcional aplicada." />
+        {features.map(feature => (
+          <div className="card-feature" key={feature.id}>
+            <div className="info">
+              <div className="detal">
+                <div className="tt">{feature.title}</div>
+                <p className="text">{feature.desc}</p>
+              </div>
+              <Botao className="btn-experimentar" href={feature.link} content="Experimentar" />
             </div>
-            <Botao className="btn-experimentar" href={feature.link} content="Experimentar" />
-          </div>
 
-          <figure className={feature.figure_className}>{feature.img}</figure>
-        </div>
-      ))}
-    </section>
+            <figure className={feature.figure_className}>{feature.img}</figure>
+          </div>
+        ))}
+      </section>
+    </>
   )
 }
