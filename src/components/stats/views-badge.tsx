@@ -137,9 +137,9 @@ export function ViewsBadge() {
         {username.trim() && userExists && (
           <div className="info">
             <p>
-              As visualizações começam a ser contadas depois de adicionares o badge ao teu README.
+              As visualizações começam a ser contadas depois de adicionares o badge ao teu README e actualizar a página.
               <Botao
-                href={`https://github.com/${username}/edit/main/README.md`}
+                href={`https://github.com/${username}/${username}/edit/main/README.md`}
                 target="_blank"
                 content={
                   <>
