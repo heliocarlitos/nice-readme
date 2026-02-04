@@ -33,23 +33,25 @@
   width: 100%;
   height: 0;
   z-index: 999;
+  opacity: 0;
+  transition: 0.3s ease;
 }
 
 .menumobile .content.open {
   height: 100dvh;
   background-color: #0000008c;
   backdrop-filter: blur(4px);
+  margin-top: 20px;
+  opacity: 1;
 }
 
 .menumobile .content nav {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: 0.3s ease;
   padding-block: 0;
-  transform: translateY(-30px);
   opacity: 0;
-  visibility: hidden;
+  transition: 0.3s ease;
 }
 
 .menumobile .content nav.open {
@@ -57,7 +59,6 @@
   opacity: 1;
   background-color: var(--bg-sec);
   padding-block: 30px;
-  transform: translateY(0);
 }
 
 .menumobile .content .link,
@@ -95,13 +96,13 @@
   color: var(--white);
 }
 
-@media (width <= 490px) {
+@media (width <= 585px) {
   .menumobile {
     display: flex;
   }
 }
 
-@media (width >= 491px) {
+@media (width >= 586px) {
   .menumobile {
     display: none;
   }

@@ -73,6 +73,25 @@
   }
 }
 
+.stats .container .input-error input {
+  border-color: var(--destructive);
+  box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+
+  &:focus {
+    border-color: var(--destructive);
+  }
+}
+
+.stats .container .input-error label {
+  color: var(--destructive);
+}
+
+.stats .container .input-error .error-message {
+  color: var(--destructive);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
 .stats .container .input-box .input-color {
   width: 50px;
   padding: 10px;

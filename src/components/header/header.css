@@ -36,9 +36,9 @@
   }
 }
 
-@media (width <= 490px) {
+@media (width <= 585px) {
   .header {
-    padding-block: 30px;
+    padding-block: 40px;
   }
   .header nav,
   .header .btn .github {
