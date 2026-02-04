@@ -1,0 +1,90 @@
+.features {
+  padding: 0 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.features .card-feature {
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 20px;
+  padding: 30px;
+  border-radius: var(--radius);
+  border: var(--thin-border);
+  width: 100%;
+  max-width: 1000px;
+}
+
+.features .card-feature:nth-child(odd) {
+  flex-direction: row-reverse;
+}
+
+.features .card-feature .info {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.features .card-feature .info .tt {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.features .card-feature .info .btn-experimentar {
+  background-color: var(--bg-sec);
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  color: var(--foreground);
+
+  &:hover,
+  &:focus {
+    background-color: var(--muted);
+  }
+}
+
+.features .card-feature figure img,
+.features .card-feature figure a {
+  width: 100%;
+  height: auto;
+}
+
+.features .card-feature .w-real {
+  width: 100%;
+  max-width: 200px;
+}
+
+@media (width <= 800px) {
+  .features .card-feature,
+  .features .card-feature:nth-child(odd) {
+    flex-direction: column;
+  }
+
+  .features .card-feature .info {
+    width: 100%;
+  }
+
+  .features .card-feature figure {
+    width: 100%;
+  }
+
+  .features .card-feature .w-real {
+    margin: auto;
+  }
+}
+
+@media (width <= 430px) {
+  .features {
+    gap: 30px;
+  }
+  .features .card-feature {
+    padding: 20px;
+  }
+
+  .features .card-feature .info .tt {
+    font-size: 1.2rem;
+  }
+}
