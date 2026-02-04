@@ -55,6 +55,10 @@
 .features .card-feature .w-real {
   width: 100%;
   max-width: 200px;
+
+  &::after {
+    z-index: -1;
+  }
 }
 
 @media (width <= 800px) {
