@@ -134,6 +134,26 @@ export function ViewsBadge() {
           <h2>Propriedades</h2>
         </div>
 
+        {username.trim() && userExists && (
+          <div className="info">
+            <p>
+              As visualizações começam a ser contadas depois de adicionares o badge ao teu README.
+              <Botao
+                href={`https://github.com/${username}/edit/main/README.md`}
+                target="_blank"
+                content={
+                  <>
+                    Adicionar agora
+                    <div className="icon">
+                      <MdOpenInNew />
+                    </div>
+                  </>
+                }
+              />
+            </p>
+          </div>
+        )}
+
         <div className="content">
           <div className={`input-box ${!userExists ? "input-error" : ""}`}>
             <label htmlFor="username">
@@ -182,26 +202,6 @@ export function ViewsBadge() {
               </select>
             </div>
           </div>
-
-          {username.trim() && userExists && (
-            <div className="info">
-              <p>
-                As visualizações começam a ser contadas depois de adicionares o badge ao teu README.
-                <Botao
-                  href={`https://github.com/${username}/edit/main/README.md`}
-                  target="_blank"
-                  content={
-                    <>
-                      Adicionar agora
-                      <div className="icon">
-                        <MdOpenInNew />
-                      </div>
-                    </>
-                  }
-                />
-              </p>
-            </div>
-          )}
         </div>
       </div>
 

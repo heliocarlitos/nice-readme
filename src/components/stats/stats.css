@@ -107,16 +107,17 @@
   display: flex;
 }
 
-.stats .container .content .info p {
+.stats .container .info p {
   display: inline;
   color: var(--destructive);
 }
 
-.stats .container .content .info button {
+.stats .container .info button {
   display: inline-flex;
   gap: 0;
   color: var(--foreground);
   text-decoration: underline;
+  margin-left: 5px;
 
   &:hover {
     color: var(--white);

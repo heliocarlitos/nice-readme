@@ -7,6 +7,8 @@ import { CodeCard } from "@/components/card/codecard/codecard"
 
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+import { MdOpenInNew } from "react-icons/md"
+import { Botao } from "../btn/botao/botao"
 
 const WAKATIME_LAYOUTS = ["default", "compact"] as const
 const WAKATIME_DISPLAY_FORMATS = ["time", "percent"] as const
@@ -166,6 +168,26 @@ export function WakaTimeStats() {
         <div className="intro">
           <h2>Propriedades</h2>
         </div>
+
+        {username.trim() && userExists && (
+          <div className="info">
+            <p>
+              Você precisa ter uma conta no WakaTime vinculada com seu Github. Pode levar até 24 horas para que suas estatísticas fiquem visíveis no cartão de estatísticas do WakaTime.
+              <Botao
+                href="https://wakatime.com/oauth/github/authorize?next=%2Fwelcome&reason=login"
+                target="_blank"
+                content={
+                  <>
+                    Criar conta
+                    <div className="icon">
+                      <MdOpenInNew />
+                    </div>
+                  </>
+                }
+              />
+            </p>
+          </div>
+        )}
 
         <div className="content">
           <div className={`input-box ${!userExists ? "input-error" : ""}`}>
