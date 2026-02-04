@@ -159,14 +159,14 @@ export function ViewsBadge() {
             <label htmlFor="username">
               Nome de utilizador <span>*</span>
             </label>
-            <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="heliocarlitos" />
+            <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="ex: heliocarlitos" />
             {!userExists && <span className="error-message">Utilizador não encontrado no GitHub</span>}
           </div>
 
           <div className="box">
             <div className="input-box">
               <label htmlFor="label">Rótulo</label>
-              <input type="text" id="label" value={label} onChange={e => setLabel(e.target.value)} placeholder="Visualizações" />
+              <input type="text" id="label" value={label} onChange={e => setLabel(e.target.value)} placeholder="ex: Visualizações" />
             </div>
 
             <div className="input-box">

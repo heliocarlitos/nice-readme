@@ -194,14 +194,14 @@ export function WakaTimeStats() {
             <label htmlFor="username">
               Nome de utilizador do WakaTime <span>*</span>
             </label>
-            <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="heliocarlitos" />
+            <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="ex: heliocarlitos" />
             {!userExists && <span className="error-message">Utilizador não encontrado no GitHub</span>}
           </div>
 
           <div className="box">
             <div className="input-box">
               <label htmlFor="custom_title">Título do cartão</label>
-              <input type="text" id="custom_title" value={customTitle} onChange={e => setCustomTitle(e.target.value)} placeholder="WakaTime Stats" />
+              <input type="text" id="custom_title" value={customTitle} onChange={e => setCustomTitle(e.target.value)} placeholder="ex: WakaTime Stats" />
             </div>
 
             <div className="input-box">
@@ -213,7 +213,7 @@ export function WakaTimeStats() {
           <div className="box">
             <div className="input-box">
               <label htmlFor="hide">Ocultar linguagens (separar por vírgula)</label>
-              <input type="text" id="hide" value={hide} onChange={e => setHide(e.target.value)} placeholder="javascript,html,css" />
+              <input type="text" id="hide" value={hide} onChange={e => setHide(e.target.value)} placeholder="ex: javascript,html,css" />
             </div>
 
             <div className="input-box">

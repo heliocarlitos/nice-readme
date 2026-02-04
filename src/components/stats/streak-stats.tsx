@@ -209,7 +209,7 @@ export function StreakStats() {
             <label htmlFor="username">
               Nome de utilizador <span>*</span>
             </label>
-            <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="heliocarlitos" />
+            <input type="text" id="username" value={username} onChange={e => setUsername(e.target.value.trim())} placeholder="ex: heliocarlitos" />
             {!userExists && <span className="error-message">Utilizador não encontrado no GitHub</span>}
           </div>
 

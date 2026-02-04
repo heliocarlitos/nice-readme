@@ -248,7 +248,7 @@ export function Badges() {
           <div className="box">
             <div className="input-box">
               <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
-              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="https://exemplo.com" />
+              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
             </div>
           </div>
         </div>

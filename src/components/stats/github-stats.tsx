@@ -213,7 +213,7 @@ export function GithubStats() {
           <div className="box">
             <div className="input-box">
               <label htmlFor="custom_title">Título do cartão</label>
-              <input type="text" id="custom_title" value={customTitle} onChange={e => setCustomTitle(e.target.value)} placeholder="GitHub Stats" />
+              <input type="text" id="custom_title" value={customTitle} onChange={e => setCustomTitle(e.target.value)} placeholder="ex: GitHub Stats" />
             </div>
 
             <div className="input-box">
@@ -287,12 +287,12 @@ export function GithubStats() {
           <div className="box">
             <div className="input-box">
               <label htmlFor="hide">Ocultar itens (separar por vírgula)</label>
-              <input type="text" id="hide" value={hide} onChange={e => setHide(e.target.value)} placeholder="stars,commits,prs" />
+              <input type="text" id="hide" value={hide} onChange={e => setHide(e.target.value)} placeholder="ex: stars,commits,prs" />
             </div>
 
             <div className="input-box">
               <label htmlFor="show">Mostrar itens (separar por vírgula)</label>
-              <input type="text" id="show" value={show} onChange={e => setShow(e.target.value)} placeholder="reviews,prs_merged" />
+              <input type="text" id="show" value={show} onChange={e => setShow(e.target.value)} placeholder="ex: reviews,prs_merged" />
             </div>
           </div>
 
@@ -322,14 +322,14 @@ export function GithubStats() {
 
             <div className="input-box">
               <label htmlFor="exclude_repo">Excluir repositórios</label>
-              <input type="text" id="exclude_repo" value={excludeRepo} onChange={e => setExcludeRepo(e.target.value)} placeholder="repo1,repo2" />
+              <input type="text" id="exclude_repo" value={excludeRepo} onChange={e => setExcludeRepo(e.target.value)} placeholder="ex: repo1,repo2" />
             </div>
           </div>
 
           <div className="box">
             <div className="input-box">
               <label htmlFor="commits_year">Ano dos commits</label>
-              <input type="number" id="commits_year" min="2005" max={new Date().getFullYear()} value={commitsYear} onChange={e => setCommitsYear(e.target.value ? parseInt(e.target.value) : "")} placeholder="ex: 2023" />
+              <input type="number" id="commits_year" min="2005" max={new Date().getFullYear()} value={commitsYear} onChange={e => setCommitsYear(e.target.value ? parseInt(e.target.value) : "")} placeholder="ex: 2026" />
             </div>
 
             <BooleanSelect id="text_bold" label="Texto em negrito" value={textBold} onChange={setTextBold} />
