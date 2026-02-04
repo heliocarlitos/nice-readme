@@ -49,6 +49,7 @@ html {
   --muted: #2a2a2a;
   --muted-foreground: #808080;
   --text: #9e9e9e;
+  --border: 1px solid var(--text);
   --thin-border: 1px solid var(--borda);
   --card: #202020;
   --card-foreground: #d9d9d9;
@@ -56,6 +57,7 @@ html {
   --destructive-foreground: #ffffff;
   --borda: #353535;
   --radius: 0.35rem;
+  --yellow: #ffdd00;
 }
 
 * {

@@ -38,16 +38,39 @@
   font-weight: 400;
 }
 
-.hero .content .star-github {
-  margin: auto;
+.hero .content .btn {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.hero .content .btn button {
   font-weight: 500;
-  background-color: var(--bg-sec);
-  padding: 10px 20px;
+  padding: 13px 20px;
   border-radius: var(--radius);
   color: var(--white);
 
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+}
+
+.hero .content .btn .star-github {
+  background-color: var(--bg-sec);
+
   & svg {
     color: var(--white);
+  }
+}
+
+.hero .content .btn .apoiar {
+  background-color: var(--yellow);
+  color: var(--black);
+
+  & svg {
+    color: var(--black);
   }
 }
 

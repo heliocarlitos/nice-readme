@@ -4,6 +4,7 @@ import { UsersGithub } from "../users-github/users-github"
 import { Botao } from "@/components/btn/botao/botao"
 import RepoStars from "@/components/automatizados/total-estrelas-github/total-estrelas-github"
 import { GoStar } from "react-icons/go"
+import { SiBuymeacoffee } from "react-icons/si"
 
 export function Hero() {
   return (
@@ -26,20 +27,36 @@ export function Hero() {
             <UsersGithub />
           </div>
 
-          <Botao
-            className="star-github"
-            target="_blank"
-            href="https://github.com/heliocarlitos/nice-readme/stargazers"
-            content={
-              <>
-                Estrela no GitHub
-                <div className="icon">
-                  <GoStar />
-                </div>
-                <RepoStars />
-              </>
-            }
-          />
+          <div className="btn">
+            <Botao
+              className="star-github"
+              target="_blank"
+              href="https://github.com/heliocarlitos/nice-readme/stargazers"
+              content={
+                <>
+                  Estrela no GitHub
+                  <div className="icon">
+                    <GoStar />
+                  </div>
+                  <RepoStars />
+                </>
+              }
+            />
+
+            <Botao
+              href="https://buymeacoffee.com/heliocarlitosantonio"
+              target="_blank"
+              className="apoiar"
+              content={
+                <>
+                  <div className="icon">
+                    <SiBuymeacoffee />
+                  </div>
+                  Compre-me um café
+                </>
+              }
+            />
+          </div>
         </div>
       </section>
     </>

@@ -43,7 +43,8 @@
 }
 
 .users-github .btn-user:nth-child(1) {
-  &:hover {
+  &:hover,
+  &:focus {
     z-index: 2;
   }
 }
@@ -60,7 +61,8 @@
 .users-github .btn-user:nth-child(11) {
   margin-left: -15px;
 
-  &:hover {
+  &:hover,
+  &:focus {
     z-index: 2;
   }
 }
@@ -72,8 +74,11 @@
   border-radius: 100px;
   z-index: 1;
   color: var(--white);
+  border: 1px solid transparent;
 
-  &:hover {
+  &:hover,
+  &:focus {
+    border: var(--border);
     background-color: var(--muted);
   }
 }
