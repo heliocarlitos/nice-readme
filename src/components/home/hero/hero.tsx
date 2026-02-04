@@ -18,7 +18,9 @@ export function Hero() {
             <p>Melhore seu README.md</p>
           </div>
 
-          <h1>Nice Readme - Dedicado para readme e documentações do Github</h1>
+          <h1>
+            <span translate="no">Nice Readme</span> - Dedicado para readme e documentações do Github
+          </h1>
 
           <p className="text">É uma ferramenta para criar e personalizar estatísticas, streak e badges do GitHub. Ideal para developers que querem um perfil mais organizado.</p>
 

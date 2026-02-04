@@ -26,6 +26,10 @@
   font-weight: 500;
   width: 100%;
   max-width: 980px;
+
+  & span {
+    color: var(--white);
+  }
 }
 
 .hero .content .text {

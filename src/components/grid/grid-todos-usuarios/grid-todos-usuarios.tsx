@@ -146,7 +146,7 @@ export function GridTodosUsuarios() {
                   <div className="detal">
                     <p className="tt">{user.name}</p>
                     <p className="text">
-                      {abreviarNumero(user.followers)} seguidor{user.followers === 1 ? "" : "es"}
+                      {abreviarNumero(user.followers)} seguidor{user.followers <= 1 ? "" : "es"}
                     </p>
                   </div>
                 </>
