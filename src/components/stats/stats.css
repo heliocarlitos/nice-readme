@@ -62,11 +62,9 @@
 
 .stats .container .input-box input,
 .stats .container .input-box select {
-  background-color: var(--muted);
   border: var(--thin-border);
   padding: 10px 20px;
   border-radius: var(--radius);
-  color: var(--foreground);
 
   &:focus {
     border: 1px solid var(--foreground);

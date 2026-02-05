@@ -17,7 +17,7 @@
 
 .menumobile .btn-menu .icon svg {
   font-size: 1.8rem;
-  color: var(--white);
+  color: var(--light-dark);
 }
 
 .menumobile .btn-menu .icon .hidden {
@@ -52,21 +52,21 @@
   padding-block: 0;
   opacity: 0;
   transition: 0.3s ease;
+  background-color: var(--bg-sec);
 }
 
 .menumobile .content nav.open {
   visibility: visible;
   opacity: 1;
-  background-color: var(--bg-sec);
   padding-block: 30px;
 }
 
 .menumobile .content .link,
 .menumobile .content .github {
-  width: calc(100% - 60px);
+  width: 100%;
   justify-content: left;
   padding: 15px 30px;
-  color: var(--white);
+  color: var(--light-dark);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -85,10 +85,11 @@
 
 .menumobile .content .github {
   background-color: var(--black);
-  width: calc(100% - 120px);
-  margin: 20px 30px 0 30px;
+  width: calc(100% - 65px);
+  margin: 0 30px;
   border-radius: 0.5rem;
   justify-content: center;
+  margin-top: 10px;
 }
 
 .menumobile .content .github svg,
@@ -96,13 +97,13 @@
   color: var(--white);
 }
 
-@media (width <= 585px) {
+@media (width <= 630px) {
   .menumobile {
     display: flex;
   }
 }
 
-@media (width >= 586px) {
+@media (width >= 631px) {
   .menumobile {
     display: none;
   }

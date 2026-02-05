@@ -28,7 +28,7 @@
   max-width: 980px;
 
   & span {
-    color: var(--white);
+    color: var(--light-dark);
   }
 }
 
@@ -63,9 +63,10 @@
 
 .hero .content .btn .star-github {
   background-color: var(--bg-sec);
+  color: var(--light-dark);
 
   & svg {
-    color: var(--white);
+    color: var(--light-dark);
   }
 }
 

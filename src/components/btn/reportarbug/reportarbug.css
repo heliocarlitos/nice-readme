@@ -6,7 +6,7 @@
 }
 
 .reportarbug button {
-  background-color: var(--white);
+  background-color: var(--bg-sec);
   padding: 5px;
   border-radius: 100px;
   position: relative;
@@ -15,7 +15,7 @@
   opacity: 0.3;
 
   & svg {
-    color: var(--black);
+    color: var(--light-dark);
   }
 
   &:hover,
@@ -34,8 +34,8 @@
     content: "Report bugs";
     position: absolute;
     text-align: center;
-    background-color: var(--white);
-    color: var(--black);
+    background-color: var(--bg-sec);
+    color: var(--light-dark);
     text-wrap: nowrap;
     border-radius: 3px;
     transition: 0.3s ease;

@@ -213,7 +213,7 @@ export default function AdminDashboard() {
 
       <div className="admin-search-section">
         <input type="text" placeholder="Pesquisar username..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={e => handleKeyDown(e, handleSearch)} className="admin-input" />
-        <button onClick={handleSearch} className="admin-btn" disabled={loading}>
+        <button onClick={handleSearch} className="btn-geral" disabled={loading}>
           <div className="icon">
             <FaSearch />
           </div>

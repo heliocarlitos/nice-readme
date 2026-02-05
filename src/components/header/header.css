@@ -21,25 +21,22 @@
 .header nav ul li button {
   &:hover,
   &:focus {
-    color: var(--foreground);
+    color: var(--light-dark);
   }
 }
 
 .header nav ul li button.active {
-  color: var(--foreground);
+  color: var(--light-dark);
 }
 
 .header .btn .github {
   &:hover .icon svg,
   &:focus .icon svg {
-    color: var(--foreground);
+    color: var(--light-dark);
   }
 }
 
-@media (width <= 585px) {
-  .header {
-    padding-block: 40px;
-  }
+@media (width <= 630px) {
   .header nav,
   .header .btn .github {
     display: none;

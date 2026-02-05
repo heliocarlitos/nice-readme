@@ -5,6 +5,7 @@ import { FaGithub } from "react-icons/fa6"
 import { Botao } from "../btn/botao/botao"
 import "./header.css"
 import { MenuMobile } from "../btn/menumobile/menumobile"
+import { BtnTheme } from "../btn/btntheme/btntheme"
 
 export function Header() {
   const pathname = usePathname()
@@ -46,7 +47,7 @@ export function Header() {
               </>
             }
           />
-
+          <BtnTheme />
           <MenuMobile />
         </div>
       </header>

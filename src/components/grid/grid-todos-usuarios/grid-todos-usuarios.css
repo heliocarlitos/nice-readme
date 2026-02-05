@@ -17,7 +17,7 @@
 }
 
 .input-search:has(input:focus) .icon svg {
-  color: var(--white);
+  color: var(--light-dark);
 }
 
 .grid-todos-usuarios {

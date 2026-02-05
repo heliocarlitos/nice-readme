@@ -4,7 +4,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,27 +20,23 @@
 }
 
 .admin-login-overlay .admin-login-popup h2 {
-  margin-top: 0;
-  color: var(--card-foreground);
+  color: var(--light-dark);
   text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
 .admin-login-overlay .admin-input {
   width: 100%;
   padding: 0.75rem;
   margin: 0.5rem 0;
-  border: var(--thin-border);
-  border-radius: var(--radius);
-  background: var(--bg-sec);
-  color: var(--bg-sec-foreground);
-  box-sizing: border-box;
 }
 
 .admin-login-overlay .admin-btn {
-  width: fit-content;
+  width: 100%;
   padding: 0.75rem;
-  background: var(--card-foreground);
-  color: var(--bg);
+  background: var(--light-dark);
+  color: var(--light-dark-reverse);
   border: none;
   border-radius: var(--radius);
   cursor: pointer;
@@ -70,7 +65,6 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  color: var(--foreground);
 }
 
 .admin-container .admin-header {
@@ -82,7 +76,6 @@
 }
 
 .admin-container .admin-header h1 {
-  color: var(--foreground);
   display: none;
 }
 
@@ -113,7 +106,7 @@
   min-width: 200px;
 }
 
-.admin-container .admin-search-section .admin-btn {
+/* .admin-container .admin-search-section .admin-btn {
   background-color: var(--white);
   color: var(--black);
   padding: 10px 20px;
@@ -132,7 +125,7 @@
   & svg {
     color: var(--black);
   }
-}
+} */
 
 .admin-container .admin-message {
   padding: 0.75rem;
