@@ -32,16 +32,7 @@
 }
 
 .features .card-feature .info .btn-experimentar {
-  background-color: var(--bg-sec);
   margin-top: 20px;
-  padding: 10px 20px;
-  border-radius: var(--radius);
-  color: var(--foreground);
-
-  &:hover,
-  &:focus {
-    background-color: var(--muted);
-  }
 }
 
 .features .card-feature figure img,

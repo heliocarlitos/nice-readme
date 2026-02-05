@@ -79,7 +79,7 @@ export function Features() {
                 <div className="tt">{feature.title}</div>
                 <p className="text">{feature.desc}</p>
               </div>
-              <Botao className="btn-experimentar" href={feature.link} content="Experimentar" />
+              <Botao className="btn-experimentar btn-geral" href={feature.link} content="Experimentar" />
             </div>
 
             <figure className={feature.figure_className}>{feature.img}</figure>

@@ -237,8 +237,8 @@ figure {
 
 .btn-geral,
 .btn-geral-center {
-  color: var(--bg-sec);
-  background-color: var(--foreground);
+  color: var(--light-dark-reverse);
+  background-color: var(--light-dark);
   padding: 10px 20px;
   border-radius: var(--radius);
   width: fit-content;
@@ -257,7 +257,7 @@ figure {
   }
 
   & .icon svg {
-    color: var(--bg-sec);
+    color: var(--light-dark-reverse);
   }
 }
 
