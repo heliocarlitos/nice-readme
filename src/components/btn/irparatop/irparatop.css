@@ -7,16 +7,17 @@
   border-radius: 100px;
   opacity: 0;
   transform: translateY(40px);
-  pointer-events: none;
+  border: 1px solid transparent;
 
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
 
   &:hover {
+    border: var(--thin-border);
     background-color: var(--muted);
     & svg {
-      color: var(--white);
+      color: var(--light-dark);
     }
   }
 }
@@ -25,14 +26,6 @@
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-}
-
-.ir-para-top:hover {
-  background-color: var(--muted);
-}
-
-.ir-para-top:hover svg {
-  color: var(--white);
 }
 
 @media (width <= 425px) {
