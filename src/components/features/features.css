@@ -33,6 +33,7 @@
 
 .features .card-feature .info .btn-experimentar {
   margin-top: 20px;
+  border-radius: 0;
 }
 
 .features .card-feature figure img,
