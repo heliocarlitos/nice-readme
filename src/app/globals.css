@@ -139,6 +139,7 @@ input {
 
   &:focus {
     border: 1px solid var(--light-dark);
+    background-color: transparent;
   }
 
   &::placeholder {
