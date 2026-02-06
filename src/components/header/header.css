@@ -36,7 +36,7 @@
   }
 }
 
-@media (width <= 924px) {
+@media (width <= 944px) {
   .header nav,
   .header .btn .github {
     display: none;

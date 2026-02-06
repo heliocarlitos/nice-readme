@@ -6,6 +6,7 @@ import TopProgressLoader from "@/components/topprogressloader/TopProgressLoader"
 import { IrparaTop } from "@/components/btn/irparatop/irparatop"
 import { UsuarioGuardado } from "@/components/avisos/usuario-guardado/usuario-guardado"
 import type { Metadata } from "next"
+import { Footer } from "@/components/footer/footer"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nice-readme.vercel.app"),
@@ -92,6 +93,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </LenisWrapper>
         <IrparaTop />
         <UsuarioGuardado />
+        <Footer />
       </body>
     </html>
   )

@@ -1,0 +1,24 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-top: var(--thin-border);
+  background-color: var(--card);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.footer button {
+  &:hover {
+    color: var(--light-dark);
+  }
+}
+
+@media (width <= 378px) {
+  .footer {
+    padding: 20px;
+    justify-content: center;
+    flex-wrap: wrap-reverse;
+  }
+}
