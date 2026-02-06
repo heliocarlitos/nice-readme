@@ -9,6 +9,8 @@ import { MdOpenInNew } from "react-icons/md"
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
+const TOOL_URL = "https://nice-readme.vercel.app/views-badge"
+
 const PROFILE_STYLES = ["flat", "flat-square", "plastic", "for-the-badge"] as const
 
 type ProfileStyle = (typeof PROFILE_STYLES)[number]
@@ -40,6 +42,7 @@ export function ViewsBadge() {
   const [style, setStyle] = useState<ProfileStyle>("for-the-badge")
   const [base, setBase] = useState("")
   const [abbreviated, setAbbreviated] = useState(false)
+  const [linkUrl, setLinkUrl] = useState("")
 
   const [imageUrl, setImageUrl] = useState("")
   const [markdown, setMarkdown] = useState("")
@@ -59,7 +62,7 @@ export function ViewsBadge() {
     timeoutRef.current = setTimeout(async () => {
       const exists = await checkGitHubUserExists(username)
       setUserExists(exists)
-    }, 500)
+    }, 1000)
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -96,14 +99,17 @@ export function ViewsBadge() {
     const url = `https://komarev.com/ghpvc/?${params.toString()}`
     setImageUrl(url)
 
-    const md = `[![${label}](${url})](https://github.com/${username.trim()})`
+    // Se o utilizador não definir linkUrl, usa o link da ferramenta
+    const finalLink = linkUrl.trim() || TOOL_URL
+
+    const md = `[![${label}](${url})](${finalLink})`
     setMarkdown(md)
 
     const img = new Image()
     img.onload = () => setLoading(false)
     img.onerror = () => setLoading(false)
     img.src = url
-  }, [username, label, color, style, base, abbreviated, userExists])
+  }, [username, label, color, style, base, abbreviated, userExists, linkUrl])
 
   const handleCopy = async (code: string) => {
     try {
@@ -137,9 +143,9 @@ export function ViewsBadge() {
         {username.trim() && userExists && (
           <div className="info">
             <p>
-              As visualizações começam a ser contadas depois de adicionares o badge ao teu README e actualizar a página.
+              As visualizações começam a ser contadas depois de adicionares o badge ao teu README e actualizares a página.
               <Botao
-                href={`https://github.com/${username}/${username}/edit/main/README.md`}
+                href={`https://github.com/${username}/edit/main/README.md`}
                 target="_blank"
                 content={
                   <>
@@ -201,6 +207,11 @@ export function ViewsBadge() {
                 <option value="true">Sim</option>
               </select>
             </div>
+
+            <div className="input-box">
+              <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
+              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
+            </div>
           </div>
         </div>
       </div>
@@ -217,19 +228,21 @@ export function ViewsBadge() {
             {imageUrl && userExists && !loading && (
               <>
                 <figure>
-                  <img
-                    src={imageUrl}
-                    alt="Pré-visualização do badge de visualizações"
-                    loading="lazy"
-                    onError={e => {
-                      ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
-                    }}
-                  />
+                  <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={imageUrl}
+                      alt="Pré-visualização do badge de visualizações"
+                      loading="lazy"
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
+                      }}
+                    />
+                  </a>
                 </figure>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={`<img src="${imageUrl}" alt="${label}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="${label}" loading="lazy" />`)} />
+                <CodeCard code={`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${label}" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${label}" loading="lazy" /></a>`)} />
               </>
             )}
 

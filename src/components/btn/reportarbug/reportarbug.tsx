@@ -7,7 +7,7 @@ export function ReportarBug() {
     <>
       <div className="reportarbug">
         <Botao
-          href="https://github.com/heliocarlitos/nice-readme/issues/1"
+          href="https://github.com/heliocarlitos/nice-readme/issues/new"
           target="_blank"
           content={
             <>

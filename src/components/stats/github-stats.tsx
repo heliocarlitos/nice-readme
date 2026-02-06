@@ -8,6 +8,8 @@ import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 import { StatsTheme } from "@/components/theme/stats"
 import { CodeCard } from "@/components/card/codecard/codecard"
 
+const TOOL_URL = "https://nice-readme.vercel.app/github-stats"
+
 const LOCALES = [
   { code: "en", name: "English" },
   { code: "pt-br", name: "Português (Brasil)" },
@@ -72,6 +74,7 @@ export function GithubStats() {
   const [numberFormat, setNumberFormat] = useState<"short" | "long">("short")
   const [numberPrecision, setNumberPrecision] = useState("")
   const [commitsYear, setCommitsYear] = useState<number | "">("")
+  const [linkUrl, setLinkUrl] = useState("")
 
   const [imageUrl, setImageUrl] = useState("")
   const [markdown, setMarkdown] = useState("")
@@ -91,7 +94,7 @@ export function GithubStats() {
     timeoutRef.current = setTimeout(async () => {
       const exists = await checkGitHubUserExists(username)
       setUserExists(exists)
-    }, 500)
+    }, 1000)
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -153,14 +156,15 @@ export function GithubStats() {
     setLoading(true)
     setImageUrl(url)
 
-    const md = `[![${customTitle}](${url})](https://github.com/${username.trim()})`
+    const finalLink = linkUrl.trim() || TOOL_URL
+    const md = `[![${customTitle}](${url})](${finalLink})`
     setMarkdown(md)
 
     const img = new Image()
     img.onload = () => setLoading(false)
     img.onerror = () => setLoading(false)
     img.src = url
-  }, [buildImageUrl, username, customTitle, userExists, hide, show, excludeRepo, numberPrecision, commitsYear])
+  }, [buildImageUrl, username, customTitle, userExists, linkUrl])
 
   const handleCopy = async (code: string) => {
     try {
@@ -352,6 +356,11 @@ export function GithubStats() {
               <label htmlFor="number_precision">Precisão decimal (0–2)</label>
               <input type="text" id="number_precision" value={numberPrecision} onChange={e => setNumberPrecision(e.target.value)} placeholder="ex: 1" />
             </div>
+
+            <div className="input-box">
+              <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
+              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
+            </div>
           </div>
         </div>
       </div>
@@ -368,21 +377,23 @@ export function GithubStats() {
             {imageUrl && userExists && !loading && (
               <>
                 <figure>
-                  <img
-                    src={imageUrl}
-                    alt={`Estatísticas do GitHub - ${username}`}
-                    width={cardWidth}
-                    height="auto"
-                    loading="lazy"
-                    onError={e => {
-                      ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
-                    }}
-                  />
+                  <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={imageUrl}
+                      alt={`Estatísticas do GitHub - ${username}`}
+                      width={cardWidth}
+                      height="auto"
+                      loading="lazy"
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
+                      }}
+                    />
+                  </a>
                 </figure>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={`<img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" />`)} />
+                <CodeCard code={`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" /></a>`)} />
               </>
             )}
 

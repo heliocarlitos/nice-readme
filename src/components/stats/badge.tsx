@@ -11,6 +11,8 @@ import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 const BADGE_STYLES = ["flat", "flat-square", "plastic", "for-the-badge", "social", "pixel"]
 const LOGO_SLUGS = ["android", "angular", "ansible", "apple", "assemblyscript", "bootstrap", "c", "circleci", "cplusplus", "css", "dart", "digitalocean", "discord", "docker", "dotnet", "elixir", "facebook", "figma", "firebase", "firefox", "flutter", "git", "github", "githubcopilot", "gitlab", "gmail", "gnubash", "go", "googlechrome", "googlecloud", "haskell", "html5", "intellijidea", "instagram", "ios", "javascript", "jenkins", "jira", "julia", "kotlin", "kubernetes", "linux", "lua", "mongodb", "mysql", "netlify", "nextdotjs", "nodedotjs", "notion", "npm", "php", "postgresql", "postman", "prometheus", "python", "pytorch", "r", "react", "redis", "ruby", "rust", "safari", "sass", "scala", "shell", "slackware", "snapchat", "solidity", "springboot", "sqlite", "swift", "tailwindcss", "telegram", "terraform", "tiktok", "travisci", "typescript", "vercel", "vite", "vuedotjs", "wechat", "webpack", "whatsapp", "yarn", "youtube"]
 
+const TOOL_URL = "https://nice-readme.vercel.app/badges"
+
 async function checkGitHubUserExists(username: string): Promise<boolean> {
   if (!username.trim()) return false
   try {
@@ -100,7 +102,10 @@ export function Badges() {
     const url = `https://img.shields.io/badge/${path}${params.toString() ? `?${params.toString()}` : ""}`
     setImageUrl(url)
 
-    const md = linkUrl.trim() ? `[![Badge](${url})](${linkUrl.trim()})` : `![Badge](${url})`
+    // Se o utilizador não definir linkUrl, usa o link da ferramenta
+    const finalLink = linkUrl.trim() || TOOL_URL
+
+    const md = `[![Badge](${url})](${finalLink})`
     setMarkdown(md)
 
     const img = new Image()
@@ -149,12 +154,18 @@ export function Badges() {
         </div>
 
         <div className="content">
-          <div className="input-box">
-            <label htmlFor="badge_type">Tipo de badge</label>
-            <select id="badge_type" value={type} onChange={e => setType(e.target.value as "static" | "logo")}>
-              <option value="static">Sem logotipo</option>
-              <option value="logo">Com logotipo</option>
-            </select>
+          <div className="box">
+            <div className="input-box">
+              <label htmlFor="badge_type">Tipo de badge</label>
+              <select id="badge_type" value={type} onChange={e => setType(e.target.value as "static" | "logo")}>
+                <option value="static">Sem logotipo</option>
+                <option value="logo">Com logotipo</option>
+              </select>
+            </div>
+
+            <div className="input-box">
+              <div></div>
+            </div>
           </div>
 
           <div className="box">
@@ -182,7 +193,7 @@ export function Badges() {
               <label htmlFor="color">
                 Cor do fundo (nome ou HEX) <span>*</span>
               </label>
-              <input type="text" id="color" value={color} onChange={e => setColor(e.target.value.trim())} placeholder="ex: blue, 007ec6" />
+              <input type="text" id="color" value={color} onChange={e => setColor(e.target.value.trim())} placeholder="ex: blue, #007ec6" />
             </div>
           </div>
 
@@ -252,6 +263,10 @@ export function Badges() {
               <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
               <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
             </div>
+
+            <div className="input-box">
+              <div></div>
+            </div>
           </div>
         </div>
       </div>
@@ -272,12 +287,14 @@ export function Badges() {
                     <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
                   </a>
                 ) : (
-                  <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
+                  <a href={TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
+                  </a>
                 )}
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<img src="${imageUrl}" alt="Badge" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<img src="${imageUrl}" alt="Badge" loading="lazy" />`)} />
+                <CodeCard code={linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<a href="${TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<a href="${TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>`)} />
               </>
             )}
 

@@ -8,7 +8,9 @@ import { CodeCard } from "@/components/card/codecard/codecard"
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 import { MdOpenInNew } from "react-icons/md"
-import { Botao } from "../btn/botao/botao"
+import { Botao } from "@/components/btn/botao/botao"
+
+const TOOL_URL = "https://nice-readme.vercel.app/wakatime"
 
 const WAKATIME_LAYOUTS = ["default", "compact"] as const
 const WAKATIME_DISPLAY_FORMATS = ["time", "percent"] as const
@@ -74,7 +76,7 @@ export function WakaTimeStats() {
     timeoutRef.current = setTimeout(async () => {
       const exists = await checkGitHubUserExists(username)
       setUserExists(exists)
-    }, 500)
+    }, 1000)
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -121,7 +123,7 @@ export function WakaTimeStats() {
     setLoading(true)
     setImageUrl(url)
 
-    const md = `[![${customTitle}](${url})](https://wakatime.com/@${username.trim()})`
+    const md = `[![${customTitle}](${url})](${TOOL_URL})`
     setMarkdown(md)
 
     const img = new Image()
@@ -172,7 +174,7 @@ export function WakaTimeStats() {
         {username.trim() && userExists && (
           <div className="info">
             <p>
-              Você precisa ter uma conta no WakaTime vinculada com seu Github. Pode levar até 24 horas para que suas estatísticas fiquem visíveis no cartão de estatísticas do WakaTime.
+              Você precisa ter uma conta no WakaTime vinculada com o seu GitHub. Pode levar até 24 horas para que as estatísticas fiquem visíveis no cartão.
               <Botao
                 href="https://wakatime.com/oauth/github/authorize?next=%2Fwelcome&reason=login"
                 target="_blank"
@@ -274,21 +276,23 @@ export function WakaTimeStats() {
             {imageUrl && userExists && !loading && (
               <>
                 <figure>
-                  <img
-                    src={imageUrl}
-                    alt={`Estatísticas WakaTime - ${username}`}
-                    width={cardWidth}
-                    height="auto"
-                    loading="lazy"
-                    onError={e => {
-                      ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
-                    }}
-                  />
+                  <a href={TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={imageUrl}
+                      alt={`Estatísticas WakaTime - ${username}`}
+                      width={cardWidth}
+                      height="auto"
+                      loading="lazy"
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
+                      }}
+                    />
+                  </a>
                 </figure>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={`<img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" />`)} />
+                <CodeCard code={`<a href="${TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${customTitle}" width="${cardWidth}" height="auto" loading="lazy" /></a>`)} />
               </>
             )}
 

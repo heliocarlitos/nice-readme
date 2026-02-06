@@ -10,6 +10,8 @@ import { StreakTheme } from "@/components/theme/streak"
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 
+const TOOL_URL = "https://nice-readme.vercel.app/streak-stats"
+
 const LOCALES = [
   { code: "en", name: "English" },
   { code: "pt_BR", name: "Português (Brasil)" },
@@ -85,6 +87,7 @@ export function StreakStats() {
   const [hideLongestStreak, setHideLongestStreak] = useState(false)
   const [startingYear, setStartingYear] = useState<number | "">("")
   const [dateFormat, setDateFormat] = useState("")
+  const [linkUrl, setLinkUrl] = useState("")
 
   const [imageUrl, setImageUrl] = useState("")
   const [markdown, setMarkdown] = useState("")
@@ -156,14 +159,17 @@ export function StreakStats() {
     setLoading(true)
     setImageUrl(url)
 
-    const md = `[![GitHub Streak](${url})](https://github.com/${username.trim()})`
+    // Se o utilizador não definir linkUrl, usa o link da ferramenta
+    const finalLink = linkUrl.trim() || TOOL_URL
+
+    const md = `[![GitHub Streak](${url})](${finalLink})`
     setMarkdown(md)
 
     const img = new Image()
     img.onload = () => setLoading(false)
     img.onerror = () => setLoading(false)
     img.src = url
-  }, [buildImageUrl, username, userExists])
+  }, [buildImageUrl, username, userExists, linkUrl])
 
   const handleCopy = async (code: string) => {
     try {
@@ -309,6 +315,11 @@ export function StreakStats() {
               <label htmlFor="starting_year">Ano inicial (opcional)</label>
               <input type="number" id="starting_year" min="2005" max={new Date().getFullYear()} value={startingYear} onChange={e => setStartingYear(e.target.value ? parseInt(e.target.value) : "")} placeholder="ex: 2017" />
             </div>
+
+            <div className="input-box">
+              <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
+              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
+            </div>
           </div>
         </div>
       </div>
@@ -327,21 +338,23 @@ export function StreakStats() {
             {imageUrl && userExists && !loading && (
               <>
                 <figure>
-                  <img
-                    src={imageUrl}
-                    alt="Pré-visualização da sequência de contribuições GitHub"
-                    width={cardWidth}
-                    height={cardHeight}
-                    loading="lazy"
-                    onError={e => {
-                      ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifica se o utilizador existe e tem contribuições públicas."
-                    }}
-                  />
+                  <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={imageUrl}
+                      alt="Pré-visualização da sequência de contribuições GitHub"
+                      width={cardWidth}
+                      height={cardHeight}
+                      loading="lazy"
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar. Verifica se o utilizador existe e tem contribuições públicas."
+                      }}
+                    />
+                  </a>
                 </figure>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={`<img src="${imageUrl}" alt="GitHub Streak de ${username.trim()}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="GitHub Streak de ${username.trim()}" width="${cardWidth}" height="${cardHeight}" loading="lazy" />`)} />
+                <CodeCard code={`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="GitHub Streak de ${username.trim()}" width="${cardWidth}" height="${cardHeight}" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="GitHub Streak de ${username.trim()}" width="${cardWidth}" height="${cardHeight}" loading="lazy" /></a>`)} />
               </>
             )}
 

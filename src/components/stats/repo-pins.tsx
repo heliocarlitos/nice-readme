@@ -15,6 +15,8 @@ interface BooleanSelectProps {
   onChange: (value: boolean) => void
 }
 
+const TOOL_URL = "https://nice-readme.vercel.app/repo-pins"
+
 async function checkGitHubUserExists(username: string): Promise<boolean> {
   if (!username.trim()) return false
   try {
@@ -51,6 +53,7 @@ export function RepoPin() {
   const [hideBorder, setHideBorder] = useState(false)
   const [borderRadius, setBorderRadius] = useState(4.5)
   const [showOwner, setShowOwner] = useState(false)
+  const [linkUrl, setLinkUrl] = useState("")
 
   const [imageUrl, setImageUrl] = useState("")
   const [markdown, setMarkdown] = useState("")
@@ -99,7 +102,7 @@ export function RepoPin() {
       } else {
         setErrorMessage("")
       }
-    }, 500)
+    }, 1000)
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -149,7 +152,9 @@ export function RepoPin() {
 
     const parsed = parseRepoUrl(repoUrl)
     if (parsed) {
-      const md = `[![${parsed.repo}](${url})](https://github.com/${parsed.username}/${parsed.repo})`
+      // Se o utilizador não definir linkUrl, usa o link da ferramenta
+      const finalLink = linkUrl.trim() || TOOL_URL
+      const md = `[![${parsed.repo}](${url})](${finalLink})`
       setMarkdown(md)
     }
 
@@ -157,7 +162,7 @@ export function RepoPin() {
     img.onload = () => setLoading(false)
     img.onerror = () => setLoading(false)
     img.src = url
-  }, [buildImageUrl, repoUrl, userExists, repoExists])
+  }, [buildImageUrl, repoUrl, userExists, repoExists, linkUrl])
 
   const handleCopy = async (code: string) => {
     try {
@@ -228,7 +233,25 @@ export function RepoPin() {
               <label htmlFor="border_radius">Raio da borda</label>
               <input type="number" id="border_radius" step="0.1" min="0" value={borderRadius} onChange={e => setBorderRadius(parseFloat(e.target.value) || 0)} />
             </div>
-            <BooleanSelect id="show_owner" label="Mostrar proprietário" value={showOwner} onChange={setShowOwner} />
+
+            <div className="input-box">
+              <label htmlFor="show_owner">Mostrar proprietário</label>
+              <select id="show_owner" value={showOwner ? "true" : "false"} onChange={e => setShowOwner(e.target.value === "true")}>
+                <option value="false">Não</option>
+                <option value="true">Sim</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="box">
+            <div className="input-box">
+              <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
+              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
+            </div>
+
+            <div className="input-box">
+              <div></div>
+            </div>
           </div>
         </div>
       </div>
@@ -245,21 +268,23 @@ export function RepoPin() {
             {imageUrl && userExists && repoExists && !loading && (
               <>
                 <figure>
-                  <img
-                    src={imageUrl}
-                    alt="Pré-visualização do Repositório Pin"
-                    width={CARD_WIDTH}
-                    height="auto"
-                    loading="lazy"
-                    onError={e => {
-                      ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
-                    }}
-                  />
+                  <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={imageUrl}
+                      alt="Pré-visualização do Repositório Pin"
+                      width={CARD_WIDTH}
+                      height="auto"
+                      loading="lazy"
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
+                      }}
+                    />
+                  </a>
                 </figure>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={`<img src="${imageUrl}" alt="Repositório Pin" width="${CARD_WIDTH}" height="auto" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="Repositório Pin" width="${CARD_WIDTH}" height="auto" loading="lazy" />`)} />
+                <CodeCard code={`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Repositório Pin" width="${CARD_WIDTH}" height="auto" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Repositório Pin" width="${CARD_WIDTH}" height="auto" loading="lazy" /></a>`)} />
               </>
             )}
 

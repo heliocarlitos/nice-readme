@@ -15,6 +15,8 @@ interface BooleanSelectProps {
   onChange: (value: boolean) => void
 }
 
+const TOOL_URL = "https://nice-readme.vercel.app/top-langs"
+
 const LAYOUTS = ["normal", "compact", "donut", "donut-vertical", "pie"] as const
 const STATS_FORMATS = ["percentages", "bytes"] as const
 const LANGS_THEMES = ["default", "dark"] as const
@@ -58,6 +60,7 @@ export function TopLangs() {
   const [sizeWeight, setSizeWeight] = useState<number | "">("")
   const [countWeight, setCountWeight] = useState<number | "">("")
   const [statsFormat, setStatsFormat] = useState<StatsFormat>("percentages")
+  const [linkUrl, setLinkUrl] = useState("")
 
   const [imageUrl, setImageUrl] = useState("")
   const [markdown, setMarkdown] = useState("")
@@ -77,7 +80,7 @@ export function TopLangs() {
     timeoutRef.current = setTimeout(async () => {
       const exists = await checkGitHubUserExists(username)
       setUserExists(exists)
-    }, 500)
+    }, 1000)
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -131,14 +134,17 @@ export function TopLangs() {
     setLoading(true)
     setImageUrl(url)
 
-    const md = `[![${customTitle}](${url})](https://github.com/${username.trim()})`
+    // Se o utilizador não definir linkUrl, usa o link da ferramenta
+    const finalLink = linkUrl.trim() || TOOL_URL
+
+    const md = `[![${customTitle}](${url})](${finalLink})`
     setMarkdown(md)
 
     const img = new Image()
     img.onload = () => setLoading(false)
     img.onerror = () => setLoading(false)
     img.src = url
-  }, [buildImageUrl, username, customTitle, userExists])
+  }, [buildImageUrl, username, customTitle, userExists, linkUrl])
 
   const handleCopy = async (code: string) => {
     try {
@@ -270,6 +276,11 @@ export function TopLangs() {
               <label htmlFor="count_weight">Peso da contagem</label>
               <input type="number" step="0.1" min="0" value={countWeight} onChange={e => setCountWeight(e.target.value ? parseFloat(e.target.value) : "")} placeholder="0.5" />
             </div>
+
+            <div className="input-box">
+              <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
+              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
+            </div>
           </div>
         </div>
       </div>
@@ -286,21 +297,23 @@ export function TopLangs() {
             {imageUrl && userExists && !loading && (
               <>
                 <figure>
-                  <img
-                    src={imageUrl}
-                    alt="Pré-visualização das linguagens mais usadas"
-                    width={CARD_WIDTH}
-                    height="auto"
-                    loading="lazy"
-                    onError={e => {
-                      ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
-                    }}
-                  />
+                  <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={imageUrl}
+                      alt="Pré-visualização das linguagens mais usadas"
+                      width={CARD_WIDTH}
+                      height="auto"
+                      loading="lazy"
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
+                      }}
+                    />
+                  </a>
                 </figure>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={`<img src="${imageUrl}" alt="${customTitle}" width="${CARD_WIDTH}" height="auto" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="${customTitle}" width="${CARD_WIDTH}" height="auto" loading="lazy" />`)} />
+                <CodeCard code={`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${customTitle}" width="${CARD_WIDTH}" height="auto" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="${customTitle}" width="${CARD_WIDTH}" height="auto" loading="lazy" /></a>`)} />
               </>
             )}
 

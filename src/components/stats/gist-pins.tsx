@@ -15,6 +15,8 @@ interface BooleanSelectProps {
   onChange: (value: boolean) => void
 }
 
+const TOOL_URL = "https://nice-readme.vercel.app/gist-pins"
+
 async function checkGitHubUserExists(username: string): Promise<boolean> {
   if (!username.trim()) return false
   try {
@@ -43,6 +45,7 @@ export function GistPin() {
   const [borderRadius, setBorderRadius] = useState(4.5)
   const [locale, setLocale] = useState("pt-br")
   const [showOwner, setShowOwner] = useState(false)
+  const [linkUrl, setLinkUrl] = useState("")
 
   const [imageUrl, setImageUrl] = useState("")
   const [markdown, setMarkdown] = useState("")
@@ -62,7 +65,7 @@ export function GistPin() {
     timeoutRef.current = setTimeout(async () => {
       const exists = await checkGitHubUserExists(username)
       setUserExists(exists)
-    }, 500)
+    }, 1000)
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -105,14 +108,17 @@ export function GistPin() {
     setLoading(true)
     setImageUrl(url)
 
-    const md = `[![Gist Card](${url})](https://gist.github.com/${gistId.trim()})`
+    // Se o utilizador não definir linkUrl, usa o link da ferramenta
+    const finalLink = linkUrl.trim() || TOOL_URL
+
+    const md = `[![Gist Card](${url})](${finalLink})`
     setMarkdown(md)
 
     const img = new Image()
     img.onload = () => setLoading(false)
     img.onerror = () => setLoading(false)
     img.src = url
-  }, [buildImageUrl, gistId, userExists])
+  }, [buildImageUrl, gistId, userExists, linkUrl])
 
   const handleCopy = async (code: string) => {
     try {
@@ -201,6 +207,11 @@ export function GistPin() {
 
           <div className="box">
             <BooleanSelect id="show_owner" label="Mostrar proprietário" value={showOwner} onChange={setShowOwner} />
+
+            <div className="input-box">
+              <label htmlFor="linkUrl">Link ao clicar (opcional)</label>
+              <input type="url" id="linkUrl" value={linkUrl} onChange={e => setLinkUrl(e.target.value.trim())} placeholder="ex: https://exemplo.com" />
+            </div>
           </div>
         </div>
       </div>
@@ -217,19 +228,21 @@ export function GistPin() {
             {imageUrl && userExists && !loading && (
               <>
                 <figure>
-                  <img
-                    src={imageUrl}
-                    alt="Pré-visualização do Gist Pin"
-                    loading="lazy"
-                    onError={e => {
-                      ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
-                    }}
-                  />
+                  <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
+                    <img
+                      src={imageUrl}
+                      alt="Pré-visualização do Gist Pin"
+                      loading="lazy"
+                      onError={e => {
+                        ;(e.target as HTMLImageElement).alt = "Erro ao carregar."
+                      }}
+                    />
+                  </a>
                 </figure>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={`<img src="${imageUrl}" alt="Gist Card" loading="lazy" />`} lang="HTML" onCopy={() => handleCopy(`<img src="${imageUrl}" alt="Gist Card" loading="lazy" />`)} />
+                <CodeCard code={`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Gist Card" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Gist Card" loading="lazy" /></a>`)} />
               </>
             )}
 
