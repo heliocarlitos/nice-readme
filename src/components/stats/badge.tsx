@@ -154,18 +154,12 @@ export function Badges() {
         </div>
 
         <div className="content">
-          <div className="box">
-            <div className="input-box">
-              <label htmlFor="badge_type">Tipo de badge</label>
-              <select id="badge_type" value={type} onChange={e => setType(e.target.value as "static" | "logo")}>
-                <option value="static">Sem logotipo</option>
-                <option value="logo">Com logotipo</option>
-              </select>
-            </div>
-
-            <div className="input-box">
-              <div></div>
-            </div>
+          <div className="input-box">
+            <label htmlFor="badge_type">Tipo de badge</label>
+            <select id="badge_type" value={type} onChange={e => setType(e.target.value as "static" | "logo")}>
+              <option value="static">Sem logotipo</option>
+              <option value="logo">Com logotipo</option>
+            </select>
           </div>
 
           <div className="box">

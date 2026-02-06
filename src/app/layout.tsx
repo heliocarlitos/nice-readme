@@ -1,4 +1,3 @@
-import type { Metadata } from "next"
 import React from "react"
 import { Header } from "@/components/header/header"
 import "./globals.css"
@@ -6,6 +5,7 @@ import { LenisWrapper } from "@/components/leniswrapper/page"
 import TopProgressLoader from "@/components/topprogressloader/TopProgressLoader"
 import { IrparaTop } from "@/components/btn/irparatop/irparatop"
 import { UsuarioGuardado } from "@/components/avisos/usuario-guardado/usuario-guardado"
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://nice-readme.vercel.app"),
