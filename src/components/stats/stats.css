@@ -65,6 +65,7 @@
   border: var(--thin-border);
   padding: 10px 20px;
   border-radius: var(--radius);
+  background-color: var(--muted);
 
   &:focus {
     border: 1px solid var(--foreground);
