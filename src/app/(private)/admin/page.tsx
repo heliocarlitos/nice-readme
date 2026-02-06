@@ -7,6 +7,7 @@ import Image from "next/image"
 import "./admin.css"
 import { FaPowerOff, FaRegTrashCan } from "react-icons/fa6"
 import { FaSearch } from "react-icons/fa"
+import { EstatisticasGerais } from "@/components/estatisticas-de-uso/estatisticasgerais"
 
 interface ToolUsage {
   id: string
@@ -200,66 +201,69 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="admin-container">
-      <header className="admin-header">
-        <h1>Dashboard de Administração</h1>
-        <button onClick={handleLogout} className="admin-logout-btn">
-          <div className="icon">
-            <FaPowerOff />
-          </div>
-          Sair
-        </button>
-      </header>
-
-      <div className="admin-search-section">
-        <input type="text" placeholder="Pesquisar username..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={e => handleKeyDown(e, handleSearch)} className="admin-input" />
-        <button onClick={handleSearch} className="btn-geral" disabled={loading}>
-          <div className="icon">
-            <FaSearch />
-          </div>
-          {loading ? "A procurar..." : "Pesquisar"}
-        </button>
-      </div>
-
-      {message && <p className="admin-message">{message}</p>}
-
-      {userDetails && (
-        <div className="admin-user-card">
-          <div className="admin-user-header">
-            <Image src={userDetails.avatar} alt={`Foto de ${userDetails.username}`} width={80} height={80} className="admin-avatar" />
-            <div>
-              <h2>{userDetails.name}</h2>
-              <p>@{userDetails.username}</p>
-              <p>{abreviarNumero(userDetails.followers)} seguidores</p>
+    <>
+      <div className="admin-container">
+        <header className="admin-header">
+          <h1>Dashboard de Administração</h1>
+          <button onClick={handleLogout} className="admin-logout-btn">
+            <div className="icon">
+              <FaPowerOff />
             </div>
-          </div>
+            Sair
+          </button>
+        </header>
 
-          <div className="admin-tools-section">
-            <h3>Ferramentas Utilizadas ({tools.length})</h3>
-            {tools.length > 0 ? (
-              <ul className="admin-tools-list">
-                {tools.map(tool => (
-                  <li key={tool.id} className="admin-tool-item">
-                    <span className="admin-tool-name">{tool.tool}</span>
-                    <span className="admin-tool-date">{tool.timestamp.toLocaleString("pt-PT")}</span>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Nenhuma ferramenta utilizada.</p>
+        <div className="admin-search-section">
+          <input type="text" placeholder="Pesquisar username..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} onKeyDown={e => handleKeyDown(e, handleSearch)} className="admin-input" />
+          <button onClick={handleSearch} className="btn-geral" disabled={loading}>
+            <div className="icon">
+              <FaSearch />
+            </div>
+            {loading ? "A procurar..." : "Pesquisar"}
+          </button>
+        </div>
+
+        {message && <p className="admin-message">{message}</p>}
+
+        {userDetails && (
+          <div className="admin-user-card">
+            <div className="admin-user-header">
+              <Image src={userDetails.avatar} alt={`Foto de ${userDetails.username}`} width={80} height={80} className="admin-avatar" />
+              <div>
+                <h2>{userDetails.name}</h2>
+                <p>@{userDetails.username}</p>
+                <p>{abreviarNumero(userDetails.followers)} seguidores</p>
+              </div>
+            </div>
+
+            <div className="admin-tools-section">
+              <h3>Ferramentas Utilizadas ({tools.length})</h3>
+              {tools.length > 0 ? (
+                <ul className="admin-tools-list">
+                  {tools.map(tool => (
+                    <li key={tool.id} className="admin-tool-item">
+                      <span className="admin-tool-name">{tool.tool}</span>
+                      <span className="admin-tool-date">{tool.timestamp.toLocaleString("pt-PT")}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Nenhuma ferramenta utilizada.</p>
+              )}
+            </div>
+
+            {tools.length > 0 && (
+              <button onClick={handleDelete} className="admin-delete-btn">
+                <div className="icon">
+                  <FaRegTrashCan />
+                </div>
+                Eliminar usuário
+              </button>
             )}
           </div>
-
-          {tools.length > 0 && (
-            <button onClick={handleDelete} className="admin-delete-btn">
-              <div className="icon">
-                <FaRegTrashCan />
-              </div>
-              Eliminar usuário
-            </button>
-          )}
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+      <EstatisticasGerais />
+    </>
   )
 }

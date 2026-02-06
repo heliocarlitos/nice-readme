@@ -1,0 +1,84 @@
+.estatisticasgerais {
+  padding: 0 20px;
+}
+
+.estatisticasgerais .content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.estatisticasgerais h2 {
+  text-align: center;
+  width: 100%;
+}
+
+.estatisticasgerais .atualizacao {
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  margin: 10px 0 20px 0;
+}
+
+.estatisticasgerais .seccao {
+  background: var(--card);
+  padding: 1.5rem 0;
+  border-radius: 8px;
+  border: var(--thin-border);
+}
+
+.estatisticasgerais .seccao.destaque {
+  background: var(--bg-sec);
+  margin-top: 20px;
+}
+
+.estatisticasgerais .seccao h3 {
+  margin: 0 0 1rem;
+  font-size: 1.25rem;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.estatisticasgerais .seccao table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.estatisticasgerais .seccao th,
+.estatisticasgerais .seccao td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: var(--thin-border);
+  color: var(--text);
+}
+
+.estatisticasgerais .seccao th {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-weight: 600;
+  color: var(--light-dark);
+}
+
+.estatisticasgerais .seccao tr:hover {
+  background: var(--muted);
+}
+
+.estatisticasgerais .total-registos {
+  text-align: center;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  margin-top: 2rem;
+  font-weight: 500;
+}
+
+.estatisticasgerais .total-registos strong {
+  color: var(--foreground);
+}
+
+@media (width <= 450px) {
+  .estatisticasgerais .content {
+    display: flex;
+    flex-direction: column;
+  }
+}
