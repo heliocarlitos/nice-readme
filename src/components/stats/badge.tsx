@@ -102,7 +102,6 @@ export function Badges() {
     const url = `https://img.shields.io/badge/${path}${params.toString() ? `?${params.toString()}` : ""}`
     setImageUrl(url)
 
-    // Se o utilizador não definir linkUrl, usa o link da ferramenta
     const finalLink = linkUrl.trim() || TOOL_URL
 
     const md = `[![Badge](${url})](${finalLink})`
@@ -187,7 +186,7 @@ export function Badges() {
               <label htmlFor="color">
                 Cor do fundo (nome ou HEX) <span>*</span>
               </label>
-              <input type="text" id="color" value={color} onChange={e => setColor(e.target.value.trim())} placeholder="ex: blue, #007ec6" />
+              <input type="text" id="color" value={color} onChange={e => setColor(e.target.value.trim())} placeholder="ex: blue, 007ec6" />
             </div>
           </div>
 
