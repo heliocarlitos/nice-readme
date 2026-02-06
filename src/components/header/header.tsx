@@ -20,13 +20,24 @@ export function Header() {
             </li>
             <li>
               <Botao content="Badges" href="/badges" isActive={pathname === "/badges"} />
-              <Botao content="Perfil view" href="/views-badge" isActive={pathname === "/views-badge"} />
+            </li>
+            <li>
+              <Botao content="Perfil Views" href="/views-badge" isActive={pathname === "/views-badge"} />
             </li>
             <li>
               <Botao content="Streak" href="/streak-stats" isActive={pathname === "/streak-stats"} />
             </li>
             <li>
               <Botao content="Stats" href="/github-stats" isActive={pathname === "/github-stats"} />
+            </li>
+            <li>
+              <Botao content="Top Langs" href="/top-langs" isActive={pathname === "/top-langs"} />
+            </li>
+            <li>
+              <Botao content="Repo Pin" href="/repo-pins" isActive={pathname === "/repo-pins"} />
+            </li>
+            <li>
+              <Botao content="Gist Pin" href="/gist-pins" isActive={pathname === "/gist-pins"} />
             </li>
             <li>
               <Botao content="Wakatime" href="/wakatime" isActive={pathname === "/wakatime"} />

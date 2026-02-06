@@ -49,10 +49,12 @@ export function MenuMobile() {
         <nav className={`nav ${menuOpen ? "open" : ""}`} ref={navRef}>
           <Botao className="link" href="/" content="Home" isActive={pathname === "/"} onClick={closeMenu} />
           <Botao className="link" href="/badges" content="Badges" isActive={pathname === "/badges"} onClick={closeMenu} />
-          <Botao className="link" href="/views-badge" content="Perfil view" isActive={pathname === "/views-badge"} onClick={closeMenu} />
-          <Botao className="link" href="/badges" content="Badges" isActive={pathname === "/badges"} onClick={closeMenu} />
+          <Botao className="link" href="/views-badge" content="Perfil Views" isActive={pathname === "/views-badge"} onClick={closeMenu} />
           <Botao className="link" href="/streak-stats" content="Streak" isActive={pathname === "/streak-stats"} onClick={closeMenu} />
           <Botao className="link" href="/github-stats" content="Stats" isActive={pathname === "/github-stats"} onClick={closeMenu} />
+          <Botao className="link" href="/top-langs" content="Top Langs" isActive={pathname === "/top-langs"} onClick={closeMenu} />
+          <Botao className="link" href="/repo-pins" content="Repo Pin" isActive={pathname === "/repo-pins"} onClick={closeMenu} />
+          <Botao className="link" href="/gist-pins" content="Gist Pin" isActive={pathname === "/gist-pins"} onClick={closeMenu} />
           <Botao className="link" href="/wakatime" content="Wakatime" isActive={pathname === "/wakatime"} onClick={closeMenu} />
 
           <Botao

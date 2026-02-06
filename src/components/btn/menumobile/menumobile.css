@@ -97,13 +97,13 @@
   color: var(--white);
 }
 
-@media (width <= 630px) {
+@media (width <= 924px) {
   .menumobile {
     display: flex;
   }
 }
 
-@media (width >= 631px) {
+@media (width >= 925px) {
   .menumobile {
     display: none;
   }
