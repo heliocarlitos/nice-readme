@@ -12,8 +12,10 @@
   align-items: start;
   gap: 20px;
   padding: 30px;
-  border-radius: var(--radius);
-  border: var(--thin-border);
+  border-radius: 10px;
+  background-color: var(--card);
+  box-shadow: -3px 3px 20px #00000010;
+  transition: 0.3s ease;
 }
 
 .features .card-feature:nth-child(odd) {
