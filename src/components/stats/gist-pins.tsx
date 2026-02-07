@@ -19,9 +19,23 @@ const TOOL_URL = "https://nice-readme.vercel.app/gist-pins"
 
 async function checkGitHubUserExists(username: string): Promise<boolean> {
   if (!username.trim()) return false
+
   try {
-    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
-    return res.status === 200
+    const res = await fetch(`/api/check-user?username=${encodeURIComponent(username.trim())}`)
+    const data = await res.json()
+    return data.exists === true
+  } catch {
+    return false
+  }
+}
+
+async function checkGistExists(gistId: string): Promise<boolean> {
+  if (!gistId.trim()) return false
+
+  try {
+    const res = await fetch(`/api/check-gist?gistId=${encodeURIComponent(gistId.trim())}`)
+    const data = await res.json()
+    return data.exists === true
   } catch {
     return false
   }
@@ -51,8 +65,10 @@ export function GistPin() {
   const [markdown, setMarkdown] = useState("")
   const [loading, setLoading] = useState(false)
   const [userExists, setUserExists] = useState(true)
+  const [gistExists, setGistExists] = useState(true)
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const gistTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
@@ -72,8 +88,28 @@ export function GistPin() {
     }
   }, [username])
 
+  useEffect(() => {
+    if (gistTimeoutRef.current) clearTimeout(gistTimeoutRef.current)
+
+    if (!gistId.trim()) {
+      setGistExists(true)
+      setImageUrl("")
+      setMarkdown("")
+      return
+    }
+
+    gistTimeoutRef.current = setTimeout(async () => {
+      const exists = await checkGistExists(gistId)
+      setGistExists(exists)
+    }, 1000)
+
+    return () => {
+      if (gistTimeoutRef.current) clearTimeout(gistTimeoutRef.current)
+    }
+  }, [gistId])
+
   const buildImageUrl = useCallback(() => {
-    if (!gistId.trim()) return ""
+    if (!gistId.trim() || !gistExists) return ""
 
     const params = new URLSearchParams({
       id: gistId.trim(),
@@ -87,10 +123,10 @@ export function GistPin() {
     if (showOwner) params.append("show_owner", "true")
 
     return `https://helio-github-stats.vercel.app/api/gist?${params.toString()}`
-  }, [gistId, theme, hideBorder, borderRadius, locale, showOwner])
+  }, [gistId, theme, hideBorder, borderRadius, locale, showOwner, gistExists])
 
   useEffect(() => {
-    if (!userExists) {
+    if (!userExists || !gistExists || !gistId.trim()) {
       setImageUrl("")
       setMarkdown("")
       setLoading(false)
@@ -108,7 +144,6 @@ export function GistPin() {
     setLoading(true)
     setImageUrl(url)
 
-    // Se o utilizador não definir linkUrl, usa o link da ferramenta
     const finalLink = linkUrl.trim() || TOOL_URL
 
     const md = `[![Gist Card](${url})](${finalLink})`
@@ -118,7 +153,7 @@ export function GistPin() {
     img.onload = () => setLoading(false)
     img.onerror = () => setLoading(false)
     img.src = url
-  }, [buildImageUrl, gistId, userExists, linkUrl])
+  }, [buildImageUrl, gistId, userExists, gistExists, linkUrl])
 
   const handleCopy = async (code: string) => {
     try {
@@ -169,11 +204,12 @@ export function GistPin() {
               {!userExists && <span className="error-message">Utilizador não encontrado no GitHub</span>}
             </div>
 
-            <div className="input-box">
+            <div className={`input-box ${!gistExists ? "input-error" : ""}`}>
               <label htmlFor="gist_id">
                 ID do Gist <span>*</span>
               </label>
               <input type="text" id="gist_id" value={gistId} onChange={e => setGistId(e.target.value.trim())} placeholder="709fbee67b48e330507b9b7f10fef16f" />
+              {!gistExists && <span className="error-message">Gist não encontrado no GitHub</span>}
             </div>
           </div>
 
@@ -225,7 +261,7 @@ export function GistPin() {
           <div className="bag-code">
             {loading && <p>A carregar...</p>}
 
-            {imageUrl && userExists && !loading && (
+            {imageUrl && userExists && gistExists && !loading && (
               <>
                 <figure>
                   <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">

@@ -27,9 +27,11 @@ type ThemeType = (typeof LANGS_THEMES)[number]
 
 async function checkGitHubUserExists(username: string): Promise<boolean> {
   if (!username.trim()) return false
+
   try {
-    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
-    return res.status === 200
+    const res = await fetch(`/api/check-user?username=${encodeURIComponent(username.trim())}`)
+    const data = await res.json()
+    return data.exists === true
   } catch {
     return false
   }
@@ -134,7 +136,6 @@ export function TopLangs() {
     setLoading(true)
     setImageUrl(url)
 
-    // Se o utilizador não definir linkUrl, usa o link da ferramenta
     const finalLink = linkUrl.trim() || TOOL_URL
 
     const md = `[![${customTitle}](${url})](${finalLink})`

@@ -15,9 +15,11 @@ const TOOL_URL = "https://nice-readme.vercel.app/badges"
 
 async function checkGitHubUserExists(username: string): Promise<boolean> {
   if (!username.trim()) return false
+
   try {
-    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
-    return res.status === 200
+    const res = await fetch(`/api/check-user?username=${encodeURIComponent(username.trim())}`)
+    const data = await res.json()
+    return data.exists === true
   } catch {
     return false
   }
@@ -186,7 +188,7 @@ export function Badges() {
               <label htmlFor="color">
                 Cor do fundo (nome ou HEX) <span>*</span>
               </label>
-              <input type="text" id="color" value={color} onChange={e => setColor(e.target.value.trim())} placeholder="ex: blue, 007ec6" />
+              <input type="text" id="color" value={color} onChange={e => setColor(e.target.value.trim())} placeholder="ex: blue, #007ec6" />
             </div>
           </div>
 
@@ -275,19 +277,13 @@ export function Badges() {
 
             {imageUrl && userExists && !loading && (
               <>
-                {linkUrl ? (
-                  <a href={linkUrl} target="_blank" rel="noopener noreferrer">
-                    <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
-                  </a>
-                ) : (
-                  <a href={TOOL_URL} target="_blank" rel="noopener noreferrer">
-                    <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
-                  </a>
-                )}
+                <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
+                  <img className="badge-preview" src={imageUrl} alt="Pré-visualização do badge" loading="lazy" />
+                </a>
 
                 <CodeCard code={markdown} lang="Markdown" onCopy={() => handleCopy(markdown)} />
 
-                <CodeCard code={linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<a href="${TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(linkUrl ? `<a href="${linkUrl}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>` : `<a href="${TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>`)} />
+                <CodeCard code={`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>`} lang="HTML" onCopy={() => handleCopy(`<a href="${linkUrl.trim() || TOOL_URL}" target="_blank" rel="noopener noreferrer"><img src="${imageUrl}" alt="Badge" loading="lazy" /></a>`)} />
               </>
             )}
 

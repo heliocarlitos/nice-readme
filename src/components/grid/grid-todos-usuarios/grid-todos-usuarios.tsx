@@ -45,12 +45,12 @@ export function GridTodosUsuarios() {
 
         const githubPromises = uniqueUsernames.map(async username => {
           try {
-            const res = await fetch(`https://api.github.com/users/${username}`)
+            const res = await fetch(`/api/github-users?username=${username}`)
             if (!res.ok) return null
             const data = await res.json()
             return {
               username,
-              name: data.name || data.login,
+              name: data.name || username,
               followers: data.followers || 0
             }
           } catch {
@@ -127,7 +127,7 @@ export function GridTodosUsuarios() {
         <div className="icon">
           <FaSearch />
         </div>
-        <input id="pesquisar" type="text" placeholder="Pesquisar usuário..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+        <input id="pesquisar" type="text" placeholder="Pesquisar utilizador..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
       </label>
 
       <div className="grid-todos-usuarios">

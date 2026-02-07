@@ -3,10 +3,11 @@
 import { useState, useEffect, useCallback, useRef } from "react"
 import "./stats.css"
 
+import { CodeCard } from "@/components/card/codecard/codecard"
+import { StatsTheme } from "@/components/theme/stats"
+
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
-import { StatsTheme } from "@/components/theme/stats"
-import { CodeCard } from "@/components/card/codecard/codecard"
 
 const TOOL_URL = "https://nice-readme.vercel.app/github-stats"
 
@@ -29,9 +30,11 @@ const LOCALES = [
 
 async function checkGitHubUserExists(username: string): Promise<boolean> {
   if (!username.trim()) return false
+
   try {
-    const res = await fetch(`https://api.github.com/users/${encodeURIComponent(username.trim())}`)
-    return res.status === 200
+    const res = await fetch(`/api/check-user?username=${encodeURIComponent(username.trim())}`)
+    const data = await res.json()
+    return data.exists === true
   } catch {
     return false
   }
