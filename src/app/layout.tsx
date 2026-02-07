@@ -93,7 +93,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </LenisWrapper>
         <IrparaTop />
         <UsuarioGuardado />
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   )
