@@ -39,7 +39,7 @@ async function checkUsageExists(username: string): Promise<boolean> {
 
 export function ViewsBadge() {
   const [username, setUsername] = useState("")
-  const [label, setLabel] = useState("Visualizações")
+  const [label, setLabel] = useState("Profile Views")
   const [color, setColor] = useState("blue")
   const [style, setStyle] = useState<ProfileStyle>("for-the-badge")
   const [base, setBase] = useState("")
@@ -92,7 +92,7 @@ export function ViewsBadge() {
       username: username.trim()
     })
 
-    if (label.trim() && label.trim() !== "Visualizações") params.append("label", label.trim())
+    if (label.trim() && label.trim() !== "Profile Views") params.append("label", label.trim())
     if (color.trim() && color.trim() !== "blue") params.append("color", color.trim())
     params.append("style", style)
     if (base.trim()) params.append("base", base.trim())
@@ -146,7 +146,7 @@ export function ViewsBadge() {
             <p>
               As visualizações começam a ser contadas depois de adicionares o badge ao teu README e actualizares a página.
               <Botao
-                href={`https://github.com/${username}/edit/main/README.md`}
+                href={`https://github.com/${username}/${username}/edit/main/README.md`}
                 target="_blank"
                 content={
                   <>
@@ -173,7 +173,7 @@ export function ViewsBadge() {
           <div className="box">
             <div className="input-box">
               <label htmlFor="label">Rótulo</label>
-              <input type="text" id="label" value={label} onChange={e => setLabel(e.target.value)} placeholder="ex: Visualizações" />
+              <input type="text" id="label" value={label} onChange={e => setLabel(e.target.value)} placeholder="ex: Profile Views" />
             </div>
 
             <div className="input-box">
@@ -232,7 +232,7 @@ export function ViewsBadge() {
                   <a href={linkUrl.trim() || TOOL_URL} target="_blank" rel="noopener noreferrer">
                     <img
                       src={imageUrl}
-                      alt="Pré-visualização do badge de visualizações"
+                      alt="Pré-visualização do badge de Profile Views"
                       loading="lazy"
                       onError={e => {
                         ;(e.target as HTMLImageElement).alt = "Erro ao carregar."

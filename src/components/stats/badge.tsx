@@ -243,7 +243,7 @@ export function Badges() {
             <div className="box">
               <div className="input-box">
                 <label htmlFor="labelColor">Cor do rótulo</label>
-                <input type="text" id="labelColor" value={labelColor} onChange={e => setLabelColor(e.target.value.trim())} placeholder="ex: #ff0000, red" />
+                <input type="text" id="labelColor" value={labelColor} onChange={e => setLabelColor(e.target.value.trim())} placeholder="ex: ff0000, red" />
               </div>
 
               <div className="input-box">

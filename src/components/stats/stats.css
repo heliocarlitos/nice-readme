@@ -115,11 +115,11 @@
   display: inline-flex;
   gap: 0;
   color: var(--foreground);
-  text-decoration: underline;
   margin-left: 5px;
 
-  &:hover {
-    color: var(--white);
+  &:hover,
+  &:focus {
+    text-decoration: underline;
   }
 }
 
