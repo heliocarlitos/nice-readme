@@ -7,7 +7,7 @@ export function Features() {
     {
       id: "1",
       title: "GitHub Streak Stats",
-      desc: "Exibe a sequência contínua de contribuições diárias no GitHub. Incentiva consistência, reforça disciplina e motiva o utilizador ao mostrar o progresso directamente no README do perfil público.",
+      desc: "Exibe a sequência contínua de contribuições diárias no GitHub. Incentiva consistência, reforça disciplina e motiva o utilizador ao mostrar o progresso directamente no README do perfil público",
       link: "/streak-stats",
       img: <img src="https://github-streak-stats-ruby.vercel.app/?user=heliocarlitos&theme=default&hide_border=false&border_radius=4.5&locale=pt_BR&short_numbers=false&mode=daily&disable_animations=false&card_width=466&card_height=194&hide_total_contributions=false&hide_current_streak=false&hide_longest_streak=false" alt="GitHub Streak de heliocarlitos" width={466} height={194} loading="lazy" />
     },

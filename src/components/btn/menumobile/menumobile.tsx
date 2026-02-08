@@ -58,7 +58,7 @@ export function MenuMobile() {
           <Botao className="link" href="/wakatime" content="Wakatime" isActive={pathname === "/wakatime"} onClick={closeMenu} />
 
           <Botao
-            href="https://github.com/hutauta"
+            href="https://github.com/heliocarlitos/nice-readme"
             target="_blank"
             className="github"
             content={
