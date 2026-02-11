@@ -7,6 +7,7 @@ import { CodeCard } from "@/components/card/codecard/codecard"
 
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+import { IoIosArrowDown } from "react-icons/io"
 
 interface BooleanSelectProps {
   id: string
@@ -195,6 +196,9 @@ export function RepoPin() {
 
   const BooleanSelect = ({ id, label, value, onChange }: BooleanSelectProps) => (
     <div className="input-box">
+      <div className="icon icon-ajustado">
+        <IoIosArrowDown />
+      </div>
       <label htmlFor={id}>{label}</label>
       <select id={id} value={value ? "true" : "false"} onChange={e => onChange(e.target.value === "true")}>
         <option value="false">Não</option>
@@ -221,6 +225,9 @@ export function RepoPin() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="theme">Tema</label>
               <select id="theme" value={theme} onChange={e => setTheme(e.target.value)}>
                 <option value="default">Default</option>
@@ -238,6 +245,9 @@ export function RepoPin() {
             </div>
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="show_owner">Mostrar proprietário</label>
               <select id="show_owner" value={showOwner ? "true" : "false"} onChange={e => setShowOwner(e.target.value === "true")}>
                 <option value="false">Não</option>

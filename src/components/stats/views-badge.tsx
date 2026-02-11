@@ -8,6 +8,7 @@ import { MdOpenInNew } from "react-icons/md"
 
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+import { IoIosArrowDown } from "react-icons/io"
 
 const TOOL_URL = "https://nice-readme.vercel.app/views-badge"
 
@@ -184,7 +185,10 @@ export function ViewsBadge() {
 
           <div className="box">
             <div className="input-box">
-              <label htmlFor="style">Estilo</label>
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
+              <label htmlFor="style">Layout</label>
               <select id="style" value={style} onChange={e => setStyle(e.target.value as ProfileStyle)}>
                 {PROFILE_STYLES.map(s => (
                   <option key={s} value={s}>
@@ -202,6 +206,9 @@ export function ViewsBadge() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="abbreviated">Abreviar número (ex: 1.2K)</label>
               <select id="abbreviated" value={abbreviated ? "true" : "false"} onChange={e => setAbbreviated(e.target.value === "true")}>
                 <option value="false">Não</option>

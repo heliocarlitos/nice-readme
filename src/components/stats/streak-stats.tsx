@@ -9,6 +9,7 @@ import { StreakTheme } from "@/components/theme/streak"
 
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+import { IoIosArrowDown } from "react-icons/io"
 
 const TOOL_URL = "https://nice-readme.vercel.app/streak-stats"
 
@@ -196,6 +197,9 @@ export function StreakStats() {
 
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
     <div className="input-box">
+      <div className="icon icon-ajustado">
+        <IoIosArrowDown />
+      </div>
       <label htmlFor={id}>{label}</label>
       <select id={id} value={value ? "true" : "false"} onChange={e => onChange(e.target.value === "true")}>
         <option value="false">Não</option>
@@ -222,6 +226,9 @@ export function StreakStats() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="theme">Tema</label>
               <select id="theme" value={theme} onChange={e => setTheme(e.target.value)}>
                 <optgroup>
@@ -240,6 +247,9 @@ export function StreakStats() {
             <BooleanSelect id="hide_border" label="Ocultar borda" value={hideBorder} onChange={setHideBorder} />
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="locale">Idioma</label>
               <select id="locale" value={locale} onChange={e => setLocale(e.target.value)}>
                 {LOCALES.map(loc => (
@@ -255,6 +265,9 @@ export function StreakStats() {
             <BooleanSelect id="short_numbers" label="Números curtos (ex: 1.5k)" value={shortNumbers} onChange={setShortNumbers} />
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="mode">Modo</label>
               <select id="mode" value={mode} onChange={e => setMode(e.target.value as "daily" | "weekly")}>
                 <option value="daily">Diário</option>
@@ -265,6 +278,9 @@ export function StreakStats() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="exclude_days">Dias excluídos</label>
               <select id="exclude_days" value={excludeDays} onChange={e => setExcludeDays(e.target.value)}>
                 {EXCLUDE_DAYS_OPTIONS.map(opt => (
@@ -300,6 +316,9 @@ export function StreakStats() {
             <BooleanSelect id="hide_longest_streak" label="Ocultar maior sequência" value={hideLongestStreak} onChange={setHideLongestStreak} />
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="date_format">Formato da data</label>
               <select id="date_format" value={dateFormat} onChange={e => setDateFormat(e.target.value)}>
                 {DATE_FORMAT_OPTIONS.map(opt => (

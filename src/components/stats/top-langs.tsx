@@ -7,6 +7,7 @@ import { CodeCard } from "@/components/card/codecard/codecard"
 
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+import { IoIosArrowDown } from "react-icons/io"
 
 interface BooleanSelectProps {
   id: string
@@ -171,6 +172,9 @@ export function TopLangs() {
 
   const BooleanSelect = ({ id, label, value, onChange }: BooleanSelectProps) => (
     <div className="input-box">
+      <div className="icon icon-ajustado">
+        <IoIosArrowDown />
+      </div>
       <label htmlFor={id}>{label}</label>
       <select id={id} value={value ? "true" : "false"} onChange={e => onChange(e.target.value === "true")}>
         <option value="false">Não</option>
@@ -197,6 +201,9 @@ export function TopLangs() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="theme">Tema</label>
               <select id="theme" value={theme} onChange={e => setTheme(e.target.value as ThemeType)}>
                 {LANGS_THEMES.map(t => (
@@ -232,6 +239,9 @@ export function TopLangs() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="layout">Layout</label>
               <select id="layout" value={layout} onChange={e => setLayout(e.target.value as LayoutType)}>
                 {LAYOUTS.map(l => (
@@ -259,6 +269,9 @@ export function TopLangs() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="stats_format">Formato das estatísticas</label>
               <select id="stats_format" value={statsFormat} onChange={e => setStatsFormat(e.target.value as StatsFormat)}>
                 <option value="percentages">Percentagem</option>

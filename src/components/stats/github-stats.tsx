@@ -8,6 +8,7 @@ import { StatsTheme } from "@/components/theme/stats"
 
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+import { IoIosArrowDown } from "react-icons/io"
 
 const TOOL_URL = "https://nice-readme.vercel.app/github-stats"
 
@@ -193,6 +194,9 @@ export function GithubStats() {
 
   const BooleanSelect = ({ id, label, value, onChange }: { id: string; label: string; value: boolean; onChange: (v: boolean) => void }) => (
     <div className="input-box">
+      <div className="icon icon-ajustado">
+        <IoIosArrowDown />
+      </div>
       <label htmlFor={id}>{label}</label>
       <select id={id} value={value ? "true" : "false"} onChange={e => onChange(e.target.value === "true")}>
         <option value="false">Não</option>
@@ -224,6 +228,9 @@ export function GithubStats() {
             </div>
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="theme">Tema</label>
               <select id="theme" value={theme} onChange={e => setTheme(e.target.value)}>
                 <StatsTheme />
@@ -268,6 +275,9 @@ export function GithubStats() {
             <BooleanSelect id="hide_border" label="Ocultar borda" value={hideBorder} onChange={setHideBorder} />
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="locale">Idioma</label>
               <select id="locale" value={locale} onChange={e => setLocale(e.target.value)}>
                 {LOCALES.map(loc => (
@@ -310,6 +320,9 @@ export function GithubStats() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="rank_icon">Ícone do rank</label>
               <select id="rank_icon" value={rankIcon} onChange={e => setRankIcon(e.target.value as "default" | "github" | "percentile")}>
                 <option value="default">Padrão</option>
@@ -346,6 +359,9 @@ export function GithubStats() {
             <BooleanSelect id="disable_animations" label="Desativar animações" value={disableAnimations} onChange={setDisableAnimations} />
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="number_format">Formato dos números</label>
               <select id="number_format" value={numberFormat} onChange={e => setNumberFormat(e.target.value as "short" | "long")}>
                 <option value="short">Curto (ex: 1.5k)</option>

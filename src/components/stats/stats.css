@@ -42,6 +42,18 @@
 
 .stats .container .input-box {
   width: 100%;
+  position: relative;
+  justify-content: center;
+}
+
+.stats .container .input-box .icon {
+  position: absolute;
+  right: 20px;
+  transform: translateY(22px);
+}
+
+.stats .container .input-box .icon-ajustado {
+  transform: translateY(17px);
 }
 
 .stats .container .input-box .user-input {

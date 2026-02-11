@@ -7,6 +7,7 @@ import { CodeCard } from "@/components/card/codecard/codecard"
 
 import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
+import { IoIosArrowDown } from "react-icons/io"
 
 const BADGE_STYLES = ["flat", "flat-square", "plastic", "for-the-badge", "social", "pixel"]
 const LOGO_SLUGS = ["android", "angular", "ansible", "apple", "assemblyscript", "bootstrap", "c", "circleci", "cplusplus", "css", "dart", "digitalocean", "discord", "docker", "dotnet", "elixir", "facebook", "figma", "firebase", "firefox", "flutter", "git", "github", "githubcopilot", "gitlab", "gmail", "gnubash", "go", "googlechrome", "googlecloud", "haskell", "html5", "intellijidea", "instagram", "ios", "javascript", "jenkins", "jira", "julia", "kotlin", "kubernetes", "linux", "lua", "mongodb", "mysql", "netlify", "nextdotjs", "nodedotjs", "notion", "npm", "php", "postgresql", "postman", "prometheus", "python", "pytorch", "r", "react", "redis", "ruby", "rust", "safari", "sass", "scala", "shell", "slackware", "snapchat", "solidity", "springboot", "sqlite", "swift", "tailwindcss", "telegram", "terraform", "tiktok", "travisci", "typescript", "vercel", "vite", "vuedotjs", "wechat", "webpack", "whatsapp", "yarn", "youtube"]
@@ -156,6 +157,9 @@ export function Badges() {
 
         <div className="content">
           <div className="input-box">
+            <div className="icon">
+              <IoIosArrowDown />
+            </div>
             <label htmlFor="badge_type">Tipo de badge</label>
             <select id="badge_type" value={type} onChange={e => setType(e.target.value as "static" | "logo")}>
               <option value="static">Sem logotipo</option>
@@ -194,7 +198,10 @@ export function Badges() {
 
           <div className="box">
             <div className="input-box">
-              <label htmlFor="style">Estilo</label>
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
+              <label htmlFor="style">Layout</label>
               <select id="style" value={style} onChange={e => setStyle(e.target.value)}>
                 {BADGE_STYLES.map(s => (
                   <option key={s} value={s}>
@@ -207,6 +214,9 @@ export function Badges() {
             <div className="input-box">
               {type === "logo" ? (
                 <>
+                  <div className="icon icon-ajustado">
+                    <IoIosArrowDown />
+                  </div>
                   <label htmlFor="logo">Logotipo</label>
                   <select id="logo" value={logo} onChange={e => setLogo(e.target.value)}>
                     {LOGO_SLUGS.map(slug => (
@@ -230,6 +240,9 @@ export function Badges() {
               </div>
 
               <div className="input-box">
+                <div className="icon icon-ajustado">
+                  <IoIosArrowDown />
+                </div>
                 <label htmlFor="logoSize">Tamanho do logotipo</label>
                 <select id="logoSize" value={logoSize} onChange={e => setLogoSize(e.target.value)}>
                   <option value="">Padrão</option>

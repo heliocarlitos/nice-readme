@@ -9,6 +9,7 @@ import { db } from "@/lib/firebase"
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore"
 import { MdOpenInNew } from "react-icons/md"
 import { Botao } from "@/components/btn/botao/botao"
+import { IoIosArrowDown } from "react-icons/io"
 
 const TOOL_URL = "https://nice-readme.vercel.app/wakatime"
 
@@ -157,6 +158,9 @@ export function WakaTimeStats() {
 
   const BooleanSelect = ({ id, label, value, onChange }: BooleanSelectProps) => (
     <div className="input-box">
+      <div className="icon icon-ajustado">
+        <IoIosArrowDown />
+      </div>
       <label htmlFor={id}>{label}</label>
       <select id={id} value={value ? "true" : "false"} onChange={e => onChange(e.target.value === "true")}>
         <option value="false">Não</option>
@@ -232,6 +236,9 @@ export function WakaTimeStats() {
 
           <div className="box">
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="layout">Layout</label>
               <select id="layout" value={layout} onChange={e => setLayout(e.target.value as Layout)}>
                 {WAKATIME_LAYOUTS.map(l => (
@@ -243,6 +250,9 @@ export function WakaTimeStats() {
             </div>
 
             <div className="input-box">
+              <div className="icon icon-ajustado">
+                <IoIosArrowDown />
+              </div>
               <label htmlFor="display_format">Formato</label>
               <select id="display_format" value={displayFormat} onChange={e => setDisplayFormat(e.target.value as DisplayFormat)}>
                 {WAKATIME_DISPLAY_FORMATS.map(f => (
